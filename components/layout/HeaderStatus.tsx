@@ -7,7 +7,7 @@ export function HeaderStatus() {
   const { systemStatus } = profileData;
 
   return (
-    <header className="w-full bg-[#0A0A0A] border-b border-[#30302D] px-4 py-2 select-none z-30 relative">
+    <header className="fixed inset-x-0 top-0 z-50 h-[41px] bg-[#0A0A0A] border-b border-[#30302D] px-4 py-2 select-none">
       <div className="max-w-[1700px] mx-auto flex items-center justify-between font-mono text-[11px] tracking-wider uppercase text-[#89857D]">
         {/* Left: System identifier */}
         <div className="flex items-center gap-3">

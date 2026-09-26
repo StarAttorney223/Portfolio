@@ -55,7 +55,7 @@ export function MobileNav() {
   }, [isOpen]);
 
   return (
-    <div className="lg:hidden w-full bg-[#0A0A0A] border-b border-[#30302D] sticky top-0 z-40">
+    <div className="lg:hidden w-full bg-[#0A0A0A] border-b border-[#30302D] sticky top-[41px] z-40">
       <div className="flex items-center justify-between px-4 py-3">
         {/* Mobile Brand Link */}
         <Link
@@ -85,7 +85,7 @@ export function MobileNav() {
       {/* Slide-out / Dropdown Solid Panel */}
       {isOpen && (
         <div
-          className="fixed inset-0 top-[53px] bg-[#0A0A0A] z-50 flex flex-col justify-between p-6 overflow-y-auto border-t border-[#30302D]"
+          className="fixed inset-0 top-[102px] bg-[#0A0A0A] z-50 flex flex-col justify-between p-6 overflow-y-auto border-t border-[#30302D]"
           role="dialog"
           aria-modal="true"
           aria-label="Navigation Menu"

@@ -2,23 +2,33 @@ import React from "react";
 import Link from "next/link";
 import { Project } from "@/data/projects";
 import { Badge } from "@/components/ui/Badge";
-import { ArrowRight, Terminal } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { CornerBrackets } from "@/components/ui/GeometricDecorations";
 
 interface ProjectCardProps {
   project: Project;
   priority?: boolean;
+  index?: number;
 }
 
-export function ProjectCard({ project }: ProjectCardProps) {
+export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
+  const isOffset = index % 2 === 1;
+
   return (
-    <article className="group relative bg-[#151515] hover:bg-[#1D1D1D] border border-[#30302D] hover:border-[#F26A21] transition-all duration-200 p-6 flex flex-col justify-between">
+    <article
+      className={[
+        "group relative overflow-hidden border border-[#30302D] bg-[#151515] p-5 transition-all duration-200 ease-out-expo hover:-translate-y-1 hover:border-[#F26A21] hover:bg-[#1D1D1D] sm:p-6",
+        isOffset ? "lg:ml-16" : "lg:mr-16",
+      ].join(" ")}
+    >
       {/* Corner Brackets */}
       <CornerBrackets accentCorner="top-left" />
+      <div className="absolute inset-y-0 right-0 hidden w-1/3 bg-dots-subtle opacity-20 transition-transform duration-300 group-hover:scale-105 md:block" />
+      <div className="absolute bottom-0 left-0 h-px w-0 bg-[#F26A21] transition-all duration-300 group-hover:w-full" />
 
-      {/* Top Header Row */}
-      <div>
-        <div className="flex items-center justify-between font-mono text-xs mb-4 pb-2 border-b border-[#30302D] group-hover:border-[#F26A21]/30 transition-colors">
+      <div className="relative grid grid-cols-1 gap-6 lg:grid-cols-[minmax(180px,0.72fr)_minmax(0,1.28fr)] lg:items-end">
+        <div className="space-y-4">
+          <div className="flex items-center justify-between border-b border-[#30302D] pb-2 font-mono text-xs transition-colors group-hover:border-[#F26A21]/30">
           <div className="flex items-center gap-2">
             <span className="text-[#F26A21] font-bold">
               // {project.number}
@@ -33,19 +43,25 @@ export function ProjectCard({ project }: ProjectCardProps) {
           </span>
         </div>
 
-        {/* Project Title */}
-        <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-[#E5E2DA] group-hover:text-[#F26A21] transition-colors mb-2.5">
-          {project.title}
-        </h2>
+          {/* Project Title */}
+          <div>
+            <span className="font-mono text-[10px] uppercase tracking-widest text-[#504E4A]">
+              PROJECT {project.number}
+            </span>
+            <h2 className="mt-1 text-3xl font-black uppercase tracking-tight text-[#E5E2DA] transition-colors group-hover:text-[#F26A21] sm:text-4xl">
+              {project.title}
+            </h2>
+          </div>
+        </div>
 
+        <div className="space-y-5">
         {/* Short Description */}
-        <p className="text-xs sm:text-sm text-[#89857D] leading-relaxed mb-6 group-hover:text-[#E5E2DA]/80 transition-colors line-clamp-3">
+        <p className="max-w-2xl text-sm leading-relaxed text-[#89857D] transition-colors group-hover:text-[#E5E2DA]/80">
           {project.shortDescription}
         </p>
-      </div>
 
       {/* Bottom Area: Tech Stack & CTA */}
-      <div className="space-y-5 pt-2">
+      <div className="space-y-5 pt-1">
         {/* Tech Stack Pills */}
         <div className="flex flex-wrap gap-1.5" aria-label="Technologies used">
           {project.techStack.map((tech) => (
@@ -56,7 +72,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
         </div>
 
         {/* View Project Action */}
-        <div className="pt-3 border-t border-[#30302D] flex items-center justify-between">
+        <div className="flex items-center justify-between border-t border-[#30302D] pt-3">
           <Link
             href={`/projects/${project.id}`}
             className="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider text-[#E5E2DA] group-hover:text-[#F26A21] transition-colors focus-visible:outline-2 focus-visible:outline-[#F26A21]"
@@ -68,6 +84,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
           <span className="font-mono text-[10px] text-[#504E4A] uppercase tracking-widest hidden sm:inline">
             ARCHIVE
           </span>
+        </div>
+      </div>
         </div>
       </div>
     </article>

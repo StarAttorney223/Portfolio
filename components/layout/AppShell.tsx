@@ -10,7 +10,7 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-[#E5E2DA] flex flex-col selection:bg-[#F26A21] selection:text-black">
+    <div className="min-h-screen bg-[#080808] text-[#E5E2DA] flex flex-col pt-[41px] selection:bg-[#F26A21] selection:text-black">
       {/* Skip to Main Content for Accessibility */}
       <a
         href="#main-content"

@@ -46,7 +46,7 @@ export function ProjectsDirectory({ initialProjects }: ProjectsDirectoryProps) {
                 className={cn(
                   "font-mono text-xs px-3 py-1 uppercase tracking-wider transition-colors border select-none focus-visible:outline-2 focus-visible:outline-[#F26A21]",
                   isSelected
-                    ? "bg-[#F26A21] text-black font-bold border-[#FF7A2F]"
+                    ? "bg-[#1D1D1D] text-[#FF7A2F] font-bold border-[#F26A21]"
                     : "bg-[#101010] text-[#89857D] hover:text-[#E5E2DA] border-[#30302D] hover:border-[#89857D]"
                 )}
               >
@@ -58,9 +58,9 @@ export function ProjectsDirectory({ initialProjects }: ProjectsDirectoryProps) {
       </div>
 
       {/* Projects Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {filteredProjects.map((project) => (
-          <ProjectCard key={project.id} project={project} />
+      <div className="space-y-5">
+        {filteredProjects.map((project, index) => (
+          <ProjectCard key={project.id} project={project} index={index} />
         ))}
       </div>
 

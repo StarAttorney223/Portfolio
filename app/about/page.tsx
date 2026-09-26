@@ -3,14 +3,11 @@ import type { Metadata } from "next";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { CornerBrackets } from "@/components/ui/GeometricDecorations";
 import { SolidButton } from "@/components/ui/SolidButton";
-import { Badge } from "@/components/ui/Badge";
 import {
   Code,
   Compass,
   Cpu,
-  Flame,
   Gamepad2,
-  Layers,
   Sparkles,
   Terminal,
 } from "lucide-react";
@@ -138,8 +135,8 @@ export default function AboutPage() {
           <span>02 // ENGINEERING PRINCIPLES</span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-          <div className="bg-[#101010] border border-[#30302D] p-4 space-y-2 font-mono">
+        <div className="grid grid-cols-1 gap-4 pt-2 md:grid-cols-5">
+          <div className="space-y-2 border border-[#30302D] bg-[#101010] p-4 font-mono md:col-span-3">
             <span className="text-xs font-bold text-[#F26A21] block">
               01 // SOLID FOUNDATIONS
             </span>
@@ -148,7 +145,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="bg-[#101010] border border-[#30302D] p-4 space-y-2 font-mono">
+          <div className="space-y-2 border border-[#30302D] bg-[#101010] p-4 font-mono md:col-span-2 md:translate-y-6">
             <span className="text-xs font-bold text-[#F26A21] block">
               02 // PRAGMATIC INNOVATION
             </span>
@@ -157,7 +154,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="bg-[#101010] border border-[#30302D] p-4 space-y-2 font-mono">
+          <div className="space-y-2 border border-[#30302D] bg-[#101010] p-4 font-mono md:col-span-4 md:mt-4">
             <span className="text-xs font-bold text-[#F26A21] block">
               03 // CONTINUOUS REFINEMENT
             </span>

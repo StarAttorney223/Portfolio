@@ -4,50 +4,37 @@ import { profileData } from "@/data/profile";
 import { projectsData } from "@/data/projects";
 import { SolidButton } from "@/components/ui/SolidButton";
 import { ProjectCard } from "@/components/projects/ProjectCard";
-import { CornerBrackets, Crosshair } from "@/components/ui/GeometricDecorations";
-import { ArrowRight, Code2, Cpu, Globe2, Layers, Sparkles } from "lucide-react";
+import { CoordinatePanel } from "@/components/home/CoordinatePanel";
+import { CornerBrackets } from "@/components/ui/GeometricDecorations";
+import { ArrowRight, Code2 } from "lucide-react";
 
 export default function HomePage() {
   const technicalPillars = [
-    {
-      title: "WEB DEVELOPMENT",
-      desc: "Full-stack architectures, high-performance APIs, and reactive interfaces.",
-      icon: Globe2,
-    },
-    {
-      title: "AI / ML",
-      desc: "Computer vision pipelines, on-device inference, and LLM integrations.",
-      icon: Cpu,
-    },
-    {
-      title: "GAME DEVELOPMENT",
-      desc: "Interactive mechanics, UI frameworks, and real-time state systems.",
-      icon: Layers,
-    },
-    {
-      title: "3D / INTERACTIVE EXPERIENCES",
-      desc: "Spatial modeling in Blender and sensory web micro-interactions.",
-      icon: Sparkles,
-    },
+    "WEB DEVELOPMENT",
+    "AI / ML",
+    "GAME DEVELOPMENT",
+    "3D / INTERACTIVE",
   ];
 
   return (
     <div className="space-y-16 lg:space-y-24">
       {/* Hero Section */}
-      <section className="relative pt-2 pb-8 sm:py-6">
-        {/* Subtle grid backdrop for visual depth */}
-        <div className="absolute inset-0 bg-grid-subtle opacity-30 pointer-events-none -z-10" />
+      <section className="relative min-h-[calc(100vh-150px)] overflow-hidden pb-8 pt-4 sm:pt-10">
+        <div className="absolute inset-0 bg-grid-subtle opacity-20 pointer-events-none -z-10 animate-grid-drift" />
+        <div className="absolute right-4 top-8 hidden h-44 w-44 border border-[#30302D] opacity-50 lg:block" />
+        <div className="absolute bottom-16 right-10 hidden h-px w-72 rotate-[-18deg] bg-[#F26A21]/25 lg:block" />
 
-        <div className="max-w-4xl space-y-8">
+        <div className="grid min-h-[calc(100vh-190px)] grid-cols-1 items-end gap-10 xl:grid-cols-[minmax(0,1fr)_420px]">
+          <div className="max-w-4xl space-y-8">
           {/* Top Identifier Tag */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#151515] border border-[#30302D] font-mono text-[11px] uppercase tracking-wider text-[#89857D]">
-            <span className="w-1.5 h-1.5 bg-[#F26A21]" />
+          <div className="inline-flex translate-y-0 items-center gap-2 border border-[#30302D] bg-[#151515] px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-[#89857D]">
+            <span className="h-1.5 w-1.5 bg-[#F26A21] animate-system-pulse" />
             <span>PORTFOLIO SYSTEM // SESSION ACTIVE</span>
           </div>
 
           {/* Hero Heading */}
           <div className="space-y-3">
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight text-[#E5E2DA] leading-[0.95]">
+            <h1 className="text-5xl font-black uppercase tracking-tight text-[#E5E2DA] leading-[0.9] sm:text-7xl lg:text-8xl">
               {profileData.name.first}
               <br />
               <span className="text-[#89857D]">{profileData.name.last}</span>
@@ -65,7 +52,7 @@ export default function HomePage() {
           </div>
 
           {/* Short Description */}
-          <p className="text-base sm:text-xl text-[#E5E2DA]/90 font-normal max-w-2xl leading-relaxed">
+          <p className="max-w-2xl text-base font-normal leading-relaxed text-[#E5E2DA]/90 sm:text-xl">
             &ldquo;{profileData.shortBio}&rdquo;
           </p>
 
@@ -79,39 +66,30 @@ export default function HomePage() {
             </SolidButton>
           </div>
 
-          {/* Technical Pillars (Asymmetric Grid) */}
-          <div className="pt-8 border-t border-[#30302D]">
-            <div className="flex items-center justify-between pb-3 mb-4">
-              <span className="font-mono text-xs text-[#89857D] uppercase tracking-widest">
+          {/* Technical Pillars */}
+          <div className="border-t border-[#30302D] pt-7">
+            <div className="mb-4 flex items-center justify-between pb-3">
+              <span className="font-mono text-xs uppercase tracking-widest text-[#89857D]">
                 // CORE DISCIPLINES
               </span>
               <span className="font-mono text-[11px] text-[#504E4A]">[ 04 DOMAINS ]</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {technicalPillars.map((pillar) => {
-                const IconComponent = pillar.icon;
-                return (
-                  <div
-                    key={pillar.title}
-                    className="relative bg-[#151515] border border-[#30302D] p-4 flex items-start gap-3.5 group hover:border-[#F26A21]/40 transition-colors"
-                  >
-                    <CornerBrackets accentCorner="top-left" color="border-[#262624]" />
-                    <div className="p-2 bg-[#1D1D1D] border border-[#30302D] text-[#F26A21] shrink-0">
-                      <IconComponent className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <h2 className="font-mono text-xs font-bold uppercase tracking-wider text-[#E5E2DA] group-hover:text-[#F26A21] transition-colors">
-                        {pillar.title}
-                      </h2>
-                      <p className="text-xs text-[#89857D] leading-relaxed mt-1">
-                        {pillar.desc}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="flex flex-wrap gap-2">
+              {technicalPillars.map((pillar) => (
+                <span
+                  key={pillar}
+                  className="border border-[#30302D] bg-[#151515] px-3 py-1.5 font-mono text-[11px] uppercase tracking-widest text-[#89857D] transition-colors hover:border-[#F26A21]/60 hover:text-[#E5E2DA]"
+                >
+                  [ {pillar} ]
+                </span>
+              ))}
             </div>
+          </div>
+        </div>
+
+          <div className="mb-2 xl:mb-12">
+            <CoordinatePanel />
           </div>
         </div>
       </section>
@@ -137,10 +115,9 @@ export default function HomePage() {
           </Link>
         </div>
 
-        {/* 2x2 Grid of Solid Project Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {projectsData.slice(0, 4).map((project) => (
-            <ProjectCard key={project.id} project={project} />
+        <div className="space-y-5">
+          {projectsData.slice(0, 4).map((project, index) => (
+            <ProjectCard key={project.id} project={project} index={index} />
           ))}
         </div>
       </section>

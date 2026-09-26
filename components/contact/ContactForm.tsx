@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { SolidButton } from "@/components/ui/SolidButton";
 import { CornerBrackets } from "@/components/ui/GeometricDecorations";
-import { CheckCircle2, Copy, Send, Terminal } from "lucide-react";
+import { CheckCircle2, Copy, Terminal } from "lucide-react";
 import { profileData } from "@/data/profile";
 
 export function ContactForm() {
@@ -36,9 +36,90 @@ export function ContactForm() {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-      {/* Left 3 Cols: Form Panel */}
-      <div className="lg:col-span-3 bg-[#151515] border border-[#30302D] p-6 sm:p-8 relative">
+    <div className="grid grid-cols-1 gap-8 lg:grid-cols-5">
+      {/* Left 2 Cols: Direct Channels & Telemetry */}
+      <div className="space-y-6 lg:col-span-2">
+        {/* Direct Email Card */}
+        <div className="relative space-y-3 border border-[#30302D] bg-[#151515] p-6">
+          <CornerBrackets accentCorner="top-left" />
+
+          <div className="flex items-center justify-between gap-4">
+            <span className="block font-mono text-[10px] uppercase tracking-widest text-[#F26A21]">
+              STATUS // AVAILABLE
+            </span>
+            <span className="h-1.5 w-1.5 bg-[#F26A21] animate-system-pulse" />
+          </div>
+          <h3 className="font-mono text-sm font-bold uppercase text-[#E5E2DA]">
+            EMAIL
+          </h3>
+
+          <div className="flex items-center justify-between border border-[#30302D] bg-[#101010] p-3 font-mono text-xs">
+            <span className="truncate text-[#E5E2DA]">{emailAddress}</span>
+            <button
+              onClick={handleCopyEmail}
+              aria-label="Copy email address"
+              className="p-1 text-[#89857D] transition-colors hover:text-[#F26A21]"
+            >
+              <Copy className="h-3.5 w-3.5" />
+            </button>
+          </div>
+
+          {copied && (
+            <p className="font-mono text-[11px] tracking-wide text-[#F26A21]">
+              COPIED TO CLIPBOARD
+            </p>
+          )}
+
+          <p className="text-xs leading-relaxed text-[#89857D]">
+            Direct line for technical opportunities, collaborations, or resume requests.
+          </p>
+        </div>
+
+        {/* Social Matrix Card */}
+        <div className="space-y-4 border border-[#30302D] bg-[#151515] p-6">
+          <span className="block font-mono text-[10px] uppercase tracking-widest text-[#89857D]">
+            PUBLIC CHANNELS
+          </span>
+
+          <div className="space-y-2 font-mono text-xs">
+            {profileData.socials.map((social) => (
+              <a
+                key={social.label}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between gap-3 border border-[#30302D] bg-[#101010] p-3 text-[#E5E2DA] transition-colors hover:border-[#F26A21] hover:text-[#F26A21]"
+              >
+                <span className="font-semibold uppercase tracking-wider">
+                  {social.label}
+                </span>
+                <span className="truncate text-[11px] text-[#89857D]">
+                  {social.identifier}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Availability Status */}
+        <div className="space-y-2 border border-[#30302D] bg-[#101010] p-4 font-mono text-xs">
+          <div className="flex items-center justify-between">
+            <span className="text-[#89857D]">STATUS</span>
+            <span className="font-bold text-[#F26A21]">ONLINE &amp; ACTIVE</span>
+          </div>
+          <div className="flex items-center justify-between text-[#89857D]">
+            <span>LOCATION</span>
+            <span>{profileData.metadata.location}</span>
+          </div>
+          <div className="flex items-center justify-between text-[#89857D]">
+            <span>TIMEZONE</span>
+            <span>{profileData.metadata.timezone}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Right 3 Cols: Form Panel */}
+      <div className="relative border border-[#30302D] bg-[#151515] p-6 sm:p-8 lg:col-span-3">
         <CornerBrackets accentCorner="all" />
 
         <div className="flex items-center justify-between pb-3 border-b border-[#30302D] mb-6">
@@ -84,7 +165,7 @@ export function ContactForm() {
                   setFormData({ ...formData, name: e.target.value })
                 }
                 placeholder="e.g. Alex Morgan"
-                className="w-full bg-[#101010] border border-[#30302D] px-3.5 py-2.5 text-[#E5E2DA] placeholder-[#504E4A] focus:border-[#F26A21] focus:outline-none transition-colors"
+                className="w-full border border-[#30302D] bg-[#101010] px-3.5 py-2.5 text-[#E5E2DA] placeholder-[#504E4A] transition-all duration-150 focus:scale-[1.01] focus:border-[#F26A21] focus:outline-none"
               />
             </div>
 
@@ -105,7 +186,7 @@ export function ContactForm() {
                   setFormData({ ...formData, email: e.target.value })
                 }
                 placeholder="e.g. alex@example.com"
-                className="w-full bg-[#101010] border border-[#30302D] px-3.5 py-2.5 text-[#E5E2DA] placeholder-[#504E4A] focus:border-[#F26A21] focus:outline-none transition-colors"
+                className="w-full border border-[#30302D] bg-[#101010] px-3.5 py-2.5 text-[#E5E2DA] placeholder-[#504E4A] transition-all duration-150 focus:scale-[1.01] focus:border-[#F26A21] focus:outline-none"
               />
             </div>
 
@@ -126,7 +207,7 @@ export function ContactForm() {
                   setFormData({ ...formData, message: e.target.value })
                 }
                 placeholder="Detail the project scope, engineering opportunity, or inquiry..."
-                className="w-full bg-[#101010] border border-[#30302D] px-3.5 py-2.5 text-[#E5E2DA] placeholder-[#504E4A] focus:border-[#F26A21] focus:outline-none transition-colors resize-y"
+                className="w-full resize-y border border-[#30302D] bg-[#101010] px-3.5 py-2.5 text-[#E5E2DA] placeholder-[#504E4A] transition-all duration-150 focus:scale-[1.01] focus:border-[#F26A21] focus:outline-none"
               />
             </div>
 
@@ -147,83 +228,6 @@ export function ContactForm() {
         )}
       </div>
 
-      {/* Right 2 Cols: Direct Channels & Telemetry */}
-      <div className="lg:col-span-2 space-y-6">
-        {/* Direct Email Card */}
-        <div className="bg-[#151515] border border-[#30302D] p-6 space-y-3 relative">
-          <CornerBrackets accentCorner="top-left" />
-
-          <span className="font-mono text-[10px] uppercase text-[#F26A21] tracking-widest block">
-            DIRECT PROTOCOL
-          </span>
-          <h3 className="font-mono text-sm font-bold uppercase text-[#E5E2DA]">
-            ELECTRONIC MAIL
-          </h3>
-
-          <div className="bg-[#101010] border border-[#30302D] p-3 flex items-center justify-between font-mono text-xs">
-            <span className="text-[#E5E2DA] truncate">{emailAddress}</span>
-            <button
-              onClick={handleCopyEmail}
-              aria-label="Copy email address"
-              className="text-[#89857D] hover:text-[#F26A21] transition-colors p-1"
-            >
-              <Copy className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
-          {copied && (
-            <p className="font-mono text-[11px] text-[#F26A21] tracking-wide">
-              ✓ COPIED TO CLIPBOARD
-            </p>
-          )}
-
-          <p className="text-xs text-[#89857D] leading-relaxed">
-            Feel free to email directly for technical opportunities, collaborations, or resume requests.
-          </p>
-        </div>
-
-        {/* Social Matrix Card */}
-        <div className="bg-[#151515] border border-[#30302D] p-6 space-y-4">
-          <span className="font-mono text-[10px] uppercase text-[#89857D] tracking-widest block">
-            PUBLIC CHANNELS
-          </span>
-
-          <div className="space-y-2 font-mono text-xs">
-            {profileData.socials.map((social) => (
-              <a
-                key={social.label}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between p-3 bg-[#101010] border border-[#30302D] hover:border-[#F26A21] text-[#E5E2DA] hover:text-[#F26A21] transition-colors"
-              >
-                <span className="font-semibold uppercase tracking-wider">
-                  {social.label}
-                </span>
-                <span className="text-[#89857D] text-[11px]">
-                  {social.identifier}
-                </span>
-              </a>
-            ))}
-          </div>
-        </div>
-
-        {/* Availability Status */}
-        <div className="bg-[#101010] border border-[#30302D] p-4 font-mono text-xs space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-[#89857D]">STATUS</span>
-            <span className="text-[#F26A21] font-bold">ONLINE &amp; ACTIVE</span>
-          </div>
-          <div className="flex items-center justify-between text-[#89857D]">
-            <span>LOCATION</span>
-            <span>{profileData.metadata.location}</span>
-          </div>
-          <div className="flex items-center justify-between text-[#89857D]">
-            <span>TIMEZONE</span>
-            <span>{profileData.metadata.timezone}</span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

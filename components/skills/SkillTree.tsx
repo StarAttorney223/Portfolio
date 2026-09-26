@@ -1,198 +1,159 @@
 "use client";
 
-import React, { useState } from "react";
-import { skillsCategories, SkillCategory, SkillNode } from "@/data/skills";
+import React, { useMemo, useState } from "react";
+import { skillsCategories } from "@/data/skills";
 import { CornerBrackets } from "@/components/ui/GeometricDecorations";
-import { Cpu, Terminal, Layers, Info } from "lucide-react";
+import { Cpu, Info, Terminal } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function SkillTree() {
-  const [selectedSkill, setSelectedSkill] = useState<SkillNode>(
-    skillsCategories[0].skills[0]
-  );
-  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [activeCategoryId, setActiveCategoryId] = useState(skillsCategories[0].id);
+  const activeCategory =
+    skillsCategories.find((category) => category.id === activeCategoryId) ??
+    skillsCategories[0];
 
-  const displayedCategories =
-    activeCategory === "all"
-      ? skillsCategories
-      : skillsCategories.filter((cat) => cat.id === activeCategory);
+  const activeSkill = useMemo(() => activeCategory.skills[0], [activeCategory]);
 
   return (
     <div className="space-y-8">
-      {/* Category Filter Matrix */}
-      <div className="bg-[#151515] border border-[#30302D] p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-2 font-mono text-xs text-[#89857D] uppercase tracking-wider">
-          <Layers className="w-3.5 h-3.5 text-[#F26A21]" />
-          <span>BRANCH FILTER:</span>
-        </div>
-
-        <div className="flex flex-wrap items-center gap-1.5 font-mono text-xs">
-          <button
-            onClick={() => setActiveCategory("all")}
-            className={cn(
-              "px-2.5 py-1 uppercase tracking-wider transition-colors border select-none focus-visible:outline-2 focus-visible:outline-[#F26A21]",
-              activeCategory === "all"
-                ? "bg-[#F26A21] text-black font-bold border-[#FF7A2F]"
-                : "bg-[#101010] text-[#89857D] hover:text-[#E5E2DA] border-[#30302D]"
-            )}
-          >
-            ALL BRANCHES
-          </button>
-          {skillsCategories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={cn(
-                "px-2.5 py-1 uppercase tracking-wider transition-colors border select-none focus-visible:outline-2 focus-visible:outline-[#F26A21]",
-                activeCategory === cat.id
-                  ? "bg-[#F26A21] text-black font-bold border-[#FF7A2F]"
-                  : "bg-[#101010] text-[#89857D] hover:text-[#E5E2DA] border-[#30302D]"
-              )}
-            >
-              {cat.title}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Visual Root System Banner (ASCII / Diagram Header) */}
-      <div className="bg-[#101010] border border-[#30302D] p-5 text-center relative overflow-hidden hidden md:block">
+      <div className="relative overflow-hidden border border-[#30302D] bg-[#151515] p-5 sm:p-6 lg:p-8">
         <CornerBrackets accentCorner="all" />
-        <div className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#E5E2DA] bg-[#151515] border border-[#30302D] px-4 py-1.5">
-          <Terminal className="w-3.5 h-3.5 text-[#F26A21]" />
-          <span>ROOT: SOFTWARE ARCHITECTURE &amp; FULL-STACK ENGINEERING</span>
-        </div>
+        <div className="absolute inset-0 bg-grid-subtle opacity-10 animate-grid-drift" />
 
-        {/* Stem Lines Downward */}
-        <div className="flex flex-col items-center pt-2">
-          <div className="w-[1px] h-5 bg-[#F26A21]/60" />
-          <div className="w-3/4 max-w-2xl h-[1px] bg-[#30302D] relative">
-            <span className="absolute -top-1 left-0 w-2 h-2 rounded-full bg-[#F26A21]" />
-            <span className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-[#F26A21]" />
-            <span className="absolute -top-1 right-0 w-2 h-2 rounded-full bg-[#F26A21]" />
-          </div>
-        </div>
-      </div>
-
-      {/* Main Grid: Branches + Interactive Node Inspector */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left 2 Cols: Category Branches */}
-        <div className="lg:col-span-2 space-y-6">
-          {displayedCategories.map((category) => (
-            <div
-              key={category.id}
-              className="bg-[#151515] border border-[#30302D] p-5 sm:p-6 space-y-4 relative group"
-            >
-              <CornerBrackets accentCorner="top-left" />
-
-              {/* Branch Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#30302D] gap-2">
-                <div>
-                  <div className="flex items-center gap-2 font-mono text-xs text-[#F26A21]">
-                    <span>// {category.code}</span>
-                    <span className="text-[#30302D]">•</span>
-                    <span className="text-[#89857D] uppercase tracking-wider text-[11px]">
-                      {category.subtitle}
-                    </span>
-                  </div>
-                  <h3 className="text-xl font-black uppercase text-[#E5E2DA] tracking-tight mt-0.5">
-                    {category.title}
-                  </h3>
-                </div>
-
-                <span className="font-mono text-[10px] text-[#504E4A] uppercase tracking-widest">
-                  [ {category.skills.length} NODES ]
-                </span>
+        <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)]">
+          <div className="space-y-8">
+            <div className="flex flex-col gap-3 border-b border-[#30302D] pb-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#89857D]">
+                <Terminal className="h-3.5 w-3.5 text-[#F26A21]" />
+                <span>ROOT: SOFTWARE ARCHITECTURE</span>
               </div>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-[#504E4A]">
+                SELECT DOMAIN TO TRACE CONNECTIONS
+              </span>
+            </div>
 
-              {/* Description */}
-              <p className="text-xs text-[#89857D] leading-relaxed">
-                {category.description}
-              </p>
+            <div className="relative min-h-[440px]">
+              <div className="absolute left-1/2 top-14 hidden h-[330px] w-px -translate-x-1/2 bg-[#30302D] md:block" />
+              <div className="absolute left-[16%] right-[16%] top-1/2 hidden h-px bg-[#30302D] md:block" />
 
-              {/* Skill Nodes Matrix */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-2">
-                {category.skills.map((skill) => {
-                  const isSelected = selectedSkill.name === skill.name;
+              <button
+                className="absolute left-1/2 top-0 z-10 -translate-x-1/2 border border-[#F26A21]/70 bg-[#101010] px-4 py-2 font-mono text-[11px] font-bold uppercase tracking-widest text-[#E5E2DA]"
+                type="button"
+              >
+                CORE SYSTEM
+              </button>
 
+              <div className="grid grid-cols-1 gap-3 pt-16 sm:grid-cols-2 md:grid-cols-3">
+                {skillsCategories.map((category, index) => {
+                  const isActive = category.id === activeCategory.id;
                   return (
                     <button
-                      key={skill.name}
-                      onClick={() => setSelectedSkill(skill)}
+                      key={category.id}
+                      onClick={() => setActiveCategoryId(category.id)}
                       className={cn(
-                        "text-left p-3 border font-mono transition-all duration-150 relative select-none focus-visible:outline-2 focus-visible:outline-[#F26A21]",
-                        isSelected
-                          ? "bg-[#1D1D1D] text-[#E5E2DA] border-[#F26A21] shadow-sm"
-                          : "bg-[#101010] text-[#89857D] hover:text-[#E5E2DA] hover:bg-[#181818] border-[#30302D] hover:border-[#89857D]"
+                        "group relative min-h-[112px] border p-4 text-left transition-all duration-200 ease-out-expo focus-visible:outline-2 focus-visible:outline-[#F26A21]",
+                        isActive
+                          ? "border-[#F26A21] bg-[#1D1D1D] text-[#E5E2DA]"
+                          : "border-[#30302D] bg-[#101010] text-[#89857D] opacity-70 hover:-translate-y-1 hover:border-[#89857D] hover:opacity-100",
+                        index % 3 === 1 && "md:translate-y-10",
+                        index % 3 === 2 && "md:translate-y-20"
                       )}
                     >
-                      {/* Active indicator dot */}
-                      {isSelected && (
-                        <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-[#F26A21]" />
-                      )}
-
-                      <span className="block text-[9px] uppercase tracking-widest text-[#504E4A] mb-1">
-                        {skill.category}
+                      <span
+                        className={cn(
+                          "absolute -top-8 left-1/2 hidden h-8 w-px -translate-x-1/2 bg-[#30302D] md:block",
+                          isActive && "bg-[#F26A21]"
+                        )}
+                        aria-hidden="true"
+                      />
+                      <span
+                        className={cn(
+                          "absolute left-3 top-3 h-2 w-2 border",
+                          isActive ? "border-[#F26A21] bg-[#F26A21]" : "border-[#504E4A]"
+                        )}
+                        aria-hidden="true"
+                      />
+                      <span className="block pl-5 font-mono text-[10px] uppercase tracking-widest text-[#504E4A] group-hover:text-[#F26A21]">
+                        {category.code}
                       </span>
-                      <span className="block text-xs font-bold text-[#E5E2DA] uppercase tracking-wider">
-                        {skill.name}
+                      <span
+                        className={cn(
+                          "mt-3 block font-mono text-sm font-bold uppercase tracking-wider transition-colors",
+                          isActive ? "text-[#FF7A2F]" : "text-[#E5E2DA]"
+                        )}
+                      >
+                        {category.title}
+                      </span>
+                      <span className="mt-2 block text-xs leading-relaxed text-[#89857D]">
+                        {category.subtitle}
                       </span>
                     </button>
                   );
                 })}
               </div>
             </div>
-          ))}
-        </div>
+          </div>
 
-        {/* Right Col: Node Inspector Panel (Solid Physical Telemetry) */}
-        <div className="lg:col-span-1">
-          <div className="sticky top-20 bg-[#151515] border border-[#30302D] p-5 sm:p-6 space-y-5">
-            <CornerBrackets accentCorner="all" />
-
-            <div className="flex items-center justify-between pb-3 border-b border-[#30302D]">
+          <aside className="relative border border-[#30302D] bg-[#101010] p-5">
+            <CornerBrackets accentCorner="top-left" />
+            <div className="mb-5 flex items-center justify-between border-b border-[#30302D] pb-3">
               <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#89857D]">
-                <Cpu className="w-3.5 h-3.5 text-[#F26A21]" />
-                <span>NODE INSPECTOR</span>
+                <Cpu className="h-3.5 w-3.5 text-[#F26A21]" />
+                <span>ACTIVE DOMAIN</span>
               </div>
-              <span className="font-mono text-[10px] text-[#F26A21] animate-pulse">
-                SYNCED
-              </span>
+              <span className="font-mono text-[10px] text-[#F26A21]">LINKED</span>
             </div>
 
-            <div className="space-y-4 font-mono">
-              <div className="bg-[#101010] border border-[#30302D] p-4 space-y-1">
-                <span className="text-[10px] uppercase text-[#89857D] tracking-widest">
-                  SELECTED NODE
+            <div className="space-y-5">
+              <div>
+                <span className="font-mono text-[10px] uppercase tracking-widest text-[#504E4A]">
+                  {activeCategory.code}
                 </span>
-                <h4 className="text-xl font-black uppercase text-[#E5E2DA] tracking-wider">
-                  {selectedSkill.name}
-                </h4>
-                <span className="text-xs text-[#F26A21] font-semibold uppercase">
-                  CLASSIFICATION: {selectedSkill.category}
-                </span>
+                <h3 className="mt-1 text-3xl font-black uppercase tracking-tight text-[#E5E2DA]">
+                  {activeCategory.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-[#89857D]">
+                  {activeCategory.description}
+                </p>
               </div>
 
-              <div className="space-y-2 text-xs">
-                <span className="text-[10px] uppercase text-[#89857D] tracking-widest block">
-                  FOCUS &amp; APPLICATIONS
-                </span>
-                <div className="bg-[#101010] border border-[#30302D] p-3 text-[#E5E2DA] leading-relaxed">
-                  {selectedSkill.focusArea || "General full-stack engineering workflow."}
-                </div>
+              <div className="space-y-3">
+                {activeCategory.skills.map((skill, index) => (
+                  <div
+                    key={skill.name}
+                    className="relative border border-[#30302D] bg-[#151515] p-3 transition-all duration-200"
+                    style={{ transitionDelay: `${index * 50}ms` }}
+                  >
+                    <span className="absolute -left-5 top-1/2 hidden h-px w-5 bg-[#F26A21]/70 md:block" />
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <span className="font-mono text-[9px] uppercase tracking-widest text-[#504E4A]">
+                          {skill.category}
+                        </span>
+                        <p className="mt-1 font-mono text-xs font-bold uppercase tracking-wider text-[#E5E2DA]">
+                          {skill.name}
+                        </p>
+                      </div>
+                      <span className="mt-1 h-1.5 w-1.5 bg-[#F26A21]" />
+                    </div>
+                    <p className="mt-2 text-xs leading-relaxed text-[#89857D]">
+                      {skill.focusArea || activeSkill.focusArea}
+                    </p>
+                  </div>
+                ))}
               </div>
 
-              <div className="pt-3 border-t border-[#30302D] space-y-2 text-xs">
-                <div className="flex items-center gap-1.5 text-[#89857D] text-[11px]">
-                  <Info className="w-3.5 h-3.5 text-[#F26A21]" />
-                  <span>DESIGN PRINCIPLE</span>
+              <div className="border-t border-[#30302D] pt-4 text-xs text-[#89857D]">
+                <div className="mb-2 flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest">
+                  <Info className="h-3.5 w-3.5 text-[#F26A21]" />
+                  <span>READING MODEL</span>
                 </div>
-                <p className="text-[11px] text-[#89857D] leading-relaxed">
-                  Skills are structured as operational engineering branches rather than arbitrary percentage bars or fake statistics.
+                <p className="leading-relaxed">
+                  Categories act as primary nodes. Selecting one activates its connected technologies while the other branches recede.
                 </p>
               </div>
             </div>
-          </div>
+          </aside>
         </div>
       </div>
     </div>

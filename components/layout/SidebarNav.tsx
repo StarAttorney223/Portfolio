@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { profileData } from "@/data/profile";
-import { ExternalLink, Terminal } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface NavItem {
@@ -28,7 +28,7 @@ export function SidebarNav() {
 
   return (
     <aside
-      className="hidden lg:flex flex-col justify-between w-64 xl:w-72 h-[calc(100vh-41px)] sticky top-[41px] bg-[#0A0A0A] border-r border-[#30302D] p-6 select-none shrink-0"
+      className="hidden lg:flex flex-col w-64 xl:w-72 h-[calc(100vh-41px)] sticky top-[41px] bg-[#0A0A0A] border-r border-[#30302D] p-6 select-none shrink-0"
       aria-label="Main Navigation"
     >
       <div className="space-y-8">
@@ -149,26 +149,6 @@ export function SidebarNav() {
         </div>
       </div>
 
-      {/* Footer System Telemetry in Sidebar */}
-      <div className="pt-4 border-t border-[#30302D]">
-        <div className="bg-[#151515] border border-[#30302D] p-3 space-y-1.5 font-mono text-[10px] text-[#89857D]">
-          <div className="flex justify-between items-center text-[#E5E2DA]">
-            <span className="flex items-center gap-1.5">
-              <Terminal className="w-3 h-3 text-[#F26A21]" />
-              <span>TERMINAL READY</span>
-            </span>
-            <span className="text-[#F26A21] font-semibold">200 OK</span>
-          </div>
-          <div className="flex justify-between text-[#89857D]">
-            <span>LOC</span>
-            <span>{profileData.metadata.timezone}</span>
-          </div>
-          <div className="flex justify-between text-[#504E4A]">
-            <span>DESIGN</span>
-            <span>SOLID INDUSTRIAL</span>
-          </div>
-        </div>
-      </div>
     </aside>
   );
 }

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --bg-base: #0A0A0A;
+  --bg-base: #080808;
   --surface-primary: #151515;
   --surface-secondary: #1D1D1D;
   --surface-tertiary: #242424;
@@ -38,6 +38,51 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes systemPulse {
+  0%, 100% {
+    opacity: 0.42;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+}
+
+@keyframes gridDrift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-32px, 32px, 0);
+  }
+}
+
+@keyframes lineScan {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-system-pulse {
+  animation: systemPulse 2.8s ease-in-out infinite;
+}
+
+.animate-grid-drift {
+  animation: gridDrift 22s linear infinite;
+}
+
+.animate-line-scan {
+  animation: lineScan 3.8s ease-in-out infinite;
+}
+
+.ease-out-expo {
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Accessible visible focus indicators */
@@ -113,5 +158,11 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .animate-system-pulse,
+  .animate-grid-drift,
+  .animate-line-scan {
+    animation: none !important;
   }
 }

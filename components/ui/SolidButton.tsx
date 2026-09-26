@@ -29,7 +29,7 @@ export function SolidButton({
   external = false,
 }: SolidButtonProps) {
   const baseStyles =
-    "group inline-flex items-center justify-center font-mono font-medium tracking-wider uppercase transition-all duration-200 select-none relative focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F26A21]";
+    "group inline-flex items-center justify-center font-mono font-medium tracking-wider uppercase transition-all duration-200 ease-out-expo select-none relative active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F26A21]";
 
   const variantStyles = {
     primary:
