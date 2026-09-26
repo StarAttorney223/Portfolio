@@ -3,19 +3,6 @@ import Link from "next/link";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface SolidButtonProps {
-  children: React.ReactNode;
-  href?: string;
-  onClick?: () => void;
-  variant?: "primary" | "secondary" | "subtle";
-  size?: "sm" | "md" | "lg";
-  icon?: "arrow" | "external" | "none";
-  className?: string;
-  disabled?: boolean;
-  type?: "button" | "submit" | "reset";
-  external?: boolean;
-}
-
 export function SolidButton({
   children,
   href,
@@ -27,7 +14,7 @@ export function SolidButton({
   disabled = false,
   type = "button",
   external = false,
-}: SolidButtonProps) {
+}) {
   const baseStyles =
     "group inline-flex items-center justify-center font-mono font-medium tracking-wider uppercase transition-all duration-200 ease-out-expo select-none relative active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F26A21]";
 

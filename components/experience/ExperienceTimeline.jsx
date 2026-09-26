@@ -2,14 +2,14 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { experienceData, experienceCategories, ExperienceItem } from "@/data/experience";
+import { experienceData, experienceCategories } from "@/data/experience";
 import { Badge } from "@/components/ui/Badge";
 import { CornerBrackets } from "@/components/ui/GeometricDecorations";
 import { ArrowRight, Calendar, Filter, MapPin, Terminal } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function ExperienceTimeline() {
-  const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
+  const [selectedCategory, setSelectedCategory] = useState("ALL");
 
   const filteredItems =
     selectedCategory === "ALL"

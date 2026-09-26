@@ -1,17 +1,10 @@
 import React from "react";
 import Link from "next/link";
-import { Project } from "@/data/projects";
 import { Badge } from "@/components/ui/Badge";
 import { ArrowRight } from "lucide-react";
 import { CornerBrackets } from "@/components/ui/GeometricDecorations";
 
-interface ProjectCardProps {
-  project: Project;
-  priority?: boolean;
-  index?: number;
-}
-
-export function ProjectCard({ project, index = 0 }: ProjectCardProps) {
+export function ProjectCard({ project, index = 0 }) {
   const isOffset = index % 2 === 1;
 
   return (

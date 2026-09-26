@@ -1,20 +1,4 @@
-export interface SkillNode {
-  name: string;
-  category: string;
-  focusArea?: string;
-  description?: string;
-}
-
-export interface SkillCategory {
-  id: string;
-  code: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  skills: SkillNode[];
-}
-
-export const skillsCategories: SkillCategory[] = [
+export const skillsCategories = [
   {
     id: "frontend",
     code: "SEC-01",

@@ -1,5 +1,4 @@
 import React from "react";
-import type { Metadata } from "next";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { CornerBrackets } from "@/components/ui/GeometricDecorations";
 import { SolidButton } from "@/components/ui/SolidButton";
@@ -12,7 +11,7 @@ import {
   Terminal,
 } from "lucide-react";
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "About",
   description:
     "About Divyansh Chandrakar: Engineering philosophy, technical curiosity, and exploration across web development, AI, and 3D design.",

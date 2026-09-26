@@ -1,9 +1,8 @@
 import React from "react";
-import type { Metadata } from "next";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { SkillTree } from "@/components/skills/SkillTree";
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Skills",
   description:
     "Technical skill tree and architectural domains: Frontend, Backend, Databases, AI/ML, Tools & Cloud, and Game/3D design.",

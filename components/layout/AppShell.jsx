@@ -4,11 +4,7 @@ import { SidebarNav } from "./SidebarNav";
 import { MobileNav } from "./MobileNav";
 import { Footer } from "./Footer";
 
-interface AppShellProps {
-  children: React.ReactNode;
-}
-
-export function AppShell({ children }: AppShellProps) {
+export function AppShell({ children }) {
   return (
     <div className="min-h-screen bg-[#080808] text-[#E5E2DA] flex flex-col pt-[41px] selection:bg-[#F26A21] selection:text-black">
       {/* Skip to Main Content for Accessibility */}

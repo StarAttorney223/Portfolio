@@ -1,9 +1,8 @@
 import React from "react";
-import type { Metadata } from "next";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ContactForm } from "@/components/contact/ContactForm";
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Contact",
   description:
     "Get in touch with Divyansh Chandrakar for software engineering opportunities, internships, collaboration, or inquiries.",

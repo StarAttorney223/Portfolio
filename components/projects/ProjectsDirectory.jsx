@@ -1,14 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Project } from "@/data/projects";
 import { ProjectCard } from "@/components/projects/ProjectCard";
 import { Terminal, Filter } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-interface ProjectsDirectoryProps {
-  initialProjects: Project[];
-}
 
 const categories = [
   "ALL",
@@ -16,10 +11,10 @@ const categories = [
   "AI / Vision",
   "AI / ML",
   "Generative AI",
-] as const;
+];
 
-export function ProjectsDirectory({ initialProjects }: ProjectsDirectoryProps) {
-  const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
+export function ProjectsDirectory({ initialProjects }) {
+  const [selectedCategory, setSelectedCategory] = useState("ALL");
 
   const filteredProjects =
     selectedCategory === "ALL"

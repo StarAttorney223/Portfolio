@@ -1,5 +1,4 @@
 import React from "react";
-import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projectsData } from "@/data/projects";
@@ -20,12 +19,6 @@ import {
   Sparkles,
 } from "lucide-react";
 
-interface ProjectPageProps {
-  params: Promise<{
-    slug: string;
-  }>;
-}
-
 export async function generateStaticParams() {
   return projectsData.map((p) => ({
     slug: p.id,
@@ -34,7 +27,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: ProjectPageProps): Promise<Metadata> {
+}) {
   const { slug } = await params;
   const project = projectsData.find((p) => p.id === slug);
 
@@ -50,7 +43,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProjectDetailPage({ params }: ProjectPageProps) {
+export default async function ProjectDetailPage({ params }) {
   const { slug } = await params;
   const projectIndex = projectsData.findIndex((p) => p.id === slug);
 

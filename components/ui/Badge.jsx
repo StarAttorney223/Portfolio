@@ -1,19 +1,12 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-interface BadgeProps {
-  children: React.ReactNode;
-  variant?: "default" | "orange" | "outline" | "dim";
-  size?: "sm" | "md";
-  className?: string;
-}
-
 export function Badge({
   children,
   variant = "default",
   size = "sm",
   className,
-}: BadgeProps) {
+}) {
   const variantStyles = {
     default: "bg-[#1D1D1D] text-[#E5E2DA] border border-[#30302D]",
     orange: "bg-[#F26A21] text-black font-semibold border border-[#FF7A2F]",

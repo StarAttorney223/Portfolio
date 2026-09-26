@@ -1,15 +1,6 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-interface SectionHeaderProps {
-  number: string;
-  title: string;
-  subtitle?: string;
-  description?: string;
-  className?: string;
-  badge?: string;
-}
-
 export function SectionHeader({
   number,
   title,
@@ -17,7 +8,7 @@ export function SectionHeader({
   description,
   className,
   badge,
-}: SectionHeaderProps) {
+}) {
   return (
     <div className={cn("space-y-3 mb-8 sm:mb-10", className)}>
       <div className="flex items-center gap-3">

@@ -7,13 +7,7 @@ import { Menu, X, ExternalLink, Terminal } from "lucide-react";
 import { profileData } from "@/data/profile";
 import { cn } from "@/lib/utils";
 
-interface NavItem {
-  number: string;
-  label: string;
-  href: string;
-}
-
-const navItems: NavItem[] = [
+const navItems = [
   { number: "01", label: "PROFILE", href: "/profile" },
   { number: "02", label: "PROJECTS", href: "/projects" },
   { number: "03", label: "SKILLS", href: "/skills" },
@@ -45,7 +39,7 @@ export function MobileNav() {
 
   // Handle escape key
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (e) => {
       if (e.key === "Escape" && isOpen) {
         setIsOpen(false);
       }

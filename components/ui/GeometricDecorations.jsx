@@ -8,10 +8,6 @@ export function CornerBrackets({
   className,
   color = "border-[#30302D]",
   accentCorner = "top-left",
-}: {
-  className?: string;
-  color?: string;
-  accentCorner?: "top-left" | "top-right" | "bottom-right" | "all";
 }) {
   return (
     <>
@@ -60,7 +56,7 @@ export function CornerBrackets({
 /**
  * Crosshair marker '+' for grid intersections
  */
-export function Crosshair({ className }: { className?: string }) {
+export function Crosshair({ className }) {
   return (
     <span
       aria-hidden="true"
@@ -81,10 +77,6 @@ export function TechMeta({
   label,
   value,
   className,
-}: {
-  label: string;
-  value: string;
-  className?: string;
 }) {
   return (
     <div

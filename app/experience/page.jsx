@@ -1,9 +1,8 @@
 import React from "react";
-import type { Metadata } from "next";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ExperienceTimeline } from "@/components/experience/ExperienceTimeline";
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Experience",
   description:
     "Engineering experience, computer science education, hackathon sprint builds, and technical milestones for Divyansh Chandrakar.",

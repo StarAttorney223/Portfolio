@@ -1,5 +1,4 @@
 import React from "react";
-import type { Metadata } from "next";
 import { profileData } from "@/data/profile";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { CornerBrackets } from "@/components/ui/GeometricDecorations";
@@ -7,7 +6,7 @@ import { Badge } from "@/components/ui/Badge";
 import { SolidButton } from "@/components/ui/SolidButton";
 import { BookOpen, GraduationCap, Target, Compass, FileText, ArrowRight } from "lucide-react";
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Profile",
   description:
     "Developer profile for Divyansh Chandrakar: Education, current focus, and areas of engineering interest.",

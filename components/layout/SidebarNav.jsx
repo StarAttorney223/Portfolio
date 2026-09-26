@@ -8,13 +8,7 @@ import { profileData } from "@/data/profile";
 import { ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface NavItem {
-  number: string;
-  label: string;
-  href: string;
-}
-
-const navItems: NavItem[] = [
+const navItems = [
   { number: "01", label: "PROFILE", href: "/profile" },
   { number: "02", label: "PROJECTS", href: "/projects" },
   { number: "03", label: "SKILLS", href: "/skills" },

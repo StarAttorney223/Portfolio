@@ -12,7 +12,7 @@ export function ContactForm() {
     email: "",
     message: "",
   });
-  const [status, setStatus] = useState<"idle" | "submitting" | "success">("idle");
+  const [status, setStatus] = useState("idle");
   const [copied, setCopied] = useState(false);
 
   const emailSocial = profileData.socials.find((s) => s.label === "EMAIL");
@@ -24,7 +24,7 @@ export function ContactForm() {
     setTimeout(() => setCopied(false), 2500);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setStatus("submitting");
 

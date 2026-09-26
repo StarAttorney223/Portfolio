@@ -1,10 +1,9 @@
 import React from "react";
-import type { Metadata } from "next";
 import { projectsData } from "@/data/projects";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ProjectsDirectory } from "@/components/projects/ProjectsDirectory";
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Projects",
   description:
     "Selected engineering projects and system architectures built by Divyansh Chandrakar: Unravel, PhysioGenie, AtmosAlert, and Ether.",

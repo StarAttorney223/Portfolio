@@ -1,28 +1,12 @@
-export interface ExperienceItem {
-  id: string;
-  category: "EDUCATION" | "PROJECT EXPERIENCE" | "HACKATHONS" | "TECHNICAL EXPERIENCE";
-  title: string;
-  subtitle: string;
-  period: string;
-  location?: string;
-  description: string;
-  details: string[];
-  techStack?: string[];
-  link?: {
-    label: string;
-    url: string;
-  };
-}
-
 export const experienceCategories = [
   "ALL",
   "EDUCATION",
   "PROJECT EXPERIENCE",
   "HACKATHONS",
   "TECHNICAL EXPERIENCE",
-] as const;
+];
 
-export const experienceData: ExperienceItem[] = [
+export const experienceData = [
   {
     id: "edu-cs",
     category: "EDUCATION",

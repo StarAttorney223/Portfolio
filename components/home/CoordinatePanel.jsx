@@ -6,7 +6,7 @@ import { CornerBrackets } from "@/components/ui/GeometricDecorations";
 export function CoordinatePanel() {
   const [position, setPosition] = useState({ x: 50, y: 50 });
 
-  const handleMove = (event: React.PointerEvent<HTMLDivElement>) => {
+  const handleMove = (event) => {
     const bounds = event.currentTarget.getBoundingClientRect();
     setPosition({
       x: ((event.clientX - bounds.left) / bounds.width) * 100,
