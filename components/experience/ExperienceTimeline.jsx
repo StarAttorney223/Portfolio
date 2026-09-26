@@ -51,7 +51,7 @@ export function ExperienceTimeline() {
             <div className="absolute -left-[31px] sm:-left-[47px] top-6 w-3 h-3 bg-[#151515] border-2 border-[#F26A21] rounded-none rotate-45 group-hover:bg-[#F26A21] transition-colors" />
 
             {/* Solid Card */}
-            <div className="bg-[#151515] border border-[#30302D] hover:border-[#F26A21]/50 p-6 space-y-4 relative transition-colors">
+            <div className="interactive-panel bg-[#151515] border border-[#30302D] hover:border-[#F26A21]/50 p-6 space-y-4 relative transition-colors">
               <CornerBrackets accentCorner="top-left" />
 
               {/* Header: Category + Period */}

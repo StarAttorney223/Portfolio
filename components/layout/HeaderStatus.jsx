@@ -7,7 +7,7 @@ export function HeaderStatus() {
   const { systemStatus } = profileData;
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 h-[41px] bg-[#0A0A0A] border-b border-[#30302D] px-4 py-2 select-none">
+    <header className="shell-header fixed inset-x-0 top-0 z-50 h-[41px] bg-[#0A0A0A] border-b border-[#30302D] px-4 py-2 select-none">
       <div className="max-w-[1700px] mx-auto flex items-center justify-between font-mono text-[11px] tracking-wider uppercase text-[#89857D]">
         {/* Left: System identifier */}
         <div className="flex items-center gap-3">
@@ -27,9 +27,12 @@ export function HeaderStatus() {
 
         {/* Center / Right: Availability indicator */}
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 text-[#E5E2DA] border border-[#30302D] bg-[#151515] px-2.5 py-0.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            <span className="text-[10px] font-medium tracking-widest text-[#E5E2DA]">
+          <div className="flex items-center gap-2 whitespace-nowrap text-[#E5E2DA] border border-[#30302D] bg-[#151515] px-2.5 py-0.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-system-pulse" />
+            <span className="text-[10px] font-medium tracking-widest text-[#E5E2DA] sm:hidden">
+              AVAILABLE
+            </span>
+            <span className="hidden text-[10px] font-medium tracking-widest text-[#E5E2DA] sm:inline">
               {systemStatus.availability}
             </span>
           </div>

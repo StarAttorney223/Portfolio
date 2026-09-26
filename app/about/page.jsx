@@ -2,14 +2,8 @@ import React from "react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { CornerBrackets } from "@/components/ui/GeometricDecorations";
 import { SolidButton } from "@/components/ui/SolidButton";
-import {
-  Code,
-  Compass,
-  Cpu,
-  Gamepad2,
-  Sparkles,
-  Terminal,
-} from "lucide-react";
+import { ExplorationPanel } from "@/components/about/ExplorationPanel";
+import { Terminal } from "lucide-react";
 
 export const metadata = {
   title: "About",
@@ -18,29 +12,6 @@ export const metadata = {
 };
 
 export default function AboutPage() {
-  const exploringTopics = [
-    {
-      title: "APPLIED ARTIFICIAL INTELLIGENCE",
-      desc: "Investigating lightweight browser-based inference with TensorFlow.js and multi-modal generative pipelines.",
-      icon: Cpu,
-    },
-    {
-      title: "FULL-STACK ARCHITECTURE",
-      desc: "Building highly resilient Next.js App Router architectures with robust data integrity and streaming capabilities.",
-      icon: Code,
-    },
-    {
-      title: "GAME SYSTEMS & INTERACTIVITY",
-      desc: "Studying game loops, physical simulation logic, and tactile UI paradigms that elevate user immersion.",
-      icon: Gamepad2,
-    },
-    {
-      title: "3D MODELING / BLENDER",
-      desc: "Creating hard-surface geometric 3D assets, procedural materials, and spatial lighting environments.",
-      icon: Sparkles,
-    },
-  ];
-
   return (
     <div className="space-y-12 max-w-5xl">
       <SectionHeader
@@ -52,7 +23,7 @@ export default function AboutPage() {
       />
 
       {/* Main Statement Banner */}
-      <div className="relative bg-[#151515] border border-[#30302D] p-6 sm:p-10 space-y-6">
+      <div className="interactive-panel relative bg-[#151515] border border-[#30302D] p-6 sm:p-10 space-y-6">
         <CornerBrackets accentCorner="all" />
 
         <div className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#F26A21]">
@@ -86,49 +57,10 @@ export default function AboutPage() {
         </div>
       </div>
 
-      {/* Currently Exploring Grid */}
-      <div className="space-y-6">
-        <div className="flex items-center justify-between pb-2 border-b border-[#30302D]">
-          <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#89857D]">
-            <Compass className="w-4 h-4 text-[#F26A21]" />
-            <span>01 // CURRENTLY EXPLORING</span>
-          </div>
-          <span className="font-mono text-[10px] text-[#504E4A]">[ RESEARCH &amp; STUDY ]</span>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {exploringTopics.map((topic, idx) => {
-            const Icon = topic.icon;
-            return (
-              <div
-                key={topic.title}
-                className="bg-[#151515] border border-[#30302D] p-5 space-y-3 group hover:border-[#F26A21]/50 transition-colors"
-              >
-                <div className="flex items-center justify-between font-mono text-xs">
-                  <div className="flex items-center gap-2 text-[#F26A21]">
-                    <Icon className="w-4 h-4" />
-                    <span>0{idx + 1}</span>
-                  </div>
-                  <span className="text-[#504E4A] text-[10px] uppercase tracking-wider">
-                    EXPLORATION
-                  </span>
-                </div>
-
-                <h3 className="font-mono text-sm font-bold uppercase text-[#E5E2DA] group-hover:text-[#F26A21] transition-colors">
-                  {topic.title}
-                </h3>
-
-                <p className="text-xs text-[#89857D] leading-relaxed">
-                  {topic.desc}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      <ExplorationPanel />
 
       {/* Technical Principles */}
-      <div className="bg-[#151515] border border-[#30302D] p-6 sm:p-8 space-y-4">
+      <div className="interactive-panel bg-[#151515] border border-[#30302D] p-6 sm:p-8 space-y-4">
         <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#89857D] pb-2 border-b border-[#30302D]">
           <Terminal className="w-3.5 h-3.5 text-[#F26A21]" />
           <span>02 // ENGINEERING PRINCIPLES</span>

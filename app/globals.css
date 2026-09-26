@@ -40,6 +40,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@media (pointer: fine) {
+  html.custom-cursor-active,
+  html.custom-cursor-active body,
+  html.custom-cursor-active a,
+  html.custom-cursor-active button {
+    cursor: none !important;
+  }
+}
+
 @keyframes systemPulse {
   0%, 100% {
     opacity: 0.42;
@@ -69,6 +78,45 @@ body {
   }
 }
 
+@keyframes ambientScan {
+  0% {
+    transform: translateY(-5vh);
+    opacity: 0;
+  }
+  15%, 80% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(105vh);
+    opacity: 0;
+  }
+}
+
+@keyframes shellHeaderEnter {
+  from { opacity: 0; transform: translateY(-100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shellSidebarEnter {
+  from { opacity: 0; transform: translateX(-18px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes heroLineReveal {
+  from { opacity: 0; transform: translateY(105%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heroSequenceReveal {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes lineReveal {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
 .animate-system-pulse {
   animation: systemPulse 2.8s ease-in-out infinite;
 }
@@ -79,6 +127,89 @@ body {
 
 .animate-line-scan {
   animation: lineScan 3.8s ease-in-out infinite;
+}
+
+.ambient-scanline {
+  animation: ambientScan 12s linear infinite;
+}
+
+.shell-header {
+  animation: shellHeaderEnter 0.45s 0.12s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.shell-sidebar,
+.shell-mobile {
+  animation: shellSidebarEnter 0.5s 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-mask {
+  overflow: hidden;
+}
+
+.hero-reveal-line {
+  animation: heroLineReveal 0.72s 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-delay-name {
+  animation-delay: 0.28s;
+}
+
+.hero-sequence {
+  animation: heroSequenceReveal 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-delay-1 { animation-delay: 0.08s; }
+.hero-delay-2 { animation-delay: 0.38s; }
+.hero-delay-3 { animation-delay: 0.48s; }
+.hero-delay-4 { animation-delay: 0.58s; }
+
+.section-header-line {
+  animation: lineReveal 0.55s 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.48s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    transform 0.48s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms),
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.interactive-panel {
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease, background-color 0.22s ease;
+}
+
+.interactive-panel:hover,
+.interactive-panel:focus-within {
+  transform: translateY(-5px);
+  border-color: rgba(242, 106, 33, 0.62);
+  background-color: #1D1D1D;
+}
+
+.field-group::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 27px;
+  width: 2px;
+  height: 0;
+  background: #F26A21;
+  transition: height 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.field-group:focus-within::before {
+  height: calc(100% - 27px);
+}
+
+.field-group:focus-within label {
+  color: #F26A21;
 }
 
 .ease-out-expo {
@@ -162,7 +293,25 @@ body {
 
   .animate-system-pulse,
   .animate-grid-drift,
-  .animate-line-scan {
+  .animate-line-scan,
+  .ambient-scanline,
+  .shell-header,
+  .shell-sidebar,
+  .shell-mobile,
+  .hero-reveal-line,
+  .hero-sequence,
+  .section-header-line {
     animation: none !important;
+  }
+
+  [data-reveal],
+  [data-reveal].is-visible {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .interactive-panel:hover,
+  .interactive-panel:focus-within {
+    transform: none;
   }
 }

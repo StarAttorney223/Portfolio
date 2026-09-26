@@ -3,6 +3,7 @@ import { HeaderStatus } from "./HeaderStatus";
 import { SidebarNav } from "./SidebarNav";
 import { MobileNav } from "./MobileNav";
 import { Footer } from "./Footer";
+import { SystemInterface } from "@/components/motion/SystemInterface";
 
 export function AppShell({ children }) {
   return (
@@ -28,15 +29,17 @@ export function AppShell({ children }) {
 
         {/* Page Content Viewport */}
         <div className="flex-1 flex flex-col min-w-0">
-          <main
-            id="main-content"
-            className="flex-1 px-4 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12"
-          >
-            {children}
-          </main>
+          <SystemInterface>
+            <main
+              id="main-content"
+              className="flex-1 px-4 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12"
+            >
+              {children}
+            </main>
 
-          {/* Understated Minimal Footer */}
-          <Footer />
+            {/* Understated Minimal Footer */}
+            <Footer />
+          </SystemInterface>
         </div>
       </div>
     </div>

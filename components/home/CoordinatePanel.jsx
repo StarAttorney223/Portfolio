@@ -1,37 +1,62 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import {
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useMotionValueEvent,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { CornerBrackets } from "@/components/ui/GeometricDecorations";
 
 export function CoordinatePanel() {
-  const [position, setPosition] = useState({ x: 50, y: 50 });
+  const pointerX = useMotionValue(50);
+  const pointerY = useMotionValue(50);
+  const smoothX = useSpring(pointerX, { stiffness: 180, damping: 25 });
+  const smoothY = useSpring(pointerY, { stiffness: 180, damping: 25 });
+  const [readout, setReadout] = useState({ x: 50, y: 50 });
+  const lastReadout = useRef(0);
+  const cursorLeft = useMotionTemplate`${smoothX}%`;
+  const cursorTop = useMotionTemplate`${smoothY}%`;
+  const primaryPath = useMotionTemplate`M 18 72 L ${smoothX} ${smoothY} L 82 28`;
+  const inverseX = useTransform(smoothX, (value) => 100 - value);
+  const secondaryPath = useMotionTemplate`M 26 24 L ${inverseX} ${smoothY} L 74 78`;
+  const gridTransform = useTransform(
+    [smoothX, smoothY],
+    ([x, y]) => `translate3d(${((x - 50) / 50) * 5}px, ${((y - 50) / 50) * 5}px, 0)`
+  );
+
+  useMotionValueEvent(smoothX, "change", (latest) => {
+    const now = performance.now();
+    if (now - lastReadout.current < 100) return;
+    lastReadout.current = now;
+    setReadout({ x: Math.round(latest), y: Math.round(smoothY.get()) });
+  });
 
   const handleMove = (event) => {
     const bounds = event.currentTarget.getBoundingClientRect();
-    setPosition({
-      x: ((event.clientX - bounds.left) / bounds.width) * 100,
-      y: ((event.clientY - bounds.top) / bounds.height) * 100,
-    });
+    pointerX.set(((event.clientX - bounds.left) / bounds.width) * 100);
+    pointerY.set(((event.clientY - bounds.top) / bounds.height) * 100);
   };
-
-  const normalizedX = (position.x - 50) / 50;
-  const normalizedY = (position.y - 50) / 50;
 
   return (
     <div
       onPointerMove={handleMove}
-      onPointerLeave={() => setPosition({ x: 50, y: 50 })}
+      onPointerLeave={() => {
+        pointerX.set(50);
+        pointerY.set(50);
+      }}
       className="relative overflow-hidden bg-[#151515] border border-[#30302D] p-5 sm:p-6 min-h-[220px] group"
       aria-label="Interactive system coordinate panel"
     >
       <CornerBrackets accentCorner="all" />
 
       <div className="absolute inset-0 bg-grid-subtle opacity-20 animate-grid-drift" />
-      <div
+      <motion.div
         className="absolute inset-8 border border-[#30302D]/80 transition-transform duration-300 ease-out-expo"
-        style={{
-          transform: `translate3d(${normalizedX * 5}px, ${normalizedY * 5}px, 0)`,
-        }}
+        style={{ transform: gridTransform }}
       />
       <div className="absolute left-0 right-0 top-1/2 h-px overflow-hidden bg-[#30302D]/70">
         <span className="block h-px w-1/2 bg-[#F26A21]/60 animate-line-scan" />
@@ -44,16 +69,16 @@ export function CoordinatePanel() {
         preserveAspectRatio="none"
         aria-hidden="true"
       >
-        <path
-          d={`M 18 72 L ${position.x} ${position.y} L 82 28`}
+        <motion.path
+          d={primaryPath}
           fill="none"
           stroke="#F26A21"
           strokeOpacity="0.58"
           strokeWidth="0.35"
           vectorEffect="non-scaling-stroke"
         />
-        <path
-          d={`M 26 24 L ${100 - position.x} ${position.y} L 74 78`}
+        <motion.path
+          d={secondaryPath}
           fill="none"
           stroke="#89857D"
           strokeOpacity="0.28"
@@ -76,9 +101,9 @@ export function CoordinatePanel() {
         />
       ))}
 
-      <span
+      <motion.span
         className="absolute h-3 w-3 -translate-x-1/2 -translate-y-1/2 border border-[#FF7A2F] bg-[#F26A21]"
-        style={{ left: `${position.x}%`, top: `${position.y}%` }}
+        style={{ left: cursorLeft, top: cursorTop }}
         aria-hidden="true"
       />
 
@@ -99,8 +124,8 @@ export function CoordinatePanel() {
             A quiet interface layer that reacts to cursor position, movement, and focus without distracting from the portfolio content.
           </p>
           <div className="font-mono text-[10px] uppercase tracking-widest text-[#504E4A]">
-            X {Math.round(position.x).toString().padStart(2, "0")} // Y{" "}
-            {Math.round(position.y).toString().padStart(2, "0")}
+            X {readout.x.toString().padStart(2, "0")} // Y{" "}
+            {readout.y.toString().padStart(2, "0")}
           </div>
         </div>
       </div>

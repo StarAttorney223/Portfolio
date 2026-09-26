@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/Badge";
 import { ArrowRight } from "lucide-react";
 import { CornerBrackets } from "@/components/ui/GeometricDecorations";
@@ -8,22 +11,24 @@ export function ProjectCard({ project, index = 0 }) {
   const isOffset = index % 2 === 1;
 
   return (
-    <article
+    <motion.article
+      whileHover={{ y: -6 }}
+      transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
       className={[
-        "group relative overflow-hidden border border-[#30302D] bg-[#151515] p-5 transition-all duration-200 ease-out-expo hover:-translate-y-1 hover:border-[#F26A21] hover:bg-[#1D1D1D] sm:p-6",
+        "group relative overflow-hidden border border-[#30302D] bg-[#151515] p-5 transition-colors duration-200 ease-out-expo hover:border-[#F26A21] hover:bg-[#1D1D1D] sm:p-6",
         isOffset ? "lg:ml-16" : "lg:mr-16",
       ].join(" ")}
     >
       {/* Corner Brackets */}
       <CornerBrackets accentCorner="top-left" />
       <div className="absolute inset-y-0 right-0 hidden w-1/3 bg-dots-subtle opacity-20 transition-transform duration-300 group-hover:scale-105 md:block" />
-      <div className="absolute bottom-0 left-0 h-px w-0 bg-[#F26A21] transition-all duration-300 group-hover:w-full" />
+      <div className="absolute bottom-0 left-0 h-px w-0 bg-[#F26A21] transition-all duration-500 ease-out-expo group-hover:w-full" />
 
       <div className="relative grid grid-cols-1 gap-6 lg:grid-cols-[minmax(180px,0.72fr)_minmax(0,1.28fr)] lg:items-end">
         <div className="space-y-4">
           <div className="flex items-center justify-between border-b border-[#30302D] pb-2 font-mono text-xs transition-colors group-hover:border-[#F26A21]/30">
           <div className="flex items-center gap-2">
-            <span className="text-[#F26A21] font-bold">
+            <span className="font-bold text-[#89857D] transition-colors group-hover:text-[#F26A21]">
               // {project.number}
             </span>
             <span className="text-[#504E4A]">//</span>
@@ -71,6 +76,7 @@ export function ProjectCard({ project, index = 0 }) {
             className="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider text-[#E5E2DA] group-hover:text-[#F26A21] transition-colors focus-visible:outline-2 focus-visible:outline-[#F26A21]"
           >
             <span>VIEW PROJECT</span>
+            <span className="h-px w-0 bg-[#F26A21] transition-all duration-300 group-hover:w-8" aria-hidden="true" />
             <ArrowRight className="w-3.5 h-3.5 text-[#F26A21] transition-transform duration-200 group-hover:translate-x-1.5" />
           </Link>
 
@@ -81,6 +87,6 @@ export function ProjectCard({ project, index = 0 }) {
       </div>
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }

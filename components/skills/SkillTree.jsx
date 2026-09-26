@@ -1,18 +1,41 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { skillsCategories } from "@/data/skills";
+import { projectsData } from "@/data/projects";
 import { CornerBrackets } from "@/components/ui/GeometricDecorations";
 import { Cpu, Info, Terminal } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function SkillTree() {
   const [activeCategoryId, setActiveCategoryId] = useState(skillsCategories[0].id);
+  const [activeSkillName, setActiveSkillName] = useState(skillsCategories[0].skills[0].name);
   const activeCategory =
     skillsCategories.find((category) => category.id === activeCategoryId) ??
     skillsCategories[0];
 
-  const activeSkill = useMemo(() => activeCategory.skills[0], [activeCategory]);
+  const activeSkill = useMemo(
+    () =>
+      activeCategory.skills.find((skill) => skill.name === activeSkillName) ||
+      activeCategory.skills[0],
+    [activeCategory, activeSkillName]
+  );
+
+  const relatedProjects = useMemo(() => {
+    const skillName = activeSkill.name.toLowerCase();
+    return projectsData.filter((project) =>
+      project.techStack.some((tech) => {
+        const technology = tech.toLowerCase();
+        return technology === skillName || technology.includes(skillName) || skillName.includes(technology);
+      })
+    );
+  }, [activeSkill]);
+
+  const activateCategory = (category) => {
+    setActiveCategoryId(category.id);
+    setActiveSkillName(category.skills[0].name);
+  };
 
   return (
     <div className="space-y-8">
@@ -49,7 +72,9 @@ export function SkillTree() {
                   return (
                     <button
                       key={category.id}
-                      onClick={() => setActiveCategoryId(category.id)}
+                      onClick={() => activateCategory(category)}
+                      onMouseEnter={() => activateCategory(category)}
+                      onFocus={() => activateCategory(category)}
                       className={cn(
                         "group relative min-h-[112px] border p-4 text-left transition-all duration-200 ease-out-expo focus-visible:outline-2 focus-visible:outline-[#F26A21]",
                         isActive
@@ -118,13 +143,23 @@ export function SkillTree() {
               </div>
 
               <div className="space-y-3">
-                {activeCategory.skills.map((skill, index) => (
-                  <div
+                {activeCategory.skills.map((skill, index) => {
+                  const isSelected = skill.name === activeSkill.name;
+                  return (
+                  <button
                     key={skill.name}
-                    className="relative border border-[#30302D] bg-[#151515] p-3 transition-all duration-200"
+                    type="button"
+                    onClick={() => setActiveSkillName(skill.name)}
+                    className={cn(
+                      "relative w-full border bg-[#151515] p-3 text-left transition-all duration-200 hover:translate-x-1 hover:border-[#F26A21]/70 focus-visible:outline-2 focus-visible:outline-[#F26A21]",
+                      isSelected ? "border-[#F26A21]" : "border-[#30302D]"
+                    )}
                     style={{ transitionDelay: `${index * 50}ms` }}
                   >
-                    <span className="absolute -left-5 top-1/2 hidden h-px w-5 bg-[#F26A21]/70 md:block" />
+                    <span className={cn(
+                      "absolute -left-5 top-1/2 hidden h-px w-5 md:block",
+                      isSelected ? "bg-[#F26A21]" : "bg-[#30302D]"
+                    )} />
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <span className="font-mono text-[9px] uppercase tracking-widest text-[#504E4A]">
@@ -134,24 +169,52 @@ export function SkillTree() {
                           {skill.name}
                         </p>
                       </div>
-                      <span className="mt-1 h-1.5 w-1.5 bg-[#F26A21]" />
+                      <span className={cn(
+                        "mt-1 h-1.5 w-1.5 border border-[#F26A21]",
+                        isSelected && "bg-[#F26A21] animate-system-pulse"
+                      )} />
                     </div>
                     <p className="mt-2 text-xs leading-relaxed text-[#89857D]">
                       {skill.focusArea || activeSkill.focusArea}
                     </p>
-                  </div>
-                ))}
+                  </button>
+                  );
+                })}
               </div>
 
-              <div className="border-t border-[#30302D] pt-4 text-xs text-[#89857D]">
-                <div className="mb-2 flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest">
-                  <Info className="h-3.5 w-3.5 text-[#F26A21]" />
-                  <span>READING MODEL</span>
-                </div>
-                <p className="leading-relaxed">
-                  Categories act as primary nodes. Selecting one activates its connected technologies while the other branches recede.
-                </p>
-              </div>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeSkill.name}
+                  className="border-t border-[#30302D] pt-4 text-xs text-[#89857D]"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <div className="mb-3 flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest">
+                    <Info className="h-3.5 w-3.5 text-[#F26A21]" />
+                    <span>SELECTED TECHNOLOGY</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 border border-[#30302D] bg-[#151515] p-3 font-mono">
+                    <div>
+                      <span className="block text-[9px] uppercase tracking-widest text-[#504E4A]">Technology</span>
+                      <span className="mt-1 block font-bold uppercase text-[#F26A21]">{activeSkill.name}</span>
+                    </div>
+                    <div>
+                      <span className="block text-[9px] uppercase tracking-widest text-[#504E4A]">Category</span>
+                      <span className="mt-1 block uppercase text-[#E5E2DA]">{activeCategory.title}</span>
+                    </div>
+                    <div className="col-span-2 border-t border-[#30302D] pt-3">
+                      <span className="block text-[9px] uppercase tracking-widest text-[#504E4A]">Used in</span>
+                      <span className="mt-1 block uppercase text-[#E5E2DA]">
+                        {relatedProjects.length
+                          ? relatedProjects.map((project) => project.title).join(" // ")
+                          : "NO DIRECT PROJECT TAG"}
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
             </div>
           </aside>
         </div>

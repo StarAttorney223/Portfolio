@@ -72,7 +72,7 @@ export default async function ProjectDetailPage({ params }) {
       </div>
 
       {/* Main Project Header Banner */}
-      <header className="relative bg-[#151515] border border-[#30302D] p-6 sm:p-10 space-y-6">
+      <header className="interactive-panel relative bg-[#151515] border border-[#30302D] p-6 sm:p-10 space-y-6">
         <CornerBrackets accentCorner="all" />
 
         <div className="flex items-center gap-3">
@@ -164,7 +164,7 @@ export default async function ProjectDetailPage({ params }) {
       {/* Problem & Solution (Side-by-side or stacked solid cards) */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Problem Card */}
-        <div className="bg-[#151515] border border-[#30302D] p-6 space-y-3 relative">
+        <div className="interactive-panel bg-[#151515] border border-[#30302D] p-6 space-y-3 relative">
           <CornerBrackets accentCorner="top-left" />
           <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#89857D]">
             <AlertCircle className="w-3.5 h-3.5 text-[#FF7A2F]" />
@@ -176,7 +176,7 @@ export default async function ProjectDetailPage({ params }) {
         </div>
 
         {/* Solution Card */}
-        <div className="bg-[#151515] border border-[#30302D] p-6 space-y-3 relative">
+        <div className="interactive-panel bg-[#151515] border border-[#30302D] p-6 space-y-3 relative">
           <CornerBrackets accentCorner="top-right" />
           <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#89857D]">
             <CheckCircle2 className="w-3.5 h-3.5 text-[#F26A21]" />
@@ -202,7 +202,7 @@ export default async function ProjectDetailPage({ params }) {
           {project.keyFeatures.map((feature, idx) => (
             <div
               key={feature.title}
-              className="bg-[#151515] border border-[#30302D] p-5 space-y-2 group hover:border-[#F26A21]/40 transition-colors"
+              className="interactive-panel bg-[#151515] border border-[#30302D] p-5 space-y-2 group hover:border-[#F26A21]/40 transition-colors"
             >
               <div className="flex items-center justify-between font-mono text-[11px]">
                 <span className="text-[#F26A21] font-semibold">
@@ -331,10 +331,10 @@ export default async function ProjectDetailPage({ params }) {
           {project.screenshots.map((shot, idx) => (
             <div
               key={shot.title}
-              className="bg-[#151515] border border-[#30302D] flex flex-col justify-between p-4 group hover:border-[#F26A21]/50 transition-colors"
+              className="interactive-panel bg-[#151515] border border-[#30302D] flex flex-col justify-between p-4 group hover:border-[#F26A21]/50 transition-colors"
             >
               {/* Wireframe Mockup Simulation Window */}
-              <div className="bg-[#0A0A0A] border border-[#30302D] aspect-[4/3] p-4 flex flex-col justify-between mb-4 relative overflow-hidden">
+              <div className="bg-[#0A0A0A] border border-[#30302D] aspect-[4/3] p-4 flex flex-col justify-between mb-4 relative overflow-hidden transition-transform duration-300 ease-out-expo group-hover:scale-[1.02] group-hover:border-[#F26A21]/60">
                 <CornerBrackets accentCorner="top-left" color="border-[#252522]" />
                 
                 {/* Simulated game-interface / code telemetry view */}
@@ -379,7 +379,7 @@ export default async function ProjectDetailPage({ params }) {
       </section>
 
       {/* Result / Outcome */}
-      <section className="bg-[#151515] border border-[#30302D] p-6 sm:p-8 space-y-4">
+      <section className="interactive-panel bg-[#151515] border border-[#30302D] p-6 sm:p-8 space-y-4">
         <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#89857D] pb-2 border-b border-[#30302D]">
           <Sparkles className="w-3.5 h-3.5 text-[#F26A21]" />
           <span>08 // RESULT &amp; DELIVERABLE OUTCOME</span>

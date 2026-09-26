@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { SolidButton } from "@/components/ui/SolidButton";
 import { CornerBrackets } from "@/components/ui/GeometricDecorations";
 import { CheckCircle2, Copy, Terminal } from "lucide-react";
@@ -40,7 +41,7 @@ export function ContactForm() {
       {/* Left 2 Cols: Direct Channels & Telemetry */}
       <div className="space-y-6 lg:col-span-2">
         {/* Direct Email Card */}
-        <div className="relative space-y-3 border border-[#30302D] bg-[#151515] p-6">
+        <div className="interactive-panel relative space-y-3 border border-[#30302D] bg-[#151515] p-6">
           <CornerBrackets accentCorner="top-left" />
 
           <div className="flex items-center justify-between gap-4">
@@ -76,7 +77,7 @@ export function ContactForm() {
         </div>
 
         {/* Social Matrix Card */}
-        <div className="space-y-4 border border-[#30302D] bg-[#151515] p-6">
+        <div className="interactive-panel space-y-4 border border-[#30302D] bg-[#151515] p-6">
           <span className="block font-mono text-[10px] uppercase tracking-widest text-[#89857D]">
             PUBLIC CHANNELS
           </span>
@@ -130,12 +131,20 @@ export function ContactForm() {
           <span className="font-mono text-[10px] text-[#F26A21]">SECURE // FORM</span>
         </div>
 
+        <AnimatePresence mode="wait">
         {status === "success" ? (
-          <div className="py-12 text-center space-y-4 font-mono">
+          <motion.div
+            key="success"
+            className="py-12 text-center space-y-4 font-mono"
+            initial={{ opacity: 0, y: 12, scale: 0.99 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0 }}
+          >
             <CheckCircle2 className="w-10 h-10 text-[#F26A21] mx-auto" />
             <h3 className="text-xl font-bold uppercase text-[#E5E2DA]">
-              MESSAGE TRANSMITTED
+              MESSAGE SENT
             </h3>
+            <p className="text-[10px] uppercase tracking-widest text-[#F26A21]">STATUS // SUCCESS</p>
             <p className="text-xs text-[#89857D] max-w-sm mx-auto leading-relaxed">
               Thank you for reaching out. Your transmission has been queued and I will respond to your provided email address shortly.
             </p>
@@ -145,11 +154,18 @@ export function ContactForm() {
             >
               SEND ANOTHER MESSAGE
             </button>
-          </div>
+          </motion.div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <motion.form
+            key="form"
+            onSubmit={handleSubmit}
+            className="space-y-5"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
             {/* Name */}
-            <div className="space-y-1.5 font-mono text-xs">
+            <div className="field-group relative space-y-1.5 font-mono text-xs">
               <label
                 htmlFor="name"
                 className="block text-[#89857D] uppercase tracking-wider font-semibold"
@@ -170,7 +186,7 @@ export function ContactForm() {
             </div>
 
             {/* Email */}
-            <div className="space-y-1.5 font-mono text-xs">
+            <div className="field-group relative space-y-1.5 font-mono text-xs">
               <label
                 htmlFor="email"
                 className="block text-[#89857D] uppercase tracking-wider font-semibold"
@@ -191,7 +207,7 @@ export function ContactForm() {
             </div>
 
             {/* Message */}
-            <div className="space-y-1.5 font-mono text-xs">
+            <div className="field-group relative space-y-1.5 font-mono text-xs">
               <label
                 htmlFor="message"
                 className="block text-[#89857D] uppercase tracking-wider font-semibold"
@@ -224,8 +240,9 @@ export function ContactForm() {
                 {status === "submitting" ? "TRANSMITTING..." : "SEND MESSAGE"}
               </SolidButton>
             </div>
-          </form>
+          </motion.form>
         )}
+        </AnimatePresence>
       </div>
 
     </div>

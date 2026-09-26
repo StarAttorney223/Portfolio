@@ -26,7 +26,7 @@ export default function ProfilePage() {
       />
 
       {/* Main Identity Banner */}
-      <div className="relative bg-[#151515] border border-[#30302D] p-6 sm:p-8">
+      <div className="interactive-panel relative bg-[#151515] border border-[#30302D] p-6 sm:p-8">
         <CornerBrackets accentCorner="all" />
 
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-[#30302D]">
@@ -73,7 +73,7 @@ export default function ProfilePage() {
       {/* Grid: Education & Current Focus */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Section 2: Education */}
-        <div className="relative bg-[#151515] border border-[#30302D] p-6 flex flex-col justify-between">
+        <div className="interactive-panel relative bg-[#151515] border border-[#30302D] p-6 flex flex-col justify-between">
           <CornerBrackets accentCorner="top-left" />
 
           <div className="space-y-4">
@@ -118,7 +118,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Section 3: Current Focus */}
-        <div className="relative bg-[#151515] border border-[#30302D] p-6 flex flex-col justify-between">
+        <div className="interactive-panel relative bg-[#151515] border border-[#30302D] p-6 flex flex-col justify-between">
           <CornerBrackets accentCorner="top-right" />
 
           <div className="space-y-4">
@@ -165,7 +165,7 @@ export default function ProfilePage() {
           {areasOfInterest.map((area, idx) => (
             <div
               key={area.title}
-              className="bg-[#151515] border border-[#30302D] p-5 space-y-3 group hover:border-[#F26A21]/40 transition-colors"
+              className="interactive-panel bg-[#151515] border border-[#30302D] p-5 space-y-3 group hover:border-[#F26A21]/40 transition-colors"
             >
               <div className="flex items-center justify-between font-mono text-xs">
                 <span className="text-[#F26A21] font-bold">0{idx + 1}</span>

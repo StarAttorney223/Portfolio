@@ -15,7 +15,7 @@ export function SectionHeader({
         <span className="font-mono text-xs font-semibold text-[#F26A21] tracking-widest">
           // {number}
         </span>
-        <div className="h-[1px] w-8 bg-[#F26A21]/40" />
+        <div className="section-header-line h-[1px] w-8 origin-left bg-[#F26A21]/40" />
         {badge && (
           <span className="font-mono text-[10px] uppercase text-[#89857D] tracking-widest px-1.5 py-0.5 border border-[#30302D] bg-[#151515]">
             {badge}

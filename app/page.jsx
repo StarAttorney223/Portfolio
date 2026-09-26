@@ -24,23 +24,22 @@ export default function HomePage() {
         <div className="absolute right-4 top-8 hidden h-44 w-44 border border-[#30302D] opacity-50 lg:block" />
         <div className="absolute bottom-16 right-10 hidden h-px w-72 rotate-[-18deg] bg-[#F26A21]/25 lg:block" />
 
-        <div className="grid min-h-[calc(100vh-190px)] grid-cols-1 items-end gap-10 xl:grid-cols-[minmax(0,1fr)_420px]">
+        <div className="grid min-h-[calc(100vh-190px)] grid-cols-1 items-end gap-10 2xl:grid-cols-[minmax(0,1fr)_420px]">
           <div className="max-w-4xl space-y-8">
           {/* Top Identifier Tag */}
-          <div className="inline-flex translate-y-0 items-center gap-2 border border-[#30302D] bg-[#151515] px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-[#89857D]">
+          <div className="hero-sequence hero-delay-1 inline-flex translate-y-0 items-center gap-2 border border-[#30302D] bg-[#151515] px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-[#89857D]">
             <span className="h-1.5 w-1.5 bg-[#F26A21] animate-system-pulse" />
             <span>PORTFOLIO SYSTEM // SESSION ACTIVE</span>
           </div>
 
           {/* Hero Heading */}
           <div className="space-y-3">
-            <h1 className="text-5xl font-black uppercase tracking-tight text-[#E5E2DA] leading-[0.9] sm:text-7xl lg:text-8xl">
-              {profileData.name.first}
-              <br />
-              <span className="text-[#89857D]">{profileData.name.last}</span>
+            <h1 className="text-5xl font-black uppercase tracking-tight text-[#E5E2DA] leading-[0.9] sm:text-6xl lg:text-7xl 2xl:text-8xl">
+              <span className="hero-mask block"><span className="hero-reveal-line block">{profileData.name.first}</span></span>
+              <span className="hero-mask block"><span className="hero-reveal-line hero-delay-name block text-[#89857D]">{profileData.name.last}</span></span>
             </h1>
 
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+            <div className="hero-sequence hero-delay-2 flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
               <span className="font-mono text-xs sm:text-sm font-semibold uppercase tracking-widest text-[#F26A21]">
                 {profileData.headline}
               </span>
@@ -52,12 +51,12 @@ export default function HomePage() {
           </div>
 
           {/* Short Description */}
-          <p className="max-w-2xl text-base font-normal leading-relaxed text-[#E5E2DA]/90 sm:text-xl">
+          <p className="hero-sequence hero-delay-3 max-w-2xl text-base font-normal leading-relaxed text-[#E5E2DA]/90 sm:text-xl">
             &ldquo;{profileData.shortBio}&rdquo;
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-wrap items-center gap-4 pt-2">
+          <div className="hero-sequence hero-delay-4 flex flex-wrap items-center gap-4 pt-2">
             <SolidButton href="/projects" variant="primary" size="lg" icon="arrow">
               VIEW PROJECTS
             </SolidButton>
@@ -88,7 +87,7 @@ export default function HomePage() {
           </div>
         </div>
 
-          <div className="mb-2 xl:mb-12">
+          <div className="mb-2 2xl:mb-12">
             <CoordinatePanel />
           </div>
         </div>

@@ -22,7 +22,7 @@ export function SidebarNav() {
 
   return (
     <aside
-      className="hidden lg:flex flex-col w-64 xl:w-72 h-[calc(100vh-41px)] sticky top-[41px] bg-[#0A0A0A] border-r border-[#30302D] p-6 select-none shrink-0"
+      className="shell-sidebar hidden lg:flex flex-col w-64 xl:w-72 h-[calc(100vh-41px)] sticky top-[41px] bg-[#0A0A0A] border-r border-[#30302D] p-6 select-none shrink-0"
       aria-label="Main Navigation"
     >
       <div className="space-y-8">
@@ -87,6 +87,12 @@ export function SidebarNav() {
                       aria-hidden="true"
                     />
                   )}
+                  {!isActive && (
+                    <span
+                      className="absolute inset-y-2 left-0 w-px origin-center scale-y-0 bg-[#F26A21] transition-transform duration-200 group-hover:scale-y-100"
+                      aria-hidden="true"
+                    />
+                  )}
 
                   {/* Section Number */}
                   <span
@@ -111,6 +117,13 @@ export function SidebarNav() {
                   >
                     {item.label}
                   </span>
+                  <span
+                    className={cn(
+                      "absolute bottom-1.5 left-11 h-px bg-[#F26A21]/70 transition-all duration-300",
+                      isActive ? "w-8" : "w-0 group-hover:w-6"
+                    )}
+                    aria-hidden="true"
+                  />
                 </Link>
               );
             })}
