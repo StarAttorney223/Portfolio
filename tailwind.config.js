@@ -8,30 +8,30 @@ const config = {
   theme: {
     extend: {
       colors: {
-        background: "#080808",
+        background: "#121212",
         surface: {
-          DEFAULT: "#151515",
-          primary: "#151515",
-          secondary: "#1D1D1D",
+          DEFAULT: "#242424",
+          primary: "#242424",
+          secondary: "#303030",
           tertiary: "#252525",
         },
         content: {
-          DEFAULT: "#E5E2DA",
-          primary: "#E5E2DA",
-          muted: "#89857D",
-          subtle: "#504E4A",
+          DEFAULT: "#F5F3EE",
+          primary: "#F5F3EE",
+          muted: "#B8B5AE",
+          subtle: "#96928B",
         },
         accent: {
-          DEFAULT: "#F26A21",
-          primary: "#F26A21",
-          bright: "#FF7A2F",
-          dark: "#B94712",
-          dim: "rgba(242, 106, 33, 0.12)",
+          DEFAULT: "#FF852E",
+          primary: "#FF852E",
+          bright: "#FFA04D",
+          dark: "#D9631C",
+          dim: "rgba(255, 133, 46, 0.12)",
         },
         border: {
-          DEFAULT: "#30302D",
-          muted: "#242422",
-          bright: "#484844",
+          DEFAULT: "#484844",
+          muted: "#363633",
+          bright: "#66665F",
         },
       },
       fontFamily: {
@@ -39,8 +39,8 @@ const config = {
         mono: ["var(--font-jetbrains-mono)", "Consolas", "Courier New", "monospace"],
       },
       boxShadow: {
-        solid: "0 0 0 1px #30302D",
-        "solid-orange": "0 0 0 1px #F26A21",
+        solid: "0 0 0 1px #484844",
+        "solid-orange": "0 0 0 1px #FF852E",
         panel: "0 4px 20px -2px rgba(0, 0, 0, 0.7)",
       },
       letterSpacing: {

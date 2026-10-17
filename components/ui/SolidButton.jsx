@@ -16,15 +16,15 @@ export function SolidButton({
   external = false,
 }) {
   const baseStyles =
-    "group inline-flex items-center justify-center font-mono font-medium tracking-wider uppercase transition-all duration-200 ease-out-expo select-none relative active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F26A21]";
+    "group inline-flex items-center justify-center font-mono font-medium tracking-wider uppercase transition-all duration-200 ease-out-expo select-none relative active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF852E]";
 
   const variantStyles = {
     primary:
-      "bg-[#F26A21] text-black hover:bg-[#FF7A2F] active:bg-[#B94712] border border-[#FF7A2F] shadow-sm",
+      "bg-[#FF852E] text-black hover:bg-[#FFA04D] active:bg-[#D9631C] border border-[#FFA04D] shadow-sm",
     secondary:
-      "bg-[#151515] text-[#E5E2DA] hover:bg-[#1D1D1D] hover:text-[#FF7A2F] border border-[#30302D] hover:border-[#F26A21]",
+      "bg-[#242424] text-[#F5F3EE] hover:bg-[#303030] hover:text-[#FFA04D] border border-[#484844] hover:border-[#FF852E]",
     subtle:
-      "bg-transparent text-[#89857D] hover:text-[#E5E2DA] hover:bg-[#151515] border border-transparent hover:border-[#30302D]",
+      "bg-transparent text-[#B8B5AE] hover:text-[#F5F3EE] hover:bg-[#242424] border border-transparent hover:border-[#484844]",
   };
 
   const sizeStyles = {

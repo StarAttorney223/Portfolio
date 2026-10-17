@@ -52,7 +52,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="font-sans bg-[#080808] text-[#E5E2DA] antialiased">
+      <body className="font-sans bg-[#121212] text-[#F5F3EE] antialiased">
         <AppShell>{children}</AppShell>
       </body>
     </html>

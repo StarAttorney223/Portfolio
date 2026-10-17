@@ -6,14 +6,14 @@ import { ProjectsDirectory } from "@/components/projects/ProjectsDirectory";
 export const metadata = {
   title: "Projects",
   description:
-    "Selected engineering projects and system architectures built by Divyansh Chandrakar: Unravel, PhysioGenie, AtmosAlert, and Ether.",
+    "Selected projects by Divyansh Chandrakar: Ether Studio, Unravel, PhysioGenie, and PixelChat.",
 };
 
 export default function ProjectsPage() {
   return (
     <div className="space-y-8 max-w-6xl">
       <SectionHeader
-        number="02"
+        number="03"
         title="PROJECTS"
         subtitle="PROJECT ARCHIVE // SELECTED WORK"
         description="Engineered full-stack applications, real-time computer vision systems, and applied machine learning tools."

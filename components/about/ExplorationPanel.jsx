@@ -35,12 +35,12 @@ export function ExplorationPanel() {
 
   return (
     <div className="space-y-6" data-reveal>
-      <div className="flex items-center justify-between border-b border-[#30302D] pb-2">
-        <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#89857D]">
-          <Compass className="h-4 w-4 text-[#F26A21]" />
+      <div className="flex items-center justify-between border-b border-[#484844] pb-2">
+        <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#B8B5AE]">
+          <Compass className="h-4 w-4 text-[#FF852E]" />
           <span>01 // CURRENTLY EXPLORING</span>
         </div>
-        <span className="font-mono text-[10px] text-[#504E4A]">[ RESEARCH &amp; STUDY ]</span>
+        <span className="font-mono text-[10px] text-[#96928B]">[ RESEARCH &amp; STUDY ]</span>
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.8fr)]">
@@ -56,21 +56,21 @@ export function ExplorationPanel() {
                 onMouseEnter={() => setSelected(index)}
                 onFocus={() => setSelected(index)}
                 className={cn(
-                  "group min-h-[112px] border bg-[#151515] p-4 text-left transition-all duration-200 ease-out-expo hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-[#F26A21]",
+                  "group min-h-[112px] border bg-[#242424] p-4 text-left transition-all duration-200 ease-out-expo hover:-translate-y-1 focus-visible:outline-2 focus-visible:outline-[#FF852E]",
                   isSelected
-                    ? "border-[#F26A21] text-[#E5E2DA]"
-                    : "border-[#30302D] text-[#89857D] opacity-60 hover:border-[#F26A21]/50 hover:opacity-100"
+                    ? "border-[#FF852E] text-[#F5F3EE]"
+                    : "border-[#484844] text-[#B8B5AE] opacity-60 hover:border-[#FF852E]/50 hover:opacity-100"
                 )}
                 aria-pressed={isSelected}
               >
                 <div className="flex items-center justify-between font-mono text-xs">
-                  <Icon className={cn("h-4 w-4", isSelected ? "text-[#F26A21]" : "text-[#504E4A]")} />
-                  <span className={isSelected ? "text-[#F26A21]" : "text-[#504E4A]"}>0{index + 1}</span>
+                  <Icon className={cn("h-4 w-4", isSelected ? "text-[#FF852E]" : "text-[#96928B]")} />
+                  <span className={isSelected ? "text-[#FF852E]" : "text-[#96928B]"}>0{index + 1}</span>
                 </div>
                 <span className="mt-5 block font-mono text-xs font-bold uppercase tracking-wider">
                   {topic.title}
                 </span>
-                <span className={cn("mt-3 block h-px bg-[#F26A21] transition-all duration-300", isSelected ? "w-12" : "w-0 group-hover:w-6")} />
+                <span className={cn("mt-3 block h-px bg-[#FF852E] transition-all duration-300", isSelected ? "w-12" : "w-0 group-hover:w-6")} />
               </button>
             );
           })}
@@ -79,20 +79,20 @@ export function ExplorationPanel() {
         <AnimatePresence mode="wait">
           <motion.aside
             key={activeTopic.title}
-            className="relative flex min-h-[228px] flex-col justify-between border border-[#30302D] bg-[#101010] p-6"
+            className="relative flex min-h-[228px] flex-col justify-between border border-[#484844] bg-[#1C1C1C] p-6"
             initial={{ opacity: 0, x: 12 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -8 }}
             transition={{ duration: 0.24 }}
           >
-            <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-[#504E4A]">
+            <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-[#96928B]">
               <span>ACTIVE RESEARCH NODE</span>
-              <span className="text-[#F26A21]">0{selected + 1}</span>
+              <span className="text-[#FF852E]">0{selected + 1}</span>
             </div>
             <div className="mt-8">
-              <ActiveIcon className="mb-4 h-5 w-5 text-[#F26A21]" />
-              <h3 className="font-mono text-base font-bold uppercase text-[#E5E2DA]">{activeTopic.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-[#89857D]">{activeTopic.description}</p>
+              <ActiveIcon className="mb-4 h-5 w-5 text-[#FF852E]" />
+              <h3 className="font-mono text-base font-bold uppercase text-[#F5F3EE]">{activeTopic.title}</h3>
+              <p className="mt-3 text-sm leading-relaxed text-[#B8B5AE]">{activeTopic.description}</p>
             </div>
           </motion.aside>
         </AnimatePresence>

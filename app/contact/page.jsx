@@ -12,7 +12,7 @@ export default function ContactPage() {
   return (
     <div className="space-y-8 max-w-5xl">
       <SectionHeader
-        number="06"
+        number="07"
         title="CONTACT"
         subtitle="COMMUNICATION PROTOCOL // INITIATE TRANSMISSION"
         description="Have an engineering opportunity, collaboration idea, or question? Send a message directly."
@@ -20,10 +20,10 @@ export default function ContactPage() {
       />
 
       <div className="space-y-4">
-        <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-[#E5E2DA]">
+        <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-[#F5F3EE]">
           LET&apos;S BUILD SOMETHING.
         </h2>
-        <p className="text-sm sm:text-base text-[#89857D] max-w-2xl leading-relaxed">
+        <p className="text-sm sm:text-base text-[#B8B5AE] max-w-2xl leading-relaxed">
           Have a project, opportunity, or idea? I&apos;d be happy to hear from you.
         </p>
       </div>

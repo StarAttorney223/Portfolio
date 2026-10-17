@@ -12,7 +12,7 @@ export default function ExperiencePage() {
   return (
     <div className="space-y-8 max-w-5xl">
       <SectionHeader
-        number="04"
+        number="05"
         title="EXPERIENCE"
         subtitle="ENGINEERING RECORD // MILESTONE TIMELINE"
         description="Structured record of academic foundations, full-stack project execution, competitive hackathons, and technical initiatives."

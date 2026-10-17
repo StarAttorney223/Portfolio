@@ -15,7 +15,7 @@ export default function AboutPage() {
   return (
     <div className="space-y-12 max-w-5xl">
       <SectionHeader
-        number="05"
+        number="06"
         title="ABOUT"
         subtitle="ENGINEERING PHILOSOPHY &amp; PERSPECTIVE"
         description="Behind the code: perspectives on software architecture, visual computing, and building thoughtful digital products."
@@ -23,19 +23,19 @@ export default function AboutPage() {
       />
 
       {/* Main Statement Banner */}
-      <div className="interactive-panel relative bg-[#151515] border border-[#30302D] p-6 sm:p-10 space-y-6">
+      <div className="interactive-panel relative bg-[#242424] border border-[#484844] p-6 sm:p-10 space-y-6">
         <CornerBrackets accentCorner="all" />
 
-        <div className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#F26A21]">
-          <span className="w-1.5 h-1.5 bg-[#F26A21]" />
+        <div className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#FF852E]">
+          <span className="w-1.5 h-1.5 bg-[#FF852E]" />
           <span>PERSONAL STATEMENT</span>
         </div>
 
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-[#E5E2DA] leading-snug">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-[#F5F3EE] leading-snug">
           &ldquo;I&apos;m a Computer Science student interested in building software that sits at the intersection of technology and creativity.&rdquo;
         </h2>
 
-        <div className="space-y-4 text-sm sm:text-base text-[#E5E2DA]/90 leading-relaxed max-w-3xl pt-2">
+        <div className="space-y-4 text-sm sm:text-base text-[#F5F3EE]/90 leading-relaxed max-w-3xl pt-2">
           <p>
             Ever since I started programming, I have been drawn to projects where rigorous backend architecture meets tangible, high-touch user interfaces. Software should not just work reliably under the hood; it should also feel intentional, responsive, and tactile to use.
           </p>
@@ -47,7 +47,7 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <div className="pt-6 border-t border-[#30302D] flex flex-wrap items-center gap-4">
+        <div className="pt-6 border-t border-[#484844] flex flex-wrap items-center gap-4">
           <SolidButton href="/projects" variant="primary" size="md" icon="arrow">
             VIEW PROJECT ARCHIVE
           </SolidButton>
@@ -60,36 +60,36 @@ export default function AboutPage() {
       <ExplorationPanel />
 
       {/* Technical Principles */}
-      <div className="interactive-panel bg-[#151515] border border-[#30302D] p-6 sm:p-8 space-y-4">
-        <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#89857D] pb-2 border-b border-[#30302D]">
-          <Terminal className="w-3.5 h-3.5 text-[#F26A21]" />
+      <div className="interactive-panel bg-[#242424] border border-[#484844] p-6 sm:p-8 space-y-4">
+        <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#B8B5AE] pb-2 border-b border-[#484844]">
+          <Terminal className="w-3.5 h-3.5 text-[#FF852E]" />
           <span>02 // ENGINEERING PRINCIPLES</span>
         </div>
 
         <div className="grid grid-cols-1 gap-4 pt-2 md:grid-cols-5">
-          <div className="space-y-2 border border-[#30302D] bg-[#101010] p-4 font-mono md:col-span-3">
-            <span className="text-xs font-bold text-[#F26A21] block">
+          <div className="space-y-2 border border-[#484844] bg-[#1C1C1C] p-4 font-mono md:col-span-3">
+            <span className="text-xs font-bold text-[#FF852E] block">
               01 // SOLID FOUNDATIONS
             </span>
-            <p className="text-xs text-[#89857D] leading-relaxed">
+            <p className="text-xs text-[#B8B5AE] leading-relaxed">
               Prioritizing deterministic states, clean component boundaries, and high-contrast readable layouts over ephemeral design gimmicks.
             </p>
           </div>
 
-          <div className="space-y-2 border border-[#30302D] bg-[#101010] p-4 font-mono md:col-span-2 md:translate-y-6">
-            <span className="text-xs font-bold text-[#F26A21] block">
+          <div className="space-y-2 border border-[#484844] bg-[#1C1C1C] p-4 font-mono md:col-span-2 md:translate-y-6">
+            <span className="text-xs font-bold text-[#FF852E] block">
               02 // PRAGMATIC INNOVATION
             </span>
-            <p className="text-xs text-[#89857D] leading-relaxed">
+            <p className="text-xs text-[#B8B5AE] leading-relaxed">
               Applying AI and computer vision where they demonstrably solve user pain points rather than adding complexity for its own sake.
             </p>
           </div>
 
-          <div className="space-y-2 border border-[#30302D] bg-[#101010] p-4 font-mono md:col-span-4 md:mt-4">
-            <span className="text-xs font-bold text-[#F26A21] block">
+          <div className="space-y-2 border border-[#484844] bg-[#1C1C1C] p-4 font-mono md:col-span-4 md:mt-4">
+            <span className="text-xs font-bold text-[#FF852E] block">
               03 // CONTINUOUS REFINEMENT
             </span>
-            <p className="text-xs text-[#89857D] leading-relaxed">
+            <p className="text-xs text-[#B8B5AE] leading-relaxed">
               Viewing every project as a living architecture to profile, benchmark, optimize, and improve iteratively.
             </p>
           </div>

@@ -8,10 +8,10 @@ export function Badge({
   className,
 }) {
   const variantStyles = {
-    default: "bg-[#1D1D1D] text-[#E5E2DA] border border-[#30302D]",
-    orange: "bg-[#F26A21] text-black font-semibold border border-[#FF7A2F]",
-    outline: "bg-transparent text-[#89857D] border border-[#30302D]",
-    dim: "bg-[#F26A21]/10 text-[#FF7A2F] border border-[#F26A21]/30",
+    default: "bg-[#303030] text-[#F5F3EE] border border-[#484844]",
+    orange: "bg-[#FF852E] text-black font-semibold border border-[#FFA04D]",
+    outline: "bg-transparent text-[#B8B5AE] border border-[#484844]",
+    dim: "bg-[#FF852E]/10 text-[#FFA04D] border border-[#FF852E]/30",
   };
 
   const sizeStyles = {

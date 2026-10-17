@@ -72,8 +72,8 @@ export const profileData = {
   socials: [
     {
       label: "GITHUB",
-      url: "https://github.com/divyansh-chandrakar", // editable placeholder
-      identifier: "@divyansh-chandrakar",
+      url: "https://github.com/StarAttorney223",
+      identifier: "@StarAttorney223",
       external: true,
     },
     {
@@ -84,8 +84,8 @@ export const profileData = {
     },
     {
       label: "EMAIL",
-      url: "mailto:divyansh.dev@example.com", // editable placeholder
-      identifier: "divyansh.dev@example.com",
+      url: "mailto:divyanshchandrakar2005@gmail.com",
+      identifier: "divyanshchandrakar2005@gmail.com",
       external: false,
     },
   ],

@@ -12,7 +12,7 @@ export default function SkillsPage() {
   return (
     <div className="space-y-8 max-w-6xl">
       <SectionHeader
-        number="03"
+        number="04"
         title="SKILLS"
         subtitle="TECHNICAL DOMAINS // SYSTEM ARCHITECTURE TREE"
         description="Structured engineering competencies across client systems, cloud infrastructure, AI models, and 3D visual environments."

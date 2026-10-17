@@ -48,20 +48,20 @@ export function CoordinatePanel() {
         pointerX.set(50);
         pointerY.set(50);
       }}
-      className="relative overflow-hidden bg-[#151515] border border-[#30302D] p-5 sm:p-6 min-h-[220px] group"
+      className="relative overflow-hidden bg-[#242424] border border-[#484844] p-5 sm:p-6 min-h-[220px] group"
       aria-label="Interactive system coordinate panel"
     >
       <CornerBrackets accentCorner="all" />
 
       <div className="absolute inset-0 bg-grid-subtle opacity-20 animate-grid-drift" />
       <motion.div
-        className="absolute inset-8 border border-[#30302D]/80 transition-transform duration-300 ease-out-expo"
+        className="absolute inset-8 border border-[#484844]/80 transition-transform duration-300 ease-out-expo"
         style={{ transform: gridTransform }}
       />
-      <div className="absolute left-0 right-0 top-1/2 h-px overflow-hidden bg-[#30302D]/70">
-        <span className="block h-px w-1/2 bg-[#F26A21]/60 animate-line-scan" />
+      <div className="absolute left-0 right-0 top-1/2 h-px overflow-hidden bg-[#484844]/70">
+        <span className="block h-px w-1/2 bg-[#FF852E]/60 animate-line-scan" />
       </div>
-      <div className="absolute top-0 bottom-0 left-1/2 w-px bg-[#30302D]/70" />
+      <div className="absolute top-0 bottom-0 left-1/2 w-px bg-[#484844]/70" />
 
       <svg
         className="absolute inset-0 h-full w-full"
@@ -72,7 +72,7 @@ export function CoordinatePanel() {
         <motion.path
           d={primaryPath}
           fill="none"
-          stroke="#F26A21"
+          stroke="#FF852E"
           strokeOpacity="0.58"
           strokeWidth="0.35"
           vectorEffect="non-scaling-stroke"
@@ -80,7 +80,7 @@ export function CoordinatePanel() {
         <motion.path
           d={secondaryPath}
           fill="none"
-          stroke="#89857D"
+          stroke="#B8B5AE"
           strokeOpacity="0.28"
           strokeWidth="0.25"
           vectorEffect="non-scaling-stroke"
@@ -95,35 +95,35 @@ export function CoordinatePanel() {
       ].map((node) => (
         <span
           key={`${node.x}-${node.y}`}
-          className="absolute h-2 w-2 border border-[#F26A21] bg-[#080808]"
+          className="absolute h-2 w-2 border border-[#FF852E] bg-[#121212]"
           style={{ left: `${node.x}%`, top: `${node.y}%` }}
           aria-hidden="true"
         />
       ))}
 
       <motion.span
-        className="absolute h-3 w-3 -translate-x-1/2 -translate-y-1/2 border border-[#FF7A2F] bg-[#F26A21]"
+        className="absolute h-3 w-3 -translate-x-1/2 -translate-y-1/2 border border-[#FFA04D] bg-[#FF852E]"
         style={{ left: cursorLeft, top: cursorTop }}
         aria-hidden="true"
       />
 
       <div className="relative z-10 flex h-full min-h-[172px] flex-col justify-between">
         <div className="flex items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-widest">
-          <span className="text-[#89857D]">SYSTEM // ONLINE</span>
-          <span className="flex items-center gap-2 text-[#F26A21]">
-            <span className="h-1.5 w-1.5 bg-[#F26A21] animate-system-pulse" />
+          <span className="text-[#B8B5AE]">SYSTEM // ONLINE</span>
+          <span className="flex items-center gap-2 text-[#FF852E]">
+            <span className="h-1.5 w-1.5 bg-[#FF852E] animate-system-pulse" />
             LIVE INPUT
           </span>
         </div>
 
         <div className="max-w-xs space-y-3 self-end text-right">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[#89857D]">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[#B8B5AE]">
             COORDINATE PANEL
           </p>
-          <p className="text-sm leading-relaxed text-[#E5E2DA]">
+          <p className="text-sm leading-relaxed text-[#F5F3EE]">
             A quiet interface layer that reacts to cursor position, movement, and focus without distracting from the portfolio content.
           </p>
-          <div className="font-mono text-[10px] uppercase tracking-widest text-[#504E4A]">
+          <div className="font-mono text-[10px] uppercase tracking-widest text-[#96928B]">
             X {readout.x.toString().padStart(2, "0")} // Y{" "}
             {readout.y.toString().padStart(2, "0")}
           </div>

@@ -19,30 +19,30 @@ export default function ProfilePage() {
     <div className="space-y-12 max-w-5xl">
       {/* Top Header */}
       <SectionHeader
-        number="01"
+        number="02"
         title="PROFILE"
         subtitle="ENGINEERING PROFILE &amp; ACADEMIC BACKGROUND"
         badge="SYS-ID: DC-CS"
       />
 
       {/* Main Identity Banner */}
-      <div className="interactive-panel relative bg-[#151515] border border-[#30302D] p-6 sm:p-8">
+      <div className="interactive-panel relative bg-[#242424] border border-[#484844] p-6 sm:p-8">
         <CornerBrackets accentCorner="all" />
 
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-[#30302D]">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-[#484844]">
           <div>
-            <span className="font-mono text-xs text-[#F26A21] uppercase tracking-widest block mb-1">
+            <span className="font-mono text-xs text-[#FF852E] uppercase tracking-widest block mb-1">
               DEVELOPER SPECIFICATION
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-[#E5E2DA]">
+            <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-[#F5F3EE]">
               {profileData.name.full}
             </h2>
             <div className="flex flex-wrap items-center gap-3 mt-2">
-              <span className="font-mono text-xs text-[#E5E2DA] uppercase tracking-wider font-semibold">
+              <span className="font-mono text-xs text-[#F5F3EE] uppercase tracking-wider font-semibold">
                 {profileData.headline}
               </span>
-              <span className="text-[#30302D]">//</span>
-              <span className="font-mono text-xs text-[#89857D] uppercase tracking-wider">
+              <span className="text-[#484844]">//</span>
+              <span className="font-mono text-xs text-[#B8B5AE] uppercase tracking-wider">
                 {profileData.subheadline}
               </span>
             </div>
@@ -57,12 +57,12 @@ export default function ProfilePage() {
 
         {/* Section 1: Introduction */}
         <div className="pt-6 space-y-4">
-          <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#89857D]">
-            <BookOpen className="w-4 h-4 text-[#F26A21]" />
+          <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#B8B5AE]">
+            <BookOpen className="w-4 h-4 text-[#FF852E]" />
             <span>01 // INTRODUCTION</span>
           </div>
 
-          <div className="space-y-3 text-[#E5E2DA]/90 text-sm sm:text-base leading-relaxed max-w-3xl">
+          <div className="space-y-3 text-[#F5F3EE]/90 text-sm sm:text-base leading-relaxed max-w-3xl">
             {introduction.map((paragraph, idx) => (
               <p key={idx}>{paragraph}</p>
             ))}
@@ -73,37 +73,37 @@ export default function ProfilePage() {
       {/* Grid: Education & Current Focus */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Section 2: Education */}
-        <div className="interactive-panel relative bg-[#151515] border border-[#30302D] p-6 flex flex-col justify-between">
+        <div className="interactive-panel relative bg-[#242424] border border-[#484844] p-6 flex flex-col justify-between">
           <CornerBrackets accentCorner="top-left" />
 
           <div className="space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-[#30302D]">
-              <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#89857D]">
-                <GraduationCap className="w-4 h-4 text-[#F26A21]" />
+            <div className="flex items-center justify-between pb-3 border-b border-[#484844]">
+              <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#B8B5AE]">
+                <GraduationCap className="w-4 h-4 text-[#FF852E]" />
                 <span>02 // EDUCATION</span>
               </div>
-              <span className="font-mono text-[10px] text-[#F26A21] bg-[#1D1D1D] px-2 py-0.5 border border-[#30302D]">
+              <span className="font-mono text-[10px] text-[#FF852E] bg-[#303030] px-2 py-0.5 border border-[#484844]">
                 {education.status}
               </span>
             </div>
 
             <div>
-              <h3 className="text-lg font-bold uppercase text-[#E5E2DA]">
+              <h3 className="text-lg font-bold uppercase text-[#F5F3EE]">
                 {education.degree}
               </h3>
-              <p className="font-mono text-xs text-[#F26A21] uppercase tracking-wider mt-0.5">
+              <p className="font-mono text-xs text-[#FF852E] uppercase tracking-wider mt-0.5">
                 {education.field}
               </p>
-              <p className="text-xs text-[#89857D] mt-2">
+              <p className="text-xs text-[#B8B5AE] mt-2">
                 {education.institution}
               </p>
-              <p className="font-mono text-[11px] text-[#504E4A] mt-1">
+              <p className="font-mono text-[11px] text-[#96928B] mt-1">
                 Timeline: {education.period}
               </p>
             </div>
 
-            <div className="pt-3 border-t border-[#30302D]">
-              <span className="font-mono text-[11px] uppercase tracking-wider text-[#89857D] block mb-2">
+            <div className="pt-3 border-t border-[#484844]">
+              <span className="font-mono text-[11px] uppercase tracking-wider text-[#B8B5AE] block mb-2">
                 CORE COURSEWORK:
               </span>
               <div className="flex flex-wrap gap-1.5">
@@ -118,31 +118,31 @@ export default function ProfilePage() {
         </div>
 
         {/* Section 3: Current Focus */}
-        <div className="interactive-panel relative bg-[#151515] border border-[#30302D] p-6 flex flex-col justify-between">
+        <div className="interactive-panel relative bg-[#242424] border border-[#484844] p-6 flex flex-col justify-between">
           <CornerBrackets accentCorner="top-right" />
 
           <div className="space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-[#30302D]">
-              <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#89857D]">
-                <Target className="w-4 h-4 text-[#F26A21]" />
+            <div className="flex items-center justify-between pb-3 border-b border-[#484844]">
+              <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#B8B5AE]">
+                <Target className="w-4 h-4 text-[#FF852E]" />
                 <span>03 // CURRENT FOCUS</span>
               </div>
-              <span className="font-mono text-[10px] text-[#89857D]">ACTIVE ITERATION</span>
+              <span className="font-mono text-[10px] text-[#B8B5AE]">ACTIVE ITERATION</span>
             </div>
 
             <div>
-              <h3 className="text-lg font-bold uppercase text-[#E5E2DA]">
+              <h3 className="text-lg font-bold uppercase text-[#F5F3EE]">
                 {currentFocus.primary}
               </h3>
-              <p className="font-mono text-xs text-[#89857D] uppercase tracking-wider mt-1">
+              <p className="font-mono text-xs text-[#B8B5AE] uppercase tracking-wider mt-1">
                 {currentFocus.secondary}
               </p>
             </div>
 
-            <ul className="space-y-2.5 pt-2 text-xs sm:text-sm text-[#89857D] leading-relaxed">
+            <ul className="space-y-2.5 pt-2 text-xs sm:text-sm text-[#B8B5AE] leading-relaxed">
               {currentFocus.details.map((detail, idx) => (
                 <li key={idx} className="flex items-start gap-2.5">
-                  <span className="text-[#F26A21] font-mono select-none mt-0.5">▸</span>
+                  <span className="text-[#FF852E] font-mono select-none mt-0.5">▸</span>
                   <span>{detail}</span>
                 </li>
               ))}
@@ -153,34 +153,34 @@ export default function ProfilePage() {
 
       {/* Section 4: Areas of Interest */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between pb-2 border-b border-[#30302D]">
-          <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#89857D]">
-            <Compass className="w-4 h-4 text-[#F26A21]" />
+        <div className="flex items-center justify-between pb-2 border-b border-[#484844]">
+          <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-[#B8B5AE]">
+            <Compass className="w-4 h-4 text-[#FF852E]" />
             <span>04 // AREAS OF INTEREST</span>
           </div>
-          <span className="font-mono text-[10px] text-[#504E4A]">[ DOMAINS ]</span>
+          <span className="font-mono text-[10px] text-[#96928B]">[ DOMAINS ]</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {areasOfInterest.map((area, idx) => (
             <div
               key={area.title}
-              className="interactive-panel bg-[#151515] border border-[#30302D] p-5 space-y-3 group hover:border-[#F26A21]/40 transition-colors"
+              className="interactive-panel bg-[#242424] border border-[#484844] p-5 space-y-3 group hover:border-[#FF852E]/40 transition-colors"
             >
               <div className="flex items-center justify-between font-mono text-xs">
-                <span className="text-[#F26A21] font-bold">0{idx + 1}</span>
-                <span className="text-[#504E4A]">[ SUB-SYS ]</span>
+                <span className="text-[#FF852E] font-bold">0{idx + 1}</span>
+                <span className="text-[#96928B]">[ SUB-SYS ]</span>
               </div>
 
-              <h4 className="text-base font-bold uppercase text-[#E5E2DA] group-hover:text-[#F26A21] transition-colors">
+              <h4 className="text-base font-bold uppercase text-[#F5F3EE] group-hover:text-[#FF852E] transition-colors">
                 {area.title}
               </h4>
 
-              <p className="text-xs text-[#89857D] leading-relaxed">
+              <p className="text-xs text-[#B8B5AE] leading-relaxed">
                 {area.description}
               </p>
 
-              <div className="flex flex-wrap gap-1.5 pt-2 border-t border-[#30302D]">
+              <div className="flex flex-wrap gap-1.5 pt-2 border-t border-[#484844]">
                 {area.tags.map((tag) => (
                   <Badge key={tag} variant="outline" size="sm">
                     {tag}
