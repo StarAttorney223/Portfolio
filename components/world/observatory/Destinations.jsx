@@ -6,6 +6,7 @@ import { Line } from "@react-three/drei";
 import { PlaneGeometry, DoubleSide } from "three";
 import { Beam, RepeatedBeams, Stencil, Walkway, AMBER } from "./IndustrialStructures";
 import { journey } from "./journey";
+import { RoomArchitecture } from "./RoomArchitecture";
 import { skillsCategories } from "@/data/skills";
 
 function Ring({ position, radius, rotation = [0, 0, 0], color = AMBER, lit = true }) {
@@ -15,19 +16,12 @@ function Ring({ position, radius, rotation = [0, 0, 0], color = AMBER, lit = tru
 }
 
 function Stage({ entry, texture }) {
-  const ribs = useMemo(() => Array.from({ length: 10 }, (_, i) => ({ position: [(i - 4.5) * 2.5, 3, -12], scale: [.18, 12, .6] })), []);
+  const circular = ["profile", "skills", "weather", "motion", "contact"].includes(entry.environment || entry.kind);
   return <>
-    <Beam position={[5, -.6, -2]} scale={[28, 1, 26]} texture={texture} color="#303b38" />
-    <RepeatedBeams items={ribs} color="#525c56" texture={texture} />
-    <Beam position={[0, 10, -12]} scale={[27, .65, 1]} texture={texture} />
-    <Beam position={[0, 9.4, -11.5]} scale={[24, .06, .12]} color="#d2c49f" lit />
-    <Stencil text={`${entry.number} / ${entry.zone.toUpperCase()}`} position={[5, 11.7, -12]} scale={[19, 1.3, 1]} />
-    {[-1, 1].map((side) => <group key={side}>
-      <Beam position={[5 + side * 13, 3, -2]} scale={[.6, 8, 25]} texture={texture} />
-      <Beam position={[5 + side * 12.5, 5, -2]} scale={[.07, .05, 23]} color={AMBER} lit />
-    </group>)}
-    <pointLight position={[9, 9, 9]} color="#ffd09a" intensity={170} distance={34} />
-    <pointLight position={[-6, 5, -6]} color="#d9e5dd" intensity={100} distance={30} />
+    {circular ? <mesh position={[7, -.65, -2]} receiveShadow><cylinderGeometry args={[15, 15.8, 1.2, 48]} /><meshStandardMaterial color="#626d60" map={texture} metalness={.6} roughness={.48} /></mesh>
+      : <Beam position={[7, -.6, -2]} scale={[31, 1.2, 30]} texture={texture} color="#596557" />}
+    <Stencil text={entry.project?.title || entry.label.toUpperCase()} position={[7, 12, -12]} scale={[15, 1.2, 1]} />
+    <RoomArchitecture entry={entry} texture={texture} />
   </>;
 }
 
@@ -212,20 +206,21 @@ function Uplink({ active, texture, onContact }) {
   </group>;
 }
 
-export function Destinations({ texture, active, currentIndex, selection, onSkill, onInspect, onContact }) {
-  return <>{journey.slice(1).filter((entry) => Math.abs(currentIndex - entry.index) < 2).map((entry) => <group key={entry.id} position={[0, 0, entry.z]}>
-    <Stage entry={entry} texture={texture} />
-    {entry.kind === "profile" && <Foundry texture={texture} active={active} />}
-    {entry.kind === "ether" && <Atelier active={active} onInspect={onInspect} />}
-    {entry.kind === "unravel" && <ComputeHall active={active} texture={texture} onInspect={onInspect} />}
-    {entry.kind === "physiogenie" && <MotionLab active={active} onInspect={onInspect} />}
-    {entry.kind === "pixelchat" && <Exchange active={active} onInspect={onInspect} />}
-    {entry.kind === "atmosalert" && <WeatherArray active={active} />}
-    {entry.kind === "skills" && <SkillNetwork active={active} selected={selection} onSkill={onSkill} />}
-    {entry.kind === "experience" && <Chronology texture={texture} active={active} />}
-    {entry.kind === "about" && <Workshop texture={texture} active={active} />}
-    {entry.kind === "contact" && <Uplink active={active} texture={texture} onContact={onContact} />}
-  </group>)}</>;
+export const environmentComponents = { atelier: Atelier, compute: ComputeHall, motion: MotionLab, exchange: Exchange, weather: WeatherArray };
+
+const sectionComponents = { profile: Foundry, skills: SkillNetwork, experience: Chronology, about: Workshop, contact: Uplink };
+
+export function Destinations({ texture, active, currentIndex, mountedStops, selection, onSkill, onInspect, onContact }) {
+  return <>{journey.slice(1).filter((entry) => mountedStops.includes(entry.index)).map((entry) => {
+    const Installation = entry.project ? environmentComponents[entry.environment] : sectionComponents[entry.kind];
+    const scale = entry.scale || (entry.kind === "profile" ? 1.25 : entry.kind === "about" ? 1.25 : 1);
+    return <group key={entry.id} position={[0, 0, entry.z]}>
+      <Stage entry={entry} texture={texture} />
+      <group position={[7, 0, -3]} scale={scale}><group position={[-7, 0, 3]}>
+        {Installation && <Installation texture={texture} active={active} selected={selection} onSkill={onSkill} onInspect={entry.index === currentIndex ? onInspect : undefined} onContact={onContact} />}
+      </group></group>
+    </group>;
+  })}</>;
 }
 
 export function ConnectingSpine({ texture }) {

@@ -117,3 +117,128 @@
   .actions { gap: 8px; }
   .actions a, .actions button { font-size: 10px; padding: 9px; }
 }
+
+/* Shared typography for scene information and long-form reading. */
+.canvas { inset: 88px 0 332px; }
+.viewport[data-section=home] .canvas { inset: 0; }
+.contentRail { top: auto; bottom: 86px; left: 36px; right: 36px; width: auto; max-width: none; height: 240px; padding: 20px 26px; overflow: visible; background: #111915; border-top: 1px solid #a78b57; }
+.homeRail { top: 24%; bottom: auto; right: auto; width: 470px; height: auto; max-width: 39%; padding: 0; background: none; border: 0; }
+.presentationGrid { display: grid; grid-template-columns: minmax(220px, .85fr) minmax(340px, 1.55fr) minmax(160px, .5fr); gap: 32px; align-items: start; }
+.titleBlock h1 { font-size: 30px; line-height: 1.12; font-weight: 500; margin: 5px 0 12px; overflow-wrap: anywhere; }
+.titleBlock .eyebrow { font-size: 8px; margin: 0 0 12px; text-transform: uppercase; }
+.captionText { font-size: 11px; color: #b6bea6; line-height: 1.6; margin: 8px 0; }
+.summaryBlock h2 { margin: 0 0 8px; font-size: 17px; }
+.summaryBlock .lead { margin: 0 0 10px; font-size: 14px; line-height: 1.65; }
+.summaryBlock .tags { margin: 8px 0 0; gap: 4px 14px; }
+.summaryBlock .tags span { font-size: 10px; }
+.presentationActions { display: flex; flex-direction: column; gap: 5px; align-items: stretch; }
+.presentationActions a, .detailButton { min-height: 38px; display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 11px; color: #e4ce9d; border-bottom: 1px solid #536044; padding: 8px 0; }
+.presentationActions .primary { color: #13190f; padding: 9px 12px; }
+.contentRail .projectNav { margin: 17px 0 0; padding: 8px 0 0; gap: 22px; border-color: #414e38; }
+.projectNav a { font-size: 10px; min-height: 31px; }
+.selectionRow, .profileFacts { display: flex; flex-wrap: wrap; gap: 7px 22px; margin-top: 14px; padding-top: 10px; border-top: 1px solid #414e38; }
+.selectionRow button { min-height: 32px; color: #bbc6ad; font-size: 10px; border-bottom: 1px solid transparent; }
+.selectionRow button[aria-pressed=true] { color: #f5d7a1; border-color: #d7b475; }
+.profileFacts span { font-size: 10px; line-height: 1.5; color: #c9cfb8; }
+.emailAddress { display: inline-flex; align-items: center; gap: 12px; font-size: 20px; color: #efd4a3; line-height: 1.6; overflow-wrap: anywhere; max-width: 100%; }
+.emailAddress svg { flex-shrink: 0; }
+.detailsDialog { width: min(1040px, calc(100% - 48px)); max-height: 84svh; margin: auto; padding: 0; border: 1px solid #8a906e; border-radius: 0; background: #101914; color: #e5e2da; box-shadow: 0 24px 100px #0009; }
+.detailsDialog::backdrop { background: #020705ce; }
+.dialogHeader { display: flex; justify-content: space-between; align-items: center; padding: 15px 28px; border-bottom: 1px solid #4b5840; background: #172117; font: 11px var(--font-jetbrains-mono), monospace; text-transform: uppercase; }
+.dialogHeader button { width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid #637150; }
+.dialogBody { max-height: calc(84svh - 72px); overflow-y: auto; overscroll-behavior: contain; padding: 28px 44px 44px; }
+.dialogBody h1 { font-size: 32px; line-height: 1.15; margin: 16px 0; }
+.dialogBody h2 { font-size: 20px; margin: 26px 0 10px; }
+.dialogBody h3 { font-size: 15px; margin-bottom: 8px; }
+.dialogBody p, .dialogBody li { font-size: 14px; line-height: 1.9; color: #c6cebb; }
+.dialogBody p { margin: 12px 0; }
+.dialogBody .eyebrow { font: 10px var(--font-jetbrains-mono), monospace; color: #d2b477; }
+.dialogBody ul { padding-left: 20px; }
+.dialogBody summary { padding: 14px 0; cursor: pointer; color: #e6c998; font-size: 13px; }
+.dialogBody .projectNav { display: none; }
+.dialogBody .timeline { list-style: none; padding: 0; }
+.dialogBody img { max-width: 100%; height: auto; }
+.viewport[data-view=standard] .contentRail { top: 150px; bottom: auto; left: 36px; right: 36px; width: auto; max-width: none; transform: none; height: auto; min-height: 240px; }
+@media (max-width: 1100px) and (min-width: 768px) {
+  .presentationGrid { grid-template-columns: 1fr 1.7fr; gap: 18px; }
+  .presentationActions { grid-column: 1 / -1; flex-direction: row; gap: 20px; }
+  .contentRail { height: 280px; }
+  .canvas { bottom: 372px; }
+  .homeRail { height: auto; }
+  .presentationActions a, .detailButton { min-height: 34px; }
+}
+@media (max-width: 767px) {
+  .canvas, .viewport[data-section=home] .canvas { inset: 68px 0 auto; height: 40svh; }
+  .contentRail, .homeRail { left: 0; right: 0; top: calc(40svh + 68px); bottom: 77px; width: 100%; max-width: none; height: auto; padding: 16px 22px; background: #111915; border-top: 1px solid #8c966b; overflow-y: auto; }
+  .presentationGrid { display: block; }
+  .titleBlock h1 { font-size: 25px; margin: 5px 0 10px; }
+  .titleBlock .eyebrow { margin-bottom: 7px; }
+  .titleBlock .captionText { display: none; }
+  .summaryBlock h2 { font-size: 14px; margin: 7px 0; }
+  .summaryBlock .lead { font-size: 12px; line-height: 1.6; margin-bottom: 7px; }
+  .summaryBlock .tags span { font-size: 9px; }
+  .presentationActions { flex-direction: row; flex-wrap: wrap; gap: 8px 18px; margin-top: 12px; }
+  .presentationActions a, .detailButton { font-size: 10px; min-height: 34px; }
+  .contentRail .projectNav { margin-top: 12px; gap: 3px 15px; padding-top: 8px; }
+  .projectNav a { font-size: 9px; min-height: 30px; }
+  .selectionRow, .profileFacts { gap: 3px 16px; margin-top: 10px; padding-top: 7px; }
+  .selectionRow button { font-size: 9px; }
+  .heroName { font-size: 31px; margin: 12px 0; }
+  .homeRail .role, .homeFields { display: none; }
+  .homeRail .lead { font-size: 13px; }
+  .homeRail .actions { margin: 12px 0; }
+  .emailAddress { font-size: 15px; }
+  .detailsDialog { width: calc(100% - 20px); max-height: 92svh; }
+  .dialogHeader { padding: 10px 18px; font-size: 9px; }
+  .dialogBody { padding: 20px; max-height: calc(92svh - 62px); }
+  .dialogBody h1 { font-size: 27px; }
+  .dialogBody p, .dialogBody li { font-size: 13px; }
+  .viewport[data-view=standard] .contentRail { left: 0; right: 0; top: 115px; bottom: 77px; width: 100%; min-height: 0; overflow: auto; }
+}
+
+/* The world is full-bleed; information is a deliberately small, optional overlay. */
+.canvas, .viewport[data-section=home] .canvas { inset: 88px 0 0; height: auto; }
+.contentRail { left: 28px; right: auto; bottom: 88px; top: auto; width: 390px; max-width: calc(100% - 56px); height: auto; padding: 0; background: #101b20ed; border: 1px solid #64777a; text-shadow: none; }
+.homeRail { top: 25%; bottom: auto; width: 430px; max-width: 36%; padding: 20px; background: #101b20d9; border: 0; }
+.sceneInfo { max-height: min(58svh, 560px); overflow-y: auto; overscroll-behavior: contain; }
+.sceneInfo > summary { list-style: none; min-height: 66px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 18px; cursor: pointer; font-size: 18px; font-weight: 500; }
+.sceneInfo > summary::-webkit-details-marker { display: none; }
+.sceneInfo > summary small { display: block; color: #a9c6c8; text-transform: uppercase; font-size: 8px; margin-bottom: 6px; }
+.sceneInfo[open] > summary { border-bottom: 1px solid #506569; }
+.sceneInfo[open] > summary svg { transform: rotate(180deg); }
+.sceneInfo .presentationGrid { display: block; padding: 18px 18px 0; }
+.sceneInfo .titleBlock { display: none; }
+.sceneInfo .summaryBlock .lead { font-size: 13px; }
+.sceneInfo .presentationActions { flex-direction: row; flex-wrap: wrap; gap: 8px 18px; margin-top: 12px; }
+.sceneInfo .presentationActions a, .sceneInfo .detailButton { min-height: 38px; }
+.sceneInfo .projectNav, .sceneInfo .selectionRow, .sceneInfo .profileFacts { margin: 14px 18px 16px; gap: 4px 16px; }
+.sceneInfo .emailAddress { font-size: 15px; }
+.footer { background: #101b20d9; padding-top: 12px; padding-bottom: 12px; }
+.viewport[data-view=standard] .contentRail { width: min(920px, calc(100% - 56px)); left: 28px; top: 140px; right: auto; height: auto; min-height: 0; background: #101b20; }
+.viewport[data-view=standard] .sceneInfo { max-height: calc(100svh - 240px); }
+.viewport[data-view=standard] .sceneInfo > summary { cursor: pointer; }
+@media (max-width: 1100px) and (min-width: 768px) {
+  .contentRail { height: auto; }
+  .homeRail { width: 350px; max-width: 43%; }
+}
+@media (max-width: 767px) {
+  .canvas, .viewport[data-section=home] .canvas { inset: 68px 0 0; height: auto; }
+  .contentRail, .homeRail { top: auto; bottom: 80px; left: 12px; right: 12px; width: auto; max-width: none; height: auto; padding: 0; overflow: visible; background: #101b20ed; }
+  .sceneInfo { max-height: 48svh; }
+  .sceneInfo > summary { min-height: 58px; padding: 12px 16px; font-size: 16px; }
+  .homeRail { padding: 14px 16px; max-height: 36svh; overflow-y: auto; }
+  .homeRail > .eyebrow { display: none; }
+  .homeRail .heroName { font-size: 26px; margin: 0 0 10px; }
+  .homeRail .lead { margin: 0; }
+  .footer { padding: 12px; gap: 8px; }
+  .controls { gap: 4px; }
+  .controls button, .journeyControls button { width: 34px; height: 38px; }
+  .journeyControls { gap: 4px; }
+  .viewport[data-view=standard] .contentRail { left: 12px; right: 12px; width: auto; top: 112px; bottom: auto; }
+  .viewport[data-view=standard] .sceneInfo { max-height: calc(100svh - 200px); }
+}
+@media (max-width: 370px) {
+  .footer { padding: 10px 8px; gap: 4px; }
+  .controls button, .journeyControls button { width: 30px; height: 38px; }
+  .controls, .journeyControls { gap: 3px; }
+}

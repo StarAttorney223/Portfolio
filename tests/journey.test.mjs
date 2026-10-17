@@ -2,6 +2,21 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { journey, worldProjects, indexForRoute, cameraStop, interpolateCamera } from "../components/world/observatory/journey.js";
 import { projectsData } from "../data/projects.js";
+import { projectRegistry } from "../components/world/observatory/projectRegistry.js";
+
+test("project scenes are bound by stable IDs, with authored cameras", () => {
+  const environments = { ether: "atelier", unravel: "compute", physiogenie: "motion", pixelchat: "exchange", atmosalert: "weather" };
+  for (const [id, environment] of Object.entries(environments)) {
+    const config = projectRegistry[id];
+    const stop = journey.find((entry) => entry.id === id);
+    assert.equal(config.environment, environment);
+    assert.equal(stop.project, config.project);
+    assert.equal(stop.environment, environment);
+    assert.equal(indexForRoute(config.route), stop.index);
+    assert.ok(cameraStop(stop.index).fov > 0);
+    assert.ok(config.zone.toLowerCase().includes(id === "ether" ? "ether" : id));
+  }
+});
 
 test("all existing projects and their external links are retained", () => {
   for (const project of projectsData) {

@@ -10,49 +10,61 @@ import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPa
 import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
 import { Vector2 } from "three";
 import { Architecture, Machinery, Turbine, usePlateTexture } from "./IndustrialStructures";
+import { TransitCorridor } from "./TransitCorridor";
 import { ConnectingSpine, Destinations } from "./Destinations";
-import { interpolateCamera } from "./journey";
+import { cameraStop, journey } from "./journey";
+import { zoomedPosition, zoomLimits } from "./viewControls";
+import { sampleTravel } from "./travel";
 
-function Camera({ active, compact, reduced, progress }) {
-  const { camera, pointer, invalidate } = useThree();
-  const time = useRef(0);
+function Camera({ compact, progress, zoom, motion, cameraState, onArrival }) {
+  const { camera, gl, invalidate } = useThree();
   const first = useRef(true);
+  const zoomValue = useRef(zoom);
   const destination = useMemo(() => new Vector3(), []);
   const target = useMemo(() => new Vector3(), []);
-  useEffect(() => { first.current = true; invalidate(); }, [compact, invalidate]);
+  useEffect(() => { invalidate(); }, [compact, invalidate]);
+  useEffect(() => { invalidate(); }, [zoom, invalidate]);
   useEffect(() => {
     const update = () => invalidate();
     window.addEventListener("observatory-camera-update", update);
     return () => window.removeEventListener("observatory-camera-update", update);
   }, [invalidate]);
   useFrame((_, delta) => {
-    if (active) time.current += Math.min(delta, .05);
-    const t = time.current;
-    const value = reduced ? Math.round(progress.current) : progress.current;
-    const frame = interpolateCamera(value, compact);
+    const travel = motion.current;
+    let frame;
+    let finished = false;
+    if (travel) {
+      travel.startedAt ??= performance.now();
+      const fraction = Math.min(1, (performance.now() - travel.startedAt) / travel.duration);
+      frame = sampleTravel(travel, fraction);
+      zoomValue.current = 1;
+      finished = fraction === 1;
+      invalidate();
+    } else {
+      const base = cameraStop(Math.round(progress.current), compact);
+      zoomValue.current += (zoom - zoomValue.current) * (1 - Math.exp(-10 * Math.min(delta, .05)));
+      if (Math.abs(zoomValue.current - zoom) < .0001) zoomValue.current = zoom;
+      frame = { ...base, position: zoomedPosition(base.position, base.target, zoomValue.current, zoomLimits(journey[Math.round(progress.current)].id)) };
+    }
     destination.set(...frame.position);
     target.set(...frame.target);
-    if (!reduced) {
-      const arc = Math.sin((value % 1) * Math.PI);
-      destination.y += arc * (value < 1 ? 10 : .6);
-      destination.x += arc * (value < 1 ? 4 : .4);
-    }
-    if (active && !compact) {
-      destination.x += pointer.x * .6 + Math.sin(t * .055) * .5;
-      destination.y += pointer.y * .25 + Math.sin(t * .08) * .2;
-    }
-    const alpha = reduced || first.current ? 1 : 1 - Math.exp(-5 * Math.min(delta, .05));
+    const alpha = travel || first.current ? 1 : 1 - Math.exp(-12 * Math.min(delta, .05));
     camera.position.lerp(destination, alpha);
-    const look = camera.userData.observatoryLook || (camera.userData.observatoryLook = target.clone());
-    look.lerp(target, alpha);
+    camera.fov = frame.fov;
+    camera.updateProjectionMatrix();
+    camera.lookAt(target);
+    cameraState.current = { position: camera.position.toArray(), target: target.toArray(), fov: camera.fov };
+    gl.domElement.dataset.cameraPosition = camera.position.toArray().map((v) => v.toFixed(3)).join(",");
+    gl.domElement.dataset.travel = travel ? "travelling" : "idle";
     first.current = false;
-    camera.lookAt(look);
-    if (camera.position.distanceTo(destination) > .005 || look.distanceTo(target) > .005) invalidate();
+    if (finished && motion.current === travel) { motion.current = null; onArrival(); }
+    if (camera.position.distanceTo(destination) > .0001 || Math.abs(zoomValue.current - zoom) > .0001) invalidate();
   });
   return null;
 }
 
-function Atmosphere({ active, compact, progress }) {
+function Atmosphere({ active, compact }) {
+  const { camera } = useThree();
   const points = useRef();
   const time = useRef(0);
   const positions = useMemo(() => {
@@ -69,7 +81,7 @@ function Atmosphere({ active, compact, progress }) {
     if (active) time.current += Math.min(delta, .05);
     points.current.position.y = Math.sin(time.current * .08) * .7;
     points.current.position.x = Math.sin(time.current * .04) * .5;
-    points.current.position.z = -progress.current * 90;
+    points.current.position.z = camera.position.z - 22;
   });
   return <points ref={points}>
     <bufferGeometry><bufferAttribute attach="attributes-position" args={[positions, 3]} /></bufferGeometry>
@@ -111,19 +123,21 @@ function RenderPipeline({ economy, onReady }) {
   return null;
 }
 
-function Scene({ active, compact, economy, reduced, progress, currentIndex, selection, onSkill, onInspect, onContact, onReady, onFailure, onSlow }) {
+function Scene({ active, compact, economy, reduced, progress, currentIndex, selection, onSkill, onInspect, onContact, onReady, onFailure, onSlow, zoom, motion, cameraState, mountedStops, onArrival }) {
   const texture = usePlateTexture();
-  const { gl, invalidate } = useThree();
+  const { gl, camera, invalidate } = useThree();
   const samples = useRef({ elapsed: 0, count: 0 });
   const sunlight = useRef();
   const keylight = useRef();
+  const homeArchitecture = useRef();
   useEffect(() => {
     gl.domElement.addEventListener("webglcontextlost", onFailure);
     return () => gl.domElement.removeEventListener("webglcontextlost", onFailure);
   }, [gl, onFailure]);
   useEffect(() => { invalidate(); }, [active, economy, invalidate]);
   useFrame((_, delta) => {
-    const z = -progress.current * 90;
+    homeArchitecture.current.visible = mountedStops.includes(0) && (currentIndex === 0 || camera.position.x < 27 && camera.position.z > 0);
+    const z = camera.position.z - 22;
     sunlight.current.position.z = z + 12;
     sunlight.current.target.position.set(5, 3, z - 12);
     sunlight.current.target.updateMatrixWorld();
@@ -137,10 +151,10 @@ function Scene({ active, compact, economy, reduced, progress, currentIndex, sele
     if (sample.count === 240 && sample.elapsed / 180 > .05) onSlow();
   });
   return <>
-    <color attach="background" args={["#141c1e"]} />
-    <fog attach="fog" args={["#192326", 30, 125]} />
-    <ambientLight intensity={.45} />
-    <hemisphereLight args={["#c6d5d6", "#1b1712", 1.4]} />
+    <color attach="background" args={["#344b51"]} />
+    <fog attach="fog" args={["#344b51", 55, 170]} />
+    <ambientLight intensity={.7} />
+    <hemisphereLight args={["#d9e1dc", "#302c23", 1.8]} />
     <directionalLight ref={sunlight} position={[-15, 32, 12]} color="#c5d8d9" intensity={3.2} castShadow={!economy && !compact}
       shadow-mapSize={[1024, 1024]} shadow-camera-left={-30} shadow-camera-right={30} shadow-camera-top={30} shadow-camera-bottom={-30} shadow-camera-far={100} shadow-bias={-.001} />
     <spotLight ref={keylight} position={[3, 25, 0]} angle={.6} penumbra={.7} intensity={650} distance={65} color="#ffcf83" />
@@ -148,18 +162,36 @@ function Scene({ active, compact, economy, reduced, progress, currentIndex, sele
       <Lightformer position={[0, 15, -8]} rotation={[Math.PI / 2, 0, 0]} scale={[30, 16, 1]} intensity={2} color="#d6e1de" />
       <Lightformer position={[20, 5, 0]} rotation={[0, -Math.PI / 2, 0]} scale={[8, 25, 1]} intensity={3} color="#ffbd67" />
     </Environment>
-    <group visible={currentIndex < 2}>
+    <group ref={homeArchitecture} visible={mountedStops.includes(0)}>
       <Architecture texture={texture} compact={compact || economy} />
       <Turbine active={active} texture={texture} />
       <Machinery active={active} texture={texture} />
       {!economy && <><LightShaft position={[-8, 12, -23]} rotation={[0, 0, -.22]} /><LightShaft position={[7, 12, -44]} rotation={[0, 0, .2]} /></>}
     </group>
     <ConnectingSpine texture={texture} />
-    <Destinations texture={texture} active={active} currentIndex={currentIndex} selection={selection} onSkill={onSkill} onInspect={onInspect} onContact={onContact} />
-    <Atmosphere active={active} compact={compact || economy} progress={progress} />
-    <Camera active={active} compact={compact} reduced={reduced} progress={progress} />
+    <TransitCorridor texture={texture} active={active} compact={compact || economy} />
+    <WorldEnvelope />
+    <Destinations texture={texture} active={active} currentIndex={currentIndex} mountedStops={mountedStops} selection={selection} onSkill={onSkill} onInspect={onInspect} onContact={onContact} />
+    <Atmosphere active={active} compact={compact || economy} />
+    <Camera compact={compact} progress={progress} zoom={zoom} motion={motion} cameraState={cameraState} onArrival={onArrival} />
     <RenderPipeline economy={economy || compact} onReady={onReady} />
   </>;
+}
+
+function WorldEnvelope() {
+  const structures = useMemo(() => Array.from({ length: 48 }, (_, i) => ({
+    x: i % 2 ? -44 - i % 4 * 5 : 48 + i % 3 * 6,
+    z: 25 - Math.floor(i / 2) * 46,
+    height: 18 + i * 7 % 24,
+  })), []);
+  return <group>
+    <mesh position={[0, -5, -450]}><boxGeometry args={[180, 2, 1120]} /><meshStandardMaterial color="#364a48" roughness={.8} /></mesh>
+    {structures.map((item, i) => <group key={i} position={[item.x, -4, item.z]}>
+      <mesh position={[0, item.height / 2, 0]}><boxGeometry args={[10, item.height, 15]} /><meshStandardMaterial color={i % 3 ? "#52686a" : "#78817a"} roughness={.65} metalness={.35} /></mesh>
+      <mesh position={[0, item.height - 3, 7.6]}><boxGeometry args={[7, .2, .12]} /><meshBasicMaterial color={i % 2 ? "#b3d9dd" : "#efba75"} /></mesh>
+    </group>)}
+    {Array.from({ length: 12 }, (_, i) => <mesh key={i} position={[0, 34, 20 - i * 90]}><boxGeometry args={[110, .6, 1]} /><meshStandardMaterial color="#71837f" metalness={.5} roughness={.6} /></mesh>)}
+  </group>;
 }
 
 export default function ObservatoryScene(props) {
