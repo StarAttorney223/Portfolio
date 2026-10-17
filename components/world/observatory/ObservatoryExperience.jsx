@@ -9,7 +9,8 @@ import { SectionPresentation } from "./SectionPresentation";
 import { cameraStop, indexForRoute, journey, mainDestinations } from "./journey";
 import styles from "./observatory.module.css";
 import { clampZoom, zoomLimits } from "./viewControls";
-import { createTravel } from "./travel";
+import { createTravel, retraceTravel } from "./travel";
+import { ProjectInteractionProvider } from "./ProjectInteractions";
 
 const Scene = dynamic(() => import("./ObservatoryScene"), { ssr: false });
 
@@ -117,7 +118,19 @@ export function ObservatoryExperience() {
     const start = cameraState.current || cameraStop(fromIndex, compact);
     // Retarget from the actual rendered camera, never a stale route's preset.
     if (using3D && ready && (destination !== fromIndex || motion.current)) {
-      motion.current = { ...createTravel(start, end, compact ? 1350 : reduced ? 1600 : 1850), startedAt: null };
+      const duration = compact ? 1350 : reduced ? 1600 : 1850;
+      const previous = motion.current;
+      const endpoint = previous?.endpointIndices?.indexOf(destination) ?? -1;
+      let travel;
+      if (endpoint >= 0 && Number.isFinite(previous.parameter)) {
+        travel = retraceTravel(start, end, previous, endpoint, duration);
+        travel.duration *= Math.max(.35, Math.abs(travel.to - travel.from));
+      } else {
+        travel = createTravel(start, end, duration);
+        const preset = cameraStop(fromIndex, compact);
+        if (Math.hypot(...start.position.map((value, axis) => value - preset.position[axis])) < .01) travel.endpointIndices = [fromIndex, destination];
+      }
+      motion.current = { ...travel, startedAt: null };
       setMountedStops((previous) => [...new Set([previous[0], fromIndex, destination])]);
       setTravelling(true);
     } else {
@@ -144,9 +157,9 @@ export function ObservatoryExperience() {
     else window.location.href = social.url;
   }, []);
 
-  return <main className={styles.experience} style={{ height: "100svh" }} aria-label="Divyansh Chandrakar, immersive developer portfolio">
+  return <ProjectInteractionProvider destination={entry.id} enabled={using3D && ready && !travelling}><main className={styles.experience} style={{ height: "100svh" }} aria-label="Divyansh Chandrakar, immersive developer portfolio">
     <div className={styles.viewport} data-view={using3D ? "3d" : "standard"} data-section={entry.kind} data-transition={travelling ? "travelling" : "idle"} data-destination={entry.id}>
-      {using3D && <div ref={canvasRegion} className={styles.canvas} aria-hidden="true"><Boundary onFailure={onFailure}>
+      {using3D && <div ref={canvasRegion} className={styles.canvas} role="region" aria-label="Interactive project environment"><Boundary onFailure={onFailure}>
         <Scene active={!paused && visible} reduced={reduced && paused} compact={compact} economy={economy} progress={progress} currentIndex={index}
           selection={skillId} onSkill={setSkillId} onInspect={() => setInspected(true)} onContact={contact}
           zoom={zoom} motion={motion} cameraState={cameraState} mountedStops={mountedStops} onArrival={onArrival} onReady={onReady} onFailure={onFailure} onSlow={onSlow} />
@@ -181,5 +194,5 @@ export function ObservatoryExperience() {
       </footer>
       <div className={styles.progress}><div style={{ height: `${index / (journey.length - 1) * 100}%` }} /></div>
     </div>
-  </main>;
+  </main></ProjectInteractionProvider>;
 }

@@ -1,5 +1,5 @@
-export const metadata = { title: "AtmosAlert" };
+import { permanentRedirect } from "next/navigation";
 
 export default function AtmosAlertPage() {
-  return null;
+  permanentRedirect("/projects");
 }

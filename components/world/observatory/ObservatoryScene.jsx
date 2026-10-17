@@ -14,7 +14,7 @@ import { TransitCorridor } from "./TransitCorridor";
 import { ConnectingSpine, Destinations } from "./Destinations";
 import { cameraStop, journey } from "./journey";
 import { zoomedPosition, zoomLimits } from "./viewControls";
-import { sampleTravel } from "./travel";
+import { sampleTravel, travelParameter } from "./travel";
 
 function Camera({ compact, progress, zoom, motion, cameraState, onArrival }) {
   const { camera, gl, invalidate } = useThree();
@@ -22,6 +22,7 @@ function Camera({ compact, progress, zoom, motion, cameraState, onArrival }) {
   const zoomValue = useRef(zoom);
   const destination = useMemo(() => new Vector3(), []);
   const target = useMemo(() => new Vector3(), []);
+  const direction = useMemo(() => new Vector3(), []);
   useEffect(() => { invalidate(); }, [compact, invalidate]);
   useEffect(() => { invalidate(); }, [zoom, invalidate]);
   useEffect(() => {
@@ -37,6 +38,7 @@ function Camera({ compact, progress, zoom, motion, cameraState, onArrival }) {
       travel.startedAt ??= performance.now();
       const fraction = Math.min(1, (performance.now() - travel.startedAt) / travel.duration);
       frame = sampleTravel(travel, fraction);
+      travel.parameter = travelParameter(travel, fraction);
       zoomValue.current = 1;
       finished = fraction === 1;
       invalidate();
@@ -55,6 +57,7 @@ function Camera({ compact, progress, zoom, motion, cameraState, onArrival }) {
     camera.lookAt(target);
     cameraState.current = { position: camera.position.toArray(), target: target.toArray(), fov: camera.fov };
     gl.domElement.dataset.cameraPosition = camera.position.toArray().map((v) => v.toFixed(3)).join(",");
+    gl.domElement.dataset.cameraDirection = camera.getWorldDirection(direction).toArray().map((v) => v.toFixed(5)).join(",");
     gl.domElement.dataset.travel = travel ? "travelling" : "idle";
     first.current = false;
     if (finished && motion.current === travel) { motion.current = null; onArrival(); }

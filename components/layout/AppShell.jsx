@@ -5,6 +5,6 @@ import { ObservatoryExperience } from "@/components/world/observatory/Observator
 
 export function AppShell({ children }) {
   const pathname = usePathname();
-  const known = /^\/(?:profile|projects(?:\/(?:ether|unravel|physiogenie|pixelchat|atmosalert))?|skills|experience|about|contact)?\/?$/.test(pathname);
+  const known = /^\/(?:profile|projects(?:\/(?:ether|unravel|physiogenie|pixelchat))?|skills|experience|about|contact)?\/?$/.test(pathname);
   return known ? <ObservatoryExperience /> : children;
 }

@@ -3,11 +3,12 @@
 import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Line } from "@react-three/drei";
-import { PlaneGeometry, DoubleSide } from "three";
+import { DoubleSide } from "three";
 import { Beam, RepeatedBeams, Stencil, Walkway, AMBER } from "./IndustrialStructures";
 import { journey } from "./journey";
 import { RoomArchitecture } from "./RoomArchitecture";
 import { skillsCategories } from "@/data/skills";
+import { DataFlow, FeatureTarget } from "./ProjectInteractions";
 
 function Ring({ position, radius, rotation = [0, 0, 0], color = AMBER, lit = true }) {
   return <mesh position={position} rotation={rotation} castShadow>
@@ -16,7 +17,7 @@ function Ring({ position, radius, rotation = [0, 0, 0], color = AMBER, lit = tru
 }
 
 function Stage({ entry, texture }) {
-  const circular = ["profile", "skills", "weather", "motion", "contact"].includes(entry.environment || entry.kind);
+  const circular = ["profile", "skills", "motion", "contact"].includes(entry.environment || entry.kind);
   return <>
     {circular ? <mesh position={[7, -.65, -2]} receiveShadow><cylinderGeometry args={[15, 15.8, 1.2, 48]} /><meshStandardMaterial color="#626d60" map={texture} metalness={.6} roughness={.48} /></mesh>
       : <Beam position={[7, -.6, -2]} scale={[31, 1.2, 30]} texture={texture} color="#596557" />}
@@ -44,29 +45,32 @@ function Atelier({ active, onInspect }) {
   const time = useRef(0);
   const shader = useMemo(() => ({ uniforms: { time: { value: 0 } }, vertexShader: `varying vec2 vUv;uniform float time;void main(){vUv=uv;vec3 p=position;p.z+=sin(p.x*.6+time*.35)*.4+cos(p.y*.8+time*.2)*.3;gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}`, fragmentShader: `varying vec2 vUv;uniform float time;void main(){float t=time*.08;float field=sin(vUv.x*14.+sin(vUv.y*10.+t)*3.+t);float line=smoothstep(.82,.98,field);vec3 base=mix(vec3(.12,.16,.15),vec3(.83,.38,.12),vUv.y);vec3 c=mix(base,vec3(.94,.86,.65),line);gl_FragColor=vec4(c,1.);}`, side: DoubleSide }), []);
   useFrame((_, delta) => { if (active) { time.current += Math.min(delta, .05); shader.uniforms.time.value = time.current; frames.current.rotation.y = Math.sin(time.current * .12) * .12; } });
-  return <group position={[7, 5, -2]} ref={frames} onClick={onInspect}>
-    {[-1, 0, 1].map((i) => <group key={i} position={[i * 4, i * .8, -Math.abs(i) * 3]} rotation={[0, i * -.22, 0]}>
+  return <group position={[7, 5, -2]} ref={frames}>
+    {[-1, 0, 1].map((i) => <FeatureTarget key={i} projectId="ether" featureIndex={i + 1} position={[i * 4, i * .8, -Math.abs(i) * 3]} rotation={[0, i * -.22, 0]}>
       <Beam position={[0, 0, -.2]} scale={[5.8, 8.6, .35]} color="#9b9684" />
       <mesh position={[0, 0, .8]}><planeGeometry args={[5.4, 8.2, 24, 24]} /><shaderMaterial {...shader} /></mesh>
       <Beam position={[0, 4.8, 0]} scale={[.04, 2, .04]} color="#bac1b6" />
-    </group>)}
-    <Ring position={[0, -4.6, 0]} radius={7} rotation={[-Math.PI / 2, 0, 0]} />
+    </FeatureTarget>)}
+    <FeatureTarget projectId="ether" featureIndex={3} position={[0, -4.6, 0]}><Ring radius={7} rotation={[-Math.PI / 2, 0, 0]} /></FeatureTarget>
+    <Line points={[[-4, -.8, -3], [0, 0, 0], [4, .8, -3]]} color="#b99d65" lineWidth={1} />
+    <DataFlow points={[[-4, -.8, -2.1], [0, 0, .9], [4, .8, -2.1]]} active={active} />
   </group>;
 }
 
 function ComputeHall({ active, texture, onInspect }) {
   const pulse = useRef();
+  const tree = useRef();
   const elapsed = useRef(0);
   const nodes = useMemo(() => Array.from({ length: 15 }, (_, i) => {
     const level = Math.floor(Math.log2(i + 1)); const first = 2 ** level - 1;
     return [((i - first) - (2 ** level - 1) / 2) * (11 / 2 ** level), 8 - level * 2.5, 0];
   }), []);
-  useFrame((_, delta) => { if (active) { elapsed.current += Math.min(delta, .05); pulse.current.position.y = -1 + (elapsed.current * 1.5) % 10; } });
-  return <group position={[7, 1, -3]} onClick={onInspect}>
-    {nodes.map((p, i) => <group key={i}>
+  useFrame((_, delta) => { if (active) { elapsed.current += Math.min(delta, .05); pulse.current.position.y = -1 + (elapsed.current * 1.5) % 10; tree.current.position.y = Math.sin(elapsed.current * .5) * .1; } });
+  return <group position={[7, 1, -3]}>
+    <group ref={tree}>{nodes.map((p, i) => <group key={i}>
       {i > 0 && <Line points={[nodes[Math.floor((i - 1) / 2)], p]} color="#b99d65" lineWidth={1.5} />}
-      <mesh position={p} rotation={[0, 0, Math.PI / 4]}><cylinderGeometry args={[.4, .4, .55, 6]} /><meshStandardMaterial color="#c7b88d" metalness={.8} roughness={.25} /></mesh>
-    </group>)}
+      <FeatureTarget projectId="unravel" featureIndex={i % 4} marker={[0, 1, 2, 7].includes(i)} position={p}><mesh rotation={[0, 0, Math.PI / 4]}><cylinderGeometry args={[.4, .4, .55, 6]} /><meshStandardMaterial color="#c7b88d" emissive="#b99d65" emissiveIntensity={.22} metalness={.8} roughness={.25} /></mesh></FeatureTarget>
+    </group>)}<DataFlow points={[nodes[0], nodes[1], nodes[3], nodes[7]]} active={active} /><DataFlow points={[nodes[0], nodes[2], nodes[6], nodes[14]]} active={active} /></group>
     {[-7, 7].map((x) => <group key={x}><Beam position={[x, 4, -2]} scale={[1.6, 10, 4]} texture={texture} />{[1, 2, 3, 4, 5, 6].map((i) => <Beam key={i} position={[x, i * 1.3, .1]} scale={[1.1, .08, .1]} color={AMBER} lit />)}</group>)}
     <group ref={pulse}><Beam position={[0, 0, .4]} scale={[12, .07, .08]} color="#ffe2a1" lit /></group>
   </group>;
@@ -79,13 +83,13 @@ function Bone({ a, b }) {
 
 function MotionLab({ active, onInspect }) {
   const arm = useRef(); const scan = useRef(); const time = useRef(0);
-  useFrame((_, delta) => { if (active) { time.current += Math.min(delta, .05); arm.current.rotation.z = Math.sin(time.current * .7) * .65; scan.current.position.y = 4 + Math.sin(time.current * .4) * 3.3; } });
+  useFrame((_, delta) => { if (active) { time.current += Math.min(delta, .05); arm.current.rotation.z = Math.sin(time.current * .7) * .12; scan.current.position.y = 4 + Math.sin(time.current * .4) * 3.3; } });
   const bones = [[[0, 6, 0], [0, 3, 0]], [[-1.8, 5.6, 0], [1.8, 5.6, 0]], [[0, 3, 0], [-1.1, 1, .3]], [[-1.1, 1, .3], [-1.5, -1, 0]], [[0, 3, 0], [1.1, 1, -.3]], [[1.1, 1, -.3], [1.5, -1, 0]], [[-1.8, 5.6, 0], [-2.3, 3.5, 0]], [[-2.3, 3.5, 0], [-2, 2, .5]]];
-  return <group position={[8, 2, -2]} onClick={onInspect}>
+  return <group position={[8, 2, -2]}>
     {bones.map(([a, b], i) => <Bone key={i} a={a} b={b} />)}
-    <group ref={arm} position={[1.8, 5.6, 0]}><Bone a={[0, 0, 0]} b={[1.6, -1.3, 0]} /><Bone a={[1.6, -1.3, 0]} b={[2.5, .2, 0]} /><mesh position={[1.6, -1.3, 0]}><sphereGeometry args={[.19, 12, 8]} /><meshStandardMaterial color={AMBER} emissive={AMBER} /></mesh></group>
+    <group ref={arm} position={[1.8, 5.6, 0]}><Bone a={[0, 0, 0]} b={[1.6, -1.3, 0]} /><Bone a={[1.6, -1.3, 0]} b={[2.5, .2, 0]} /><FeatureTarget projectId="physiogenie" featureIndex={0} position={[1.6, -1.3, 0]}><mesh><sphereGeometry args={[.19, 12, 8]} /><meshStandardMaterial color={AMBER} emissive={AMBER} /></mesh></FeatureTarget></group>
     <mesh position={[0, 7, 0]}><sphereGeometry args={[.65, 16, 12]} /><meshStandardMaterial color="#bbc5b7" metalness={.6} roughness={.35} /></mesh>
-    {[-1.1, 1.1, 0].map((x, i) => <mesh key={i} position={[x, i === 2 ? 3 : 1, 0]}><sphereGeometry args={[.17, 12, 8]} /><meshStandardMaterial color={AMBER} emissive={AMBER} /></mesh>)}
+    {[-1.1, 1.1, 0].map((x, i) => <FeatureTarget key={i} projectId="physiogenie" featureIndex={i + 1} position={[x, i === 2 ? 3 : 1, 0]}><mesh><sphereGeometry args={[.17, 12, 8]} /><meshStandardMaterial color={AMBER} emissive={AMBER} /></mesh></FeatureTarget>)}
     <group ref={scan}><Ring position={[0, 0, 0]} radius={4.5} rotation={[-Math.PI / 2, 0, 0]} color="#c4d9d0" /></group>
     <Ring position={[0, -1.5, 0]} radius={5.5} rotation={[-Math.PI / 2, 0, 0]} />
     {[-5, 5].map((x) => <Beam key={x} position={[x, 3, -1]} scale={[.4, 11, .5]} color="#78908c" />)}
@@ -95,40 +99,15 @@ function MotionLab({ active, onInspect }) {
 function Exchange({ active, onInspect }) {
   const packets = useRef(); const time = useRef(0);
   useFrame((_, delta) => { if (active) { time.current += Math.min(delta, .05); packets.current.position.x = Math.sin(time.current * .5) * 5; } });
-  return <group position={[7, 5, -3]} onClick={onInspect}>
-    {[-5.5, 5.5].map((x) => <group key={x} position={[x, 0, 0]}>
+  return <group position={[7, 5, -3]}>
+    {[-5.5, 5.5].map((x, i) => <FeatureTarget key={x} projectId="pixelchat" featureIndex={i} position={[x, 0, 0]}>
       <Ring radius={3.4} position={[0, 0, 0]} rotation={[0, Math.PI / 2, 0]} color="#a4c8b3" />
       <Ring radius={3.6} position={[x > 0 ? 1 : -1, 0, 0]} rotation={[0, Math.PI / 2, 0]} lit={false} color="#b4b9a8" />
       <Beam position={[0, -3.6, 0]} scale={[2, 3, 7]} color="#44554d" />
-    </group>)}
+    </FeatureTarget>)}
     {[-1, 0, 1].map((y) => <Line key={y} points={[[-5.5, y * 1.2, 0], [5.5, y * 1.2, 0]]} color="#839f91" lineWidth={1} />)}
-    <group ref={packets}>{[-1, 0, 1].map((y) => <Beam key={y} position={[y * .8, y * 1.2, 0]} scale={[.5, .5, .5]} color={AMBER} lit />)}</group>
+    <group ref={packets}>{[-1, 0, 1].map((y) => <FeatureTarget key={y} projectId="pixelchat" featureIndex={y + 3} marker={y !== 1} position={[y * .8, y * 1.2, 0]}><Beam scale={[.5, .5, .5]} color={AMBER} lit /></FeatureTarget>)}</group>
     <Stencil text="ROOM / CONNECTED" position={[0, -4.5, 1]} scale={[10, 1, 1]} />
-  </group>;
-}
-
-function WeatherArray({ active }) {
-  const sweep = useRef(); const clouds = useRef(); const rain = useRef(); const time = useRef(0);
-  const rainPositions = useMemo(() => {
-    const data = new Float32Array(80 * 6);
-    for (let i = 0; i < 80; i++) {
-      const x = (i * 3.13) % 17 - 8.5, y = 3 + (i * 1.71) % 5, z = (i * 2.19) % 13 - 8;
-      data.set([x, y, z, x + .06, y - .35, z], i * 6);
-    }
-    return data;
-  }, []);
-  const terrain = useMemo(() => {
-    const geo = new PlaneGeometry(22, 19, 32, 28); const vertices = geo.attributes.position;
-    for (let i = 0; i < vertices.count; i++) { const x = vertices.getX(i), y = vertices.getY(i); vertices.setZ(i, Math.sin(x * .33) * Math.cos(y * .3) * 1.5 + Math.sin(x * .8 + y * .5) * .35); }
-    geo.computeVertexNormals(); return geo;
-  }, []);
-  useFrame((_, delta) => { if (active) { time.current += Math.min(delta, .05); sweep.current.rotation.y += Math.min(delta, .05) * .25; clouds.current.position.x = Math.sin(time.current * .1) * 1.5; rain.current.position.y = -(time.current * 2) % 2; } });
-  return <group position={[6, 1.5, -2]}>
-    <mesh geometry={terrain} position={[0, 1, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow><meshStandardMaterial color="#2b443a" roughness={1} /></mesh>
-    {[3, 6, 9].map((r) => <Ring key={r} position={[0, 2.3, 0]} radius={r} rotation={[-Math.PI / 2, 0, 0]} color="#b4c6ae" lit={false} />)}
-    <group ref={sweep} position={[0, 2.5, 0]}><Beam position={[4.5, 0, 0]} scale={[9, .04, .08]} color={AMBER} lit /></group>
-    <group ref={clouds} position={[0, 8, -3]}>{Array.from({ length: 9 }, (_, i) => <mesh key={i} position={[(i % 3 - 1) * 4.3, Math.floor(i / 3) * .7, Math.floor(i / 3) * 2.8]} scale={[3.8, .9, 2.8]}><sphereGeometry args={[1, 16, 8]} /><meshStandardMaterial color="#8c9f9e" transparent opacity={.48} depthWrite={false} roughness={1} /></mesh>)}</group>
-    <lineSegments ref={rain}><bufferGeometry><bufferAttribute attach="attributes-position" args={[rainPositions, 3]} /></bufferGeometry><lineBasicMaterial color="#b0c8bf" transparent opacity={.32} /></lineSegments>
   </group>;
 }
 
@@ -206,7 +185,7 @@ function Uplink({ active, texture, onContact }) {
   </group>;
 }
 
-export const environmentComponents = { atelier: Atelier, compute: ComputeHall, motion: MotionLab, exchange: Exchange, weather: WeatherArray };
+export const environmentComponents = { atelier: Atelier, compute: ComputeHall, motion: MotionLab, exchange: Exchange };
 
 const sectionComponents = { profile: Foundry, skills: SkillNetwork, experience: Chronology, about: Workshop, contact: Uplink };
 

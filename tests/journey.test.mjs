@@ -5,7 +5,7 @@ import { projectsData } from "../data/projects.js";
 import { projectRegistry } from "../components/world/observatory/projectRegistry.js";
 
 test("project scenes are bound by stable IDs, with authored cameras", () => {
-  const environments = { ether: "atelier", unravel: "compute", physiogenie: "motion", pixelchat: "exchange", atmosalert: "weather" };
+  const environments = { ether: "atelier", unravel: "compute", physiogenie: "motion", pixelchat: "exchange" };
   for (const [id, environment] of Object.entries(environments)) {
     const config = projectRegistry[id];
     const stop = journey.find((entry) => entry.id === id);
@@ -23,9 +23,17 @@ test("all existing projects and their external links are retained", () => {
     assert.equal(worldProjects.find((item) => item.id === project.id), project);
     assert.ok(journey.some((stop) => stop.project === project));
   }
-  const weather = worldProjects.find((project) => project.id === "atmosalert");
-  assert.deepEqual(weather.links, {});
-  assert.deepEqual(weather.techStack, []);
+  assert.equal(worldProjects.some((project) => project.id === "atmosalert"), false);
+});
+
+test("removed weather room leaves a contiguous PixelChat-to-Skills journey", () => {
+  assert.equal(projectRegistry.atmosalert, undefined);
+  assert.deepEqual(journey.map((stop) => stop.id), ["home", "profile", "ether", "unravel", "physiogenie", "pixelchat", "skills", "experience", "about", "contact"]);
+  journey.forEach((stop, index) => {
+    assert.equal(stop.index, index);
+    assert.equal(stop.number, String(index + 1).padStart(2, "0"));
+    assert.equal(stop.z, -index * 90);
+  });
 });
 
 test("every destination has a unique URL and resolves to its camera stop", () => {

@@ -207,6 +207,14 @@
 .sceneInfo[open] > summary { border-bottom: 1px solid #506569; }
 .sceneInfo[open] > summary svg { transform: rotate(180deg); }
 .sceneInfo .presentationGrid { display: block; padding: 18px 18px 0; }
+.featureMarker { display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 1px solid #c9ab72; border-radius: 50%; background: #101b20e8; color: #ffe2a1; cursor: pointer; transition: background .18s, box-shadow .18s; }
+.featureMarker:hover, .featureMarker:focus-visible, .featureMarker[data-highlighted=true] { background: #815f2d; box-shadow: 0 0 0 4px #edc27a33; outline: 2px solid #ffe2a1; outline-offset: 3px; }
+.modelDetail { position: fixed; z-index: 40; top: 112px; right: 24px; width: min(340px, calc(100vw - 32px)); max-height: calc(100svh - 240px); overflow: auto; padding: 20px; border: 1px solid #8a997f; border-radius: 4px; background: #101b20f5; color: #e9eadf; box-shadow: 0 12px 32px #0005; }
+.modelDetail > div { display: flex; justify-content: space-between; align-items: center; gap: 12px; color: #e1bf80; font-size: 12px; }
+.modelDetail button { display: grid; place-items: center; flex-shrink: 0; width: 36px; height: 36px; border: 1px solid #65716c; background: transparent; color: #e9eadf; cursor: pointer; }
+.modelDetail h2 { font-size: 20px; line-height: 1.3; margin: 16px 0 10px; }
+.modelDetail p { font-size: 15px; line-height: 1.6; margin: 0; }
+@media (max-width: 767px) { .modelDetail { top: 82px; right: 12px; width: calc(100vw - 24px); max-height: 32svh; padding: 16px; } .featureMarker { width: 36px; height: 36px; } }
 .sceneInfo .titleBlock { display: none; }
 .sceneInfo .summaryBlock .lead { font-size: 13px; }
 .sceneInfo .presentationActions { flex-direction: row; flex-wrap: wrap; gap: 8px 18px; margin-top: 12px; }

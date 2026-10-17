@@ -8,7 +8,6 @@ const limits = {
   unravel: { min: .67, max: 1.8, step: .18 },
   physiogenie: { min: .68, max: 1.8, step: .18 },
   pixelchat: { min: .7, max: 1.85, step: .18 },
-  atmosalert: { min: .65, max: 1.8, step: .18 },
   skills: { min: .67, max: 1.8, step: .18 },
   experience: { min: .68, max: 1.6, step: .18 },
   about: { min: .7, max: 1.5, step: .18 },

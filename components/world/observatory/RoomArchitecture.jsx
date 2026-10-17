@@ -86,18 +86,6 @@ function ExchangeArchitecture({ texture }) {
   </>;
 }
 
-function WeatherArchitecture({ texture }) {
-  return <>
-    {[-6, 19].map((x) => <group key={x}>
-      <Beam position={[x, 4, -10]} scale={[.6, 8, .6]} texture={texture} color="#99a59b" />
-      <Beam position={[x, 8, -10]} scale={[3, .3, .5]} color="#bdad86" />
-      <Beam position={[x, .5, 0]} scale={[1.1, 1, 24]} texture={texture} />
-    </group>)}
-    <Beam position={[7, 1, -15]} scale={[30, 2, 2]} texture={texture} color="#7b887d" />
-    <mesh position={[7, 6, -32]}><planeGeometry args={[90, 32]} /><meshBasicMaterial color="#394a48" /></mesh>
-  </>;
-}
-
 function CommunicationsArchitecture({ texture }) {
   return <>
     <Beam position={[7, 4, -15]} scale={[30, 8, .8]} texture={texture} color="#515e55" />
@@ -134,7 +122,7 @@ function FabricationArchitecture({ texture }) {
   </>;
 }
 
-const rooms = { profile: Archive, atelier: Gallery, compute: ComputeArchitecture, motion: MotionArchitecture, exchange: ExchangeArchitecture, weather: WeatherArchitecture, skills: NexusArchitecture, experience: ChronologyArchitecture, about: FabricationArchitecture, contact: CommunicationsArchitecture };
+const rooms = { profile: Archive, atelier: Gallery, compute: ComputeArchitecture, motion: MotionArchitecture, exchange: ExchangeArchitecture, skills: NexusArchitecture, experience: ChronologyArchitecture, about: FabricationArchitecture, contact: CommunicationsArchitecture };
 
 export function RoomArchitecture({ entry, texture }) {
   const Room = rooms[entry.environment || entry.kind];
