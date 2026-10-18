@@ -162,8 +162,8 @@ function Scene({ active, compact, economy, reduced, progress, currentIndex, sele
     if (sample.count === 240 && sample.elapsed / 180 > .05) onSlow();
   });
   return <>
-    <color attach="background" args={["#1c3339"]} />
-    <fog attach="fog" args={["#1c3339", 70, 220]} />
+    <color attach="background" args={["#111a1c"]} />
+    <fog attach="fog" args={["#111a1c", 70, 220]} />
     <ambientLight intensity={.35} />
     <hemisphereLight args={["#c8dbdd", "#172327", 1.25]} />
     <directionalLight ref={sunlight} position={[-15, 32, 12]} color="#c5d8d9" intensity={2.7} castShadow={!economy && !compact}

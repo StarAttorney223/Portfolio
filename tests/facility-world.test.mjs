@@ -29,8 +29,12 @@ test("all nine non-home destinations have supported, bounded architectural detai
         assert.ok(item.position[0] + item.scale[0] / 2 < 25, "boarding bay must remain open");
       }
     }
-    assert.ok(count < 220, "instanced detail budget");
+    assert.ok(count < 270, "instanced detail budget");
     assert.ok(facilityLayout(entry.id, true).hardware.length < layout.hardware.length);
+    assert.ok(layout.panels.some((item) => item.position[2] === -47), "segmented rear gallery should add background depth");
+    assert.equal(layout.panels.filter((item) => item.position[2] === -47).length, layout.theme.bays);
+    assert.ok(layout.frames.some((item) => item.position[1] === 22.2 && item.scale[2] >= 50), "destination should be enclosed by ceiling trusses");
+    assert.ok(!layout.panels.some((item) => item.position[2] === -38 && item.scale[0] >= 30), "rear gallery should not use a full-width slab");
     const lastStep = layout.frames.at(-1);
     assert.ok(lastStep.position[2] - lastStep.scale[2] / 2 <= -22.5);
     assert.equal(lastStep.position[1] + lastStep.scale[1] / 2, layout.theme.level);
