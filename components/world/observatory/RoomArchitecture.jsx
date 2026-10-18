@@ -2,40 +2,29 @@
 
 import { useMemo } from "react";
 import { DoubleSide } from "three";
-import { Beam, RepeatedBeams, Stencil, AMBER } from "./IndustrialStructures";
+import { Beam, RepeatedBeams, AMBER } from "./IndustrialStructures";
 
-function Vault({ texture, radius = 12, depth = 10, color = "#74796c" }) {
+function ObservationWall({ texture, z = -14 }) {
+  return <group position={[7, 0, z]}>
+    <Beam position={[0, 1, 0]} scale={[30, 2, .7]} texture={texture} color="#273e45" />
+    <Beam position={[0, 13, 0]} scale={[30, 1.5, .7]} texture={texture} color="#334a50" />
+    {[-13, 13].map((x) => <Beam key={x} position={[x, 7, 0]} scale={[3, 12, .7]} texture={texture} color="#344c52" />)}
+    {[-11.3, 0, 11.3].map((x) => <Beam key={x} position={[x, 7, .2]} scale={[.16, 10.5, .35]} color="#7c9494" texture={texture} />)}
+    <mesh position={[0, 7, 0]}><planeGeometry args={[22.4, 10]} /><meshStandardMaterial color="#8bb3bd" transparent opacity={.085} depthWrite={false} roughness={.22} metalness={.35} /></mesh>
+    <Beam position={[0, 12.2, .4]} scale={[22.5, .055, .08]} color="#c7cebf" lit />
+  </group>;
+}
+
+function Vault({ texture, radius = 12, depth = 10, offset = -5, color = "#74796c" }) {
   const arches = useMemo(() => {
     const items = [];
     for (const z of [-depth, 0, depth]) for (let i = 0; i <= 24; i++) {
       const a = i / 24 * Math.PI;
-      items.push({ position: [7 + Math.cos(a) * radius, Math.sin(a) * radius, z - 5], scale: [radius * .14, .55, .9], rotation: [0, 0, a + Math.PI / 2] });
+      items.push({ position: [7 + Math.cos(a) * radius, Math.sin(a) * radius, z + offset], scale: [radius * .14, .55, .9], rotation: [0, 0, a + Math.PI / 2] });
     }
     return items;
-  }, [radius, depth]);
+  }, [radius, depth, offset]);
   return <RepeatedBeams items={arches} color={color} texture={texture} />;
-}
-
-function Archive({ texture }) {
-  const shelves = useMemo(() => {
-    const items = [];
-    for (let bay = 0; bay < 9; bay++) {
-      const x = -6 + bay * 3.1;
-      items.push({ position: [x, 5.8, -13], scale: [.15, 11.6, 2.8] });
-      for (let row = 0; row < 5; row++) {
-        items.push({ position: [x + 1.4, 1 + row * 2, -13], scale: [2.8, .16, 3] });
-        for (let book = 0; book < 5; book++) items.push({ position: [x + .35 + book * .48, 1.7 + row * 2, -12.8], scale: [.28, 1.1, 1.1] });
-      }
-    }
-    return items;
-  }, []);
-  return <>
-    <Vault texture={texture} radius={14} depth={6} />
-    <Beam position={[7, 5.8, -15]} scale={[30, 12, 1]} texture={texture} color="#505a52" />
-    <RepeatedBeams items={shelves} texture={texture} color="#a1987d" />
-    <Stencil text="ARCHIVE / 01" position={[-3, 9, -11.4]} scale={[6, .7, 1]} />
-    {[-5, 19].map((x) => <Beam key={x} position={[x, 5, -10]} scale={[.08, 9, .08]} color={AMBER} lit />)}
-  </>;
 }
 
 function Gallery({ texture }) {
@@ -45,8 +34,13 @@ function Gallery({ texture }) {
       <Beam position={[7, 13, z]} scale={[29, .6, .8]} texture={texture} />
       <Beam position={[7, 12.5, z]} scale={[20, .05, .16]} color="#ead8aa" lit />
     </group>)}
-    <Beam position={[7, 6, -14]} scale={[30, 12, .5]} color="#5e675e" texture={texture} />
-    {[-1, 1].map((side) => <Beam key={side} position={[7 + side * 14, 4, -3]} scale={[.7, 8, 20]} texture={texture} color={side < 0 ? "#9c7950" : "#535f59"} />)}
+    <ObservationWall texture={texture} />
+    {[-1, 1].map((side) => <group key={side} position={[7 + side * 14, 0, -3]}>
+      <Beam position={[0, 1.5, 0]} scale={[.7, 3, 20]} texture={texture} color="#334b52" />
+      {[-8, 0, 8].map((z) => <Beam key={z} position={[0, 5.5, z]} scale={[.4, 5, .4]} texture={texture} color="#728b8e" />)}
+      {[3, 8].map((y) => <Beam key={y} position={[0, y, 0]} scale={[.4, .25, 20]} texture={texture} color="#6a8182" />)}
+      <mesh position={[0, 5.5, 0]} rotation={[0, Math.PI / 2, 0]}><planeGeometry args={[19, 4.8]} /><meshStandardMaterial color="#88aeb7" side={DoubleSide} transparent opacity={.12} depthWrite={false} metalness={.3} roughness={.25} /></mesh>
+    </group>)}
   </>;
 }
 
@@ -61,7 +55,7 @@ function ComputeArchitecture({ texture }) {
   }, []);
   return <>
     <RepeatedBeams items={racks} color="#66746b" texture={texture} />
-    <Beam position={[7, 6, -13]} scale={[26, 12, .7]} color="#46534e" texture={texture} />
+    <ObservationWall texture={texture} z={-13} />
     {[-5, 19].map((x) => <group key={x}><Beam position={[x, 10, -3]} scale={[1, .5, 26]} color="#a18d62" /><Beam position={[x, 9.7, -3]} scale={[.08, .05, 24]} color={AMBER} lit /></group>)}
     <Beam position={[7, 11, -7]} scale={[27, .5, 1]} texture={texture} />
   </>;
@@ -69,8 +63,8 @@ function ComputeArchitecture({ texture }) {
 
 function MotionArchitecture({ texture }) {
   return <>
-    <Vault texture={texture} radius={10} depth={6} color="#a2aaa0" />
-    <mesh position={[7, 5, -14]}><cylinderGeometry args={[14, 14, 12, 32, 1, true, Math.PI / 2, Math.PI]} /><meshStandardMaterial color="#65736d" side={DoubleSide} metalness={.4} roughness={.55} /></mesh>
+    <Vault texture={texture} radius={10} depth={4} offset={-13} color="#8eaaa9" />
+    <mesh position={[7, 5, -14]}><cylinderGeometry args={[14, 14, 12, 32, 1, true, Math.PI / 2, Math.PI]} /><meshStandardMaterial color="#708f95" side={DoubleSide} metalness={.4} roughness={.25} transparent opacity={.22} depthWrite={false} /></mesh>
     {[-4, 18].map((x) => <group key={x}><Beam position={[x, 3, 3]} scale={[1.2, 6, 2]} texture={texture} color="#a8aea0" /><Beam position={[x, 3.3, 4.02]} scale={[.12, 4, .08]} color="#f2d59a" lit /></group>)}
   </>;
 }
@@ -82,7 +76,7 @@ function ExchangeArchitecture({ texture }) {
       <Beam position={[7, z >= 4 ? 16 : 10, z]} scale={[27, 1, 1]} texture={texture} />
       <Beam position={[7, z >= 4 ? 15.45 : 9.45, z]} scale={[21, .05, .08]} color={AMBER} lit />
     </group>)}
-    <Beam position={[7, 5, -15]} scale={[30, 10, .8]} color="#515e55" texture={texture} />
+    <ObservationWall texture={texture} z={-15} />
   </>;
 }
 
@@ -99,17 +93,23 @@ function CommunicationsArchitecture({ texture }) {
 
 function NexusArchitecture({ texture }) {
   return <>
-    <Vault texture={texture} radius={16} depth={5} />
-    <Beam position={[7, 5, -13]} scale={[29, 12, .8]} texture={texture} color="#4f6057" />
-    {Array.from({ length: 6 }, (_, i) => { const a = i / 6 * Math.PI * 2, h = 4 + Math.sin(a) * 3.5; return <Beam key={i} position={[7 + Math.cos(a) * 7, h / 2 - .5, -3]} scale={[.25, Math.max(.3, h), .3]} color="#909b87" />; })}
+    <ObservationWall texture={texture} z={-13} />
+    {[-5, 7, 19].map((x) => <group key={x}>
+      <Beam position={[x, 15, -4]} scale={[1.5, .45, 24]} texture={texture} color="#506c72" />
+      <Beam position={[x, 14.72, -4]} scale={[.1, .06, 23]} color="#c2d8d5" lit />
+    </group>)}
   </>;
 }
 
 function ChronologyArchitecture({ texture }) {
   return <>
-    {[-10, -6, -2].map((z, i) => <Beam key={z} position={[7, -1.5 - i * .3, z]} scale={[27, 1.3, 3]} texture={texture} color="#596b5d" />)}
-    <Vault texture={texture} radius={16} depth={8} />
-    <Beam position={[7, 5, -15]} scale={[29, 14, .8]} texture={texture} color="#525e53" />
+    <ObservationWall texture={texture} z={-15} />
+    {[-7, 21].map((x) => <group key={x}>
+      {[-13, -5, 3].map((z) => <Beam key={z} position={[x, 7, z]} scale={[.5, 14, .7]} texture={texture} color="#607e82" />)}
+      {[2, 7, 12].map((y) => <Beam key={y} position={[x, y, -5]} scale={[.35, .3, 20]} texture={texture} color="#4c686e" />)}
+      <Beam position={[x, 14, -5]} scale={[1.4, .6, 22]} texture={texture} color="#70817d" />
+      <Beam position={[x, 13.6, -5]} scale={[.12, .05, 21]} color="#d4c49f" lit />
+    </group>)}
   </>;
 }
 
@@ -122,14 +122,14 @@ function FabricationArchitecture({ texture }) {
   </>;
 }
 
-const rooms = { profile: Archive, atelier: Gallery, compute: ComputeArchitecture, motion: MotionArchitecture, exchange: ExchangeArchitecture, skills: NexusArchitecture, experience: ChronologyArchitecture, about: FabricationArchitecture, contact: CommunicationsArchitecture };
+const rooms = { atelier: Gallery, compute: ComputeArchitecture, motion: MotionArchitecture, exchange: ExchangeArchitecture, skills: NexusArchitecture, experience: ChronologyArchitecture, about: FabricationArchitecture, contact: CommunicationsArchitecture };
 
 export function RoomArchitecture({ entry, texture }) {
   const Room = rooms[entry.environment || entry.kind];
   return <>
     {Room && <Room texture={texture} />}
-    <pointLight position={[7, 8, 10]} color="#ffe3b4" intensity={320} distance={45} />
-    <pointLight position={[-5, 8, -1]} color="#e1e8dd" intensity={210} distance={40} />
-    <pointLight position={[18, 10, -8]} color="#ffbd69" intensity={180} distance={35} />
+    <pointLight position={[7, 8, 10]} color="#efe2c5" intensity={240} distance={40} />
+    <pointLight position={[-5, 8, -1]} color="#c2d6da" intensity={160} distance={35} />
+    <pointLight position={[18, 10, -8]} color="#dcc18b" intensity={110} distance={30} />
   </>;
 }

@@ -8,6 +8,7 @@ import { experienceData } from "@/data/experience";
 import { journey, worldProjects } from "./journey";
 import { PortfolioContent } from "./PortfolioContent";
 import styles from "./observatory.module.css";
+import { ObjectChoices, ObjectInformation, useRoomObjects } from "./RoomObjects";
 
 const experiences = experienceData.filter((item) => item.category !== "HACKATHONS" || !/\[Editable\]/i.test(item.subtitle));
 
@@ -19,6 +20,7 @@ export function SectionPresentation({ entry, go, skillId, setSkillId, inspected,
   const currentExperience = experiences[experience];
   const email = profileData.socials.find((social) => social.label === "EMAIL");
   const project = entry.project;
+  const objects = useRoomObjects();
 
   useEffect(() => {
     if (inspected && !dialog.current.open) dialog.current.showModal();
@@ -33,7 +35,7 @@ export function SectionPresentation({ entry, go, skillId, setSkillId, inspected,
   const heading = (title, subtitle) => <div className={styles.titleBlock}><p className={styles.eyebrow}>{entry.number} / {entry.zone}</p><h1>{title}</h1>{subtitle && <p className={styles.captionText}>{subtitle}</p>}</div>;
 
   return <>
-    {entry.kind === "home" ? <>
+    {objects.choices.length > 0 && objects.selected ? <ObjectInformation /> : entry.kind === "home" ? <>
       <p className={styles.eyebrow}>DIVYANSH CHANDRAKAR / THE OBSERVATORY</p>
       <h1 className={styles.heroName}>DIVYANSH<br /><span>CHANDRAKAR</span></h1>
       <p className={styles.role}>{profileData.headline}<br />{profileData.subheadline}</p>
@@ -50,13 +52,14 @@ export function SectionPresentation({ entry, go, skillId, setSkillId, inspected,
           {entry.kind === "skills" && <><h2>{category.subtitle}</h2><p className={styles.lead}>{category.description}</p><div className={styles.tags}>{category.skills.map((skill) => <span key={skill.name}>{skill.name}</span>)}</div></>}
           {entry.kind === "experience" && <><p className={styles.eyebrow}>{currentExperience.period}</p><h2>{currentExperience.title}</h2><p className={styles.lead}>{currentExperience.description}</p></>}
           {entry.kind === "about" && <><h2>{profileData.areasOfInterest[interest].title}</h2><p className={styles.lead}>{profileData.areasOfInterest[interest].description}</p><div className={styles.tags}>{profileData.areasOfInterest[interest].tags.map((tag) => <span key={tag}>{tag}</span>)}</div></>}
-          {entry.kind === "contact" && <><h2>Let&apos;s build something.</h2><a className={styles.emailAddress} href={email.url}>{email.identifier}<ArrowUpRight size={20} /></a></>}
+          {entry.kind === "contact" && <><h2>Have an interesting idea? Let&apos;s build it.</h2><p>Projects, collaboration, and development opportunities.</p><a className={styles.emailAddress} href={email.url}>{email.identifier}<ArrowUpRight size={20} /></a></>}
         </div>
         <div className={styles.presentationActions}>
           {project?.links.github && <a className={styles.primary} href={project.links.github} target="_blank" rel="noopener noreferrer">Repository<ArrowUpRight size={16} /></a>}
           {project?.links.demo && <a href={project.links.demo} target="_blank" rel="noopener noreferrer">Live demo<ArrowUpRight size={16} /></a>}
-          {entry.kind === "contact" && profileData.socials.filter((social) => social.external).map((social) => <a key={social.label} href={social.url} target="_blank" rel="noopener noreferrer">{social.label}<ArrowUpRight size={16} /></a>)}
+          {entry.kind === "contact" && profileData.socials.filter((social) => social.external && social.configured !== false).map((social) => <a key={social.label} href={social.url} target="_blank" rel="noopener noreferrer">{social.label}<ArrowUpRight size={16} /></a>)}
           {detailsButton(project ? "Project details" : entry.kind === "profile" ? "Background & education" : entry.kind === "skills" ? "Explore technologies" : entry.kind === "contact" ? "Contact options" : "Read more")}
+          {objects.choices.length > 0 && <ObjectChoices />}
         </div>
       </div>
       {project && <nav className={styles.projectNav} aria-label="Project destinations">{worldProjects.map((item) => { const destination = journey.find((stop) => stop.id === item.id); return <a key={item.id} href={destination.route} aria-current={item.id === entry.id ? "page" : undefined} onClick={(e) => { e.preventDefault(); go(destination.index); }}>{item.title}</a>; })}</nav>}

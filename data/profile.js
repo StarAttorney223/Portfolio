@@ -78,6 +78,7 @@ export const profileData = {
     },
     {
       label: "LINKEDIN",
+      configured: false, // Set true after replacing the placeholder with your verified profile URL.
       url: "https://linkedin.com/in/divyansh-chandrakar", // editable placeholder
       identifier: "in/divyansh-chandrakar",
       external: true,

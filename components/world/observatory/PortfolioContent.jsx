@@ -97,7 +97,8 @@ export function PortfolioContent({ entry, go, skillId, setSkillId, inspected, se
 
     {entry.kind === "contact" && <>
       <p className={styles.lead}>Let&apos;s build something.</p><p>Open to engineering opportunities, collaborations, and conversations.</p>
-      <div className={styles.contactLinks}>{[email, ...profileData.socials.filter((social) => social.label !== "EMAIL")].map((social) => <a key={social.label} href={social.url} target={social.external ? "_blank" : undefined} rel={social.external ? "noopener noreferrer" : undefined}><span>{social.label}<small>{social.identifier}</small></span><ArrowUpRight size={18} /></a>)}</div>
+      <div className={styles.contactLinks}>{[email, ...profileData.socials.filter((social) => social.label !== "EMAIL" && social.configured !== false)].map((social) => <a key={social.label} href={social.url} target={social.external ? "_blank" : undefined} rel={social.external ? "noopener noreferrer" : undefined}><span>{social.label}<small>{social.identifier}</small></span><ArrowUpRight size={18} /></a>)}</div>
+      {profileData.socials.some((social) => social.configured === false) && <p>LinkedIn is not configured yet.</p>}
       <button className={styles.textLink} onClick={copyEmail}>{copied ? <Check size={16} /> : <Copy size={16} />}{copied ? "Email copied" : "Copy email address"}</button>
       {copyError && <p role="status">{email.identifier}</p>}
       <details><summary>Write a message</summary><form className={styles.contactForm} onSubmit={(e) => {

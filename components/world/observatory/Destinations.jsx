@@ -9,6 +9,10 @@ import { journey } from "./journey";
 import { RoomArchitecture } from "./RoomArchitecture";
 import { skillsCategories } from "@/data/skills";
 import { DataFlow, FeatureTarget } from "./ProjectInteractions";
+import { ProfileRoom } from "./ProfileRoom";
+import { AboutRoom, ContactRoom } from "./StudioRooms";
+import { RoomEnvironment } from "./RoomEnvironment";
+import { TechnologyCore, OperationsCenter } from "./SystemInstallations";
 
 function Ring({ position, radius, rotation = [0, 0, 0], color = AMBER, lit = true }) {
   return <mesh position={position} rotation={rotation} castShadow>
@@ -21,23 +25,14 @@ function Stage({ entry, texture }) {
   return <>
     {circular ? <mesh position={[7, -.65, -2]} receiveShadow><cylinderGeometry args={[15, 15.8, 1.2, 48]} /><meshStandardMaterial color="#626d60" map={texture} metalness={.6} roughness={.48} /></mesh>
       : <Beam position={[7, -.6, -2]} scale={[31, 1.2, 30]} texture={texture} color="#596557" />}
-    <Stencil text={entry.project?.title || entry.label.toUpperCase()} position={[7, 12, -12]} scale={[15, 1.2, 1]} />
+    <group position={[7, entry.environment === "motion" ? 15.5 : entry.environment === "atelier" ? 11.8 : ["compute", "skills", "experience", "about"].includes(entry.environment || entry.kind) ? 13.5 : 11.5, entry.environment === "atelier" ? .5 : entry.environment === "compute" || entry.kind === "about" ? -6 : -11.4]}>
+      <Beam position={[0, 0, -.16]} scale={[entry.environment === "atelier" ? 14 : 20, 1.75, .25]} color="#18282b" roughness={.8} />
+      <Stencil text={entry.project?.title || entry.label.toUpperCase()} position={[0, 0, 0]} scale={[entry.environment === "atelier" ? 12 : 17, 1.1, 1]} />
+      <Beam position={[0, -.95, -.05]} scale={[entry.environment === "atelier" ? 14 : 20, .045, .07]} color="#c4ab7b" lit />
+      {entry.environment === "atelier" && [-6, 6].map((x) => <Beam key={x} position={[x, .8, -.5]} scale={[.08, 1.3, .12]} color="#7b8985" />)}
+    </group>
     <RoomArchitecture entry={entry} texture={texture} />
   </>;
-}
-
-function Foundry({ texture, active }) {
-  const press = useRef();
-  const time = useRef(0);
-  useFrame((_, delta) => { if (active) { time.current += Math.min(delta, .05); press.current.position.y = 7 + Math.sin(time.current * .3) * .35; } });
-  return <group position={[7, 0, -2]}>
-    {[-5, -2.5, 0, 2.5, 5].map((x, i) => <group key={x}>
-      <Beam position={[x, 3 + i % 2, 0]} scale={[1.5, 6 + i % 2 * 2, 3]} texture={texture} color="#59615b" />
-      <Beam position={[x, 3 + i % 2, 1.55]} scale={[.07, 4, .1]} color={i % 2 ? "#edb561" : "#c7d6cb"} lit />
-    </group>)}
-    <group ref={press}><Beam position={[0, 0, 0]} scale={[13, .8, 5]} texture={texture} /><Beam position={[0, -.5, 2.5]} scale={[11, .08, .1]} color={AMBER} lit /></group>
-    <Stencil text="D / C" position={[0, 3, 1.6]} scale={[6, 2, 1]} />
-  </group>;
 }
 
 function Atelier({ active, onInspect }) {
@@ -50,6 +45,7 @@ function Atelier({ active, onInspect }) {
       <Beam position={[0, 0, -.2]} scale={[5.8, 8.6, .35]} color="#9b9684" />
       <mesh position={[0, 0, .8]}><planeGeometry args={[5.4, 8.2, 24, 24]} /><shaderMaterial {...shader} /></mesh>
       <Beam position={[0, 4.8, 0]} scale={[.04, 2, .04]} color="#bac1b6" />
+      <Beam position={[0, 8, 0]} scale={[.035, 6.4, .035]} color="#9caea8" />
     </FeatureTarget>)}
     <FeatureTarget projectId="ether" featureIndex={3} position={[0, -4.6, 0]}><Ring radius={7} rotation={[-Math.PI / 2, 0, 0]} /></FeatureTarget>
     <Line points={[[-4, -.8, -3], [0, 0, 0], [4, .8, -3]]} color="#b99d65" lineWidth={1} />
@@ -104,6 +100,9 @@ function Exchange({ active, onInspect }) {
       <Ring radius={3.4} position={[0, 0, 0]} rotation={[0, Math.PI / 2, 0]} color="#a4c8b3" />
       <Ring radius={3.6} position={[x > 0 ? 1 : -1, 0, 0]} rotation={[0, Math.PI / 2, 0]} lit={false} color="#b4b9a8" />
       <Beam position={[0, -3.6, 0]} scale={[2, 3, 7]} color="#44554d" />
+      <Beam position={[0, -2.02, 0]} scale={[2.4, .18, 7.4]} color="#8b9d97" />
+      {[-2.6, -1, .6, 2.2].map((z) => <Beam key={z} position={[0, -3.5, z]} scale={[2.12, 2.5, .12]} color="#718a8b" />)}
+      <Beam position={[0, -2, 3.7]} scale={[1.6, .06, .06]} color="#dbc99f" lit />
     </FeatureTarget>)}
     {[-1, 0, 1].map((y) => <Line key={y} points={[[-5.5, y * 1.2, 0], [5.5, y * 1.2, 0]]} color="#839f91" lineWidth={1} />)}
     <group ref={packets}>{[-1, 0, 1].map((y) => <FeatureTarget key={y} projectId="pixelchat" featureIndex={y + 3} marker={y !== 1} position={[y * .8, y * 1.2, 0]}><Beam scale={[.5, .5, .5]} color={AMBER} lit /></FeatureTarget>)}</group>
@@ -187,16 +186,23 @@ function Uplink({ active, texture, onContact }) {
 
 export const environmentComponents = { atelier: Atelier, compute: ComputeHall, motion: MotionLab, exchange: Exchange };
 
-const sectionComponents = { profile: Foundry, skills: SkillNetwork, experience: Chronology, about: Workshop, contact: Uplink };
+const sectionComponents = { skills: TechnologyCore, experience: OperationsCenter, about: Workshop, contact: Uplink };
 
-export function Destinations({ texture, active, currentIndex, mountedStops, selection, onSkill, onInspect, onContact }) {
+export function Destinations({ texture, active, compact, currentIndex, mountedStops, selection, onSkill, onInspect, onContact }) {
   return <>{journey.slice(1).filter((entry) => mountedStops.includes(entry.index)).map((entry) => {
+    const surroundings = <RoomEnvironment entry={entry} texture={texture} active={active} compact={compact} />;
+    if (entry.kind === "profile") return <group key={entry.id} position={[0, 0, entry.z]}>{surroundings}<ProfileRoom texture={texture} active={active} /></group>;
+    if (entry.kind === "about" || entry.kind === "contact") {
+      const Room = entry.kind === "about" ? AboutRoom : ContactRoom;
+      return <group key={entry.id} position={[0, 0, entry.z]}>{surroundings}<Room texture={texture} active={active} /></group>;
+    }
     const Installation = entry.project ? environmentComponents[entry.environment] : sectionComponents[entry.kind];
     const scale = entry.scale || (entry.kind === "profile" ? 1.25 : entry.kind === "about" ? 1.25 : 1);
     return <group key={entry.id} position={[0, 0, entry.z]}>
+      {surroundings}
       <Stage entry={entry} texture={texture} />
       <group position={[7, 0, -3]} scale={scale}><group position={[-7, 0, 3]}>
-        {Installation && <Installation texture={texture} active={active} selected={selection} onSkill={onSkill} onInspect={entry.index === currentIndex ? onInspect : undefined} onContact={onContact} />}
+        {Installation && <Installation texture={texture} active={active} interactive={entry.index === currentIndex} selected={selection} onSkill={onSkill} onInspect={entry.index === currentIndex ? onInspect : undefined} onContact={onContact} />}
       </group></group>
     </group>;
   })}</>;

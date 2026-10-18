@@ -11,17 +11,17 @@ export function usePlateTexture() {
     const canvas = document.createElement("canvas");
     canvas.width = canvas.height = 256;
     const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "#727877";
+    ctx.fillStyle = "#b0b7b5";
     ctx.fillRect(0, 0, 256, 256);
     // Deterministic brushed metal grain; no downloaded texture dependency.
     for (let i = 0; i < 2100; i++) {
       const x = (i * 73) % 256;
       const y = (i * 137) % 256;
-      ctx.fillStyle = i % 2 ? "#646b6a" : "#818785";
+      ctx.fillStyle = i % 2 ? "#a6aeac" : "#b9bfbc";
       ctx.fillRect(x, y, 2 + i % 27, 1);
     }
-    ctx.strokeStyle = "#353c3b";
-    ctx.lineWidth = 3;
+    ctx.strokeStyle = "#727f7e";
+    ctx.lineWidth = 1;
     ctx.strokeRect(2, 2, 252, 252);
     ctx.strokeStyle = "#9ca09a";
     ctx.lineWidth = 1;
@@ -33,21 +33,22 @@ export function usePlateTexture() {
     const map = new CanvasTexture(canvas);
     map.wrapS = map.wrapT = RepeatWrapping;
     map.colorSpace = SRGBColorSpace;
+    map.anisotropy = 4;
     return map;
   }, []);
   useEffect(() => () => texture.dispose(), [texture]);
   return texture;
 }
 
-export function Beam({ position, scale, rotation, color = "#333b3b", texture, lit = false }) {
+export function Beam({ position, scale, rotation, color = "#333b3b", texture, lit = false, roughness = .54, metalness = .55 }) {
   return <mesh position={position} scale={scale} rotation={rotation} castShadow={!lit} receiveShadow>
     <boxGeometry />
-    <meshStandardMaterial color={color} map={texture} metalness={lit ? 0 : .65} roughness={.42}
-      emissive={lit ? color : "#000000"} emissiveIntensity={lit ? 1.6 : 0} />
+    <meshStandardMaterial color={color} map={lit ? undefined : texture} bumpMap={lit ? undefined : texture} bumpScale={.025} metalness={lit ? 0 : metalness} roughness={roughness}
+      emissive={lit ? color : "#000000"} emissiveIntensity={lit ? .9 : 0} />
   </mesh>;
 }
 
-export function RepeatedBeams({ items, color = "#424a48", texture }) {
+export function RepeatedBeams({ items, color = "#424a48", texture, roughness = .58, metalness = .55, lit = false }) {
   const ref = useRef();
   useEffect(() => {
     const object = new Object3D();
@@ -61,27 +62,29 @@ export function RepeatedBeams({ items, color = "#424a48", texture }) {
     ref.current.instanceMatrix.needsUpdate = true;
     ref.current.computeBoundingSphere();
   }, [items]);
-  return <instancedMesh ref={ref} args={[null, null, items.length]} castShadow receiveShadow>
-    <boxGeometry /><meshStandardMaterial color={color} map={texture} roughness={.5} metalness={.65} />
+  return <instancedMesh ref={ref} args={[null, null, items.length]} castShadow={!lit} receiveShadow={!lit}>
+    <boxGeometry /><meshStandardMaterial color={color} map={texture} bumpMap={texture} bumpScale={.02} roughness={roughness} metalness={lit ? 0 : metalness} emissive={lit ? color : "#000000"} emissiveIntensity={lit ? .9 : 0} />
   </instancedMesh>;
 }
 
 export function Stencil({ text, position, scale = [8, 2, 1], rotation = [0, 0, 0] }) {
   const texture = useMemo(() => {
     const canvas = document.createElement("canvas");
-    canvas.width = 1024; canvas.height = 256;
+    canvas.width = Math.min(2048, Math.max(256, Math.round(256 * scale[0] / scale[1]))); canvas.height = 256;
     const ctx = canvas.getContext("2d");
-    ctx.fillStyle = "#aeb5aa";
-    ctx.font = "bold 160px monospace";
+    ctx.fillStyle = "#dce2d9";
+    ctx.font = "500 160px monospace";
     ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    ctx.fillText(text, 512, 134, 980);
+    const fit = Math.min(160, 160 * (canvas.width - 32) / Math.max(1, ctx.measureText(text).width));
+    ctx.font = `500 ${fit}px monospace`;
+    ctx.fillText(text, canvas.width / 2, 132);
     const map = new CanvasTexture(canvas);
     map.colorSpace = SRGBColorSpace;
     return map;
-  }, [text]);
+  }, [text, scale[0], scale[1]]);
   useEffect(() => () => texture.dispose(), [texture]);
   return <mesh position={position} scale={scale} rotation={rotation}>
-    <planeGeometry /><meshStandardMaterial map={texture} transparent roughness={.8} depthWrite={false} />
+    <planeGeometry /><meshBasicMaterial map={texture} transparent alphaTest={.05} toneMapped={false} depthWrite={false} />
   </mesh>;
 }
 
@@ -130,17 +133,23 @@ export function Turbine({ active, texture }) {
   </group>;
 }
 
-export function Walkway({ position, length, width = 5, rotation = 0, texture }) {
+export function Walkway({ position, length, width = 5, rotation = 0, texture, opening }) {
   const rails = useMemo(() => {
     const items = [];
     for (const side of [-1, 1]) {
-      for (let z = -length / 2; z <= length / 2; z += 2.5) items.push({ position: [side * width / 2, .85, z], scale: [.1, 1.7, .1] });
-      items.push({ position: [side * width / 2, 1.7, 0], scale: [.12, .12, length] });
-      items.push({ position: [side * width / 2, .7, 0], scale: [.06, .06, length] });
+      for (let z = -length / 2; z <= length / 2; z += 2.5) {
+        if (opening?.side === side && z > opening.start && z < opening.end) continue;
+        items.push({ position: [side * width / 2, .85, z], scale: [.1, 1.7, .1] });
+      }
+      const spans = opening?.side === side ? [[-length / 2, opening.start], [opening.end, length / 2]] : [[-length / 2, length / 2]];
+      for (const [start, end] of spans) {
+        items.push({ position: [side * width / 2, 1.7, (start + end) / 2], scale: [.12, .12, end - start] });
+        items.push({ position: [side * width / 2, .7, (start + end) / 2], scale: [.06, .06, end - start] });
+      }
     }
     for (let z = -length / 2; z <= length / 2; z += 1.5) items.push({ position: [0, -.12, z], scale: [width, .12, .07] });
     return items;
-  }, [length, width]);
+  }, [length, width, opening?.side, opening?.start, opening?.end]);
   return <group position={position} rotation={[0, rotation, 0]}>
     <Beam position={[0, -.4, 0]} scale={[width + .3, .6, length]} texture={texture} color="#333b39" />
     <RepeatedBeams items={rails} color="#85877b" />
